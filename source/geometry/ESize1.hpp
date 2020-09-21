@@ -1,6 +1,8 @@
 #ifndef ESIZE1_HPP
 #define ESIZE1_HPP
 
+//Test
+
 /*
  * @description: Evandro's C++ Toolkit.
  */
