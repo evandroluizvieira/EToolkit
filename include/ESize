@@ -1,0 +1,3 @@
+#include "../source/geometry/ESize1.hpp"
+#include "../source/geometry/ESize2.hpp"
+#include "../source/geometry/ESize3.hpp"
