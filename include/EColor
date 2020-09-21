@@ -1,0 +1,4 @@
+#include "../source/graphics/EColor1.hpp"
+#include "../source/graphics/EColor2.hpp"
+#include "../source/graphics/EColor3.hpp"
+#include "../source/graphics/EColor4.hpp"

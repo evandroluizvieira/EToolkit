@@ -1,0 +1,3 @@
+#include "../source/geometry/EPosition1.hpp"
+#include "../source/geometry/EPosition2.hpp"
+#include "../source/geometry/EPosition3.hpp"
