@@ -1,7 +1,7 @@
 #ifndef ESIZE3_HPP
 #define ESIZE3_HPP
 
-#include <ESize>
+#include "ESize2.hpp"
 
 /*
  * @description: Evandro's C++ Toolkit.

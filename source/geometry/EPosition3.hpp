@@ -1,7 +1,7 @@
 #ifndef EPOSITION3_HPP
 #define EPOSITION3_HPP
 
-#include <EPosition>
+#include "EPosition2.hpp"
 
 /*
  * @description: Evandro's C++ Toolkit.
@@ -10,7 +10,7 @@ namespace EToolkit{
 
 	/*
 	 * @description: Class that represent 3 dimensional position.
-	 * @note: 'Color2Type' must be numeric.
+	 * @note: 'Position3Type' must be numeric.
 	 */
 	template<class Position3Type>
 	class Position3 : public Position2<Position3Type>{

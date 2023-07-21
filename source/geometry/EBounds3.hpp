@@ -1,10 +1,8 @@
 #ifndef EBOUNDS3_HPP
 #define EBOUNDS3_HPP
 
-#include <EToolkit>
-
-#include <EPosition>
-#include <ESize>
+#include "EPosition3.hpp"
+#include "ESize3.hpp"
 
 /*
  * @description: Evandro's Toolkit.
@@ -36,7 +34,7 @@ namespace EToolkit{
 
 template<class Bounds3Type>
 EToolkit::Bounds3<Bounds3Type>::Bounds3(Bounds3Type x, Bounds3Type y, Bounds3Type z, Bounds3Type width, Bounds3Type height, Bounds3Type depth) :
-	Position2<Bounds3Type>(x, y, z), Size2<Bounds3Type>(width, height, depth){
+	Position3<Bounds3Type>(x, y, z), Size3<Bounds3Type>(width, height, depth){
 
 }
 

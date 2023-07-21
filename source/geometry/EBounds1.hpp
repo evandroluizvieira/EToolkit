@@ -1,10 +1,8 @@
 #ifndef EBOUNDS1_HPP
 #define EBOUNDS1_HPP
 
-#include <EToolkit>
-
-#include <EPosition>
-#include <ESize>
+#include "EPosition1.hpp"
+#include "ESize1.hpp"
 
 /*
  * @description: Evandro's Toolkit.

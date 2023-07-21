@@ -1,7 +1,7 @@
 #ifndef ESIZE2_HPP
 #define ESIZE2_HPP
 
-#include <ESize>
+#include "ESize1.hpp"
 
 /*
  * @description: Evandro's C++ Toolkit.
@@ -32,7 +32,7 @@ namespace EToolkit{
 
 template<class Size2Type>
 EToolkit::Size2<Size2Type>::Size2(Size2Type width, Size2Type height) :
-	Size2<Size2Type>(width), height(height){
+	Size1<Size2Type>(width), height(height){
 
 }
 
