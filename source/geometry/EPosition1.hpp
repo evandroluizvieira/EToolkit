@@ -8,7 +8,7 @@ namespace EToolkit{
 
 	/*
 	 * @description: Class that represent 1 dimensional position.
-	 * @note: 'Color2Type' must be numeric.
+	 * @note: 'Position1Type' must be numeric.
 	 */
 	template<class Position1Type>
 	class Position1{
