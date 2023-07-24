@@ -28,6 +28,8 @@ namespace EToolkit{
 		public:
 			Size2Type height;
 	};
+
+	typedef Size2<int> Size2i;
 }
 
 template<class Size2Type>

@@ -26,6 +26,8 @@ namespace EToolkit{
 		public:
 			Size1Type width;
 	};
+
+	typedef Size1<int> Size1i;
 }
 
 template<class Size1Type>

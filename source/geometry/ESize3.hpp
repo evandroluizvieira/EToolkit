@@ -28,6 +28,8 @@ namespace EToolkit{
 		public:
 			Size3Type depth;
 	};
+
+	typedef Size3<int> Size3i;
 }
 
 template<class Size3Type>
