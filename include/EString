@@ -1,0 +1,2 @@
+#include "../source/string/ECString.hpp"
+#include "../source/string/EString.hpp"
