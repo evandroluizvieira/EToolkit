@@ -28,6 +28,8 @@ namespace EToolkit{
 		public:
 			Position2Type y;
 	};
+
+	typedef Position2<int> Position2i;
 }
 
 template<class Position2Type>
