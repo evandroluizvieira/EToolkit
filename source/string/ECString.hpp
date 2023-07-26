@@ -7,6 +7,7 @@
  * @description: Evandro's C++ Toolkit.
  */
 namespace EToolkit{
+
 	/*
 	 * @description: Class to use old style 'C string' functions.
 	 */

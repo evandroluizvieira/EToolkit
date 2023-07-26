@@ -1,0 +1,4 @@
+#include "../source/exceptions/EException.hpp"
+#include "../source/exceptions/EMemoryAllocationException.hpp"
+#include "../source/exceptions/EOutOfBoundsException.hpp"
+#include "../source/exceptions/EWindowsAPIException.hpp"
