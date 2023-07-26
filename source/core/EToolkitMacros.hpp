@@ -3,19 +3,30 @@
 
 #include <EMacros>
 
-//ADD COMMENT
+//For further use.
+
+/*
+ * @description: Macro that includes a function to get the string name of the class.
+ * @note: Used inside a public scope of the class header.
+ */
 #define ETOOLKIT_OBJECT_NAME(ClassName)			\
 	static const char* const getClassName(){	\
 		return EMakeString(ClassName);			\
 	}
 
-//ADD COMMENT
+/*
+ * @description: Macro that includes a function to get the bits size the class.
+ * @note: Used inside a public scope of the class header.
+ */
 #define ETOOLKIT_OBJECT_SIZE(ClassName)			\
 	static const unsigned int getClassSize(){	\
 		return sizeof(ClassName);				\
 	}
 
-//ADD COMMENT
+/*
+ * @description: Macro that includes a function to get the string name and the bits size of the class.
+ * @note: Used inside a public scope of the class header.
+ */
 #define ETOOLKIT_OBJECT(ClassName)	\
 	ETOOLKIT_OBJECT_NAME(ClassName)	\
 	ETOOLKIT_OBJECT_SIZE(ClassName)
