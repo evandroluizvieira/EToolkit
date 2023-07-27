@@ -16,7 +16,7 @@ namespace EToolkit{
 			 * @description: Default constructor what create the exception with the "cannot access data" message.
 			 * @return: None.
 			 */
-			explicit OutOfBoundsException();
+			OutOfBoundsException();
 
 			/*
 			 * @description: Default inheritable destructor.

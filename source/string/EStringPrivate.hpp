@@ -4,9 +4,10 @@
 namespace EToolkit{
 	class StringPrivate{
 		friend class String;
+		friend class Control;
 
 		public:
-			explicit StringPrivate();
+			StringPrivate();
 			virtual ~StringPrivate();
 
 		private:

@@ -8,7 +8,7 @@ namespace EToolkit{
 			friend class Exception;
 
 		public:
-			explicit ExceptionPrivate(const String& message);
+			ExceptionPrivate(const String& message);
 			virtual ~ExceptionPrivate();
 
 		private:
