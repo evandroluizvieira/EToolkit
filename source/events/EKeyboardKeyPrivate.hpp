@@ -5,6 +5,8 @@
 
 namespace EToolkit{
 	class KeyboardKeyPrivate{
+		friend class ControlPrivate;
+
 		private:
 			KeyboardKeyPrivate();
 
