@@ -5,6 +5,8 @@
 
 namespace EToolkit{
 	class ResizeWindowPrivate{
+		friend class ControlPrivate;
+
 		private:
 			ResizeWindowPrivate();
 

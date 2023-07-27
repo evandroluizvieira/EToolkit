@@ -5,6 +5,8 @@
 
 namespace EToolkit{
 	class VirtualKeyPrivate{
+		friend class ControlPrivate;
+
 		private:
 			VirtualKeyPrivate();
 
