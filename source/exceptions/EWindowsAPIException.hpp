@@ -16,7 +16,7 @@ namespace EToolkit{
 			 * @description: Default constructor what create the exception with the given 'message'.
 			 * @return: None.
 			 */
-			explicit WindowsAPIException(const String& message);
+			WindowsAPIException(const String& message);
 
 			/*
 			 * @description: Default inheritable destructor.

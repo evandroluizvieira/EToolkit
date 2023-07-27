@@ -16,7 +16,7 @@ namespace EToolkit{
 			 * @description: Default constructor what create the exception with the "cannot allocate memory" message.
 			 * @return: None.
 			 */
-			explicit MemoryAllocationException();
+			MemoryAllocationException();
 
 			/*
 			 * @description: Default inheritable destructor.

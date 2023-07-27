@@ -20,7 +20,7 @@ namespace EToolkit{
 			 * @description: Default constructor what create the exception with the given 'message'.
 			 * @return: None.
 			 */
-			explicit Exception(const String& message);
+			Exception(const String& message);
 
 			/*
 			 * @description: Default inheritable destructor.
