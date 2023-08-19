@@ -136,15 +136,15 @@ unsigned int EToolkit::CString::strlen(const char* string){
 	return (unsigned int)(auxiliary - string);
 }
 
-char* EToolkit::CString::strncat(char* string1, const char* string2, unsigned int lenght){
+char* EToolkit::CString::strncat(char* string1, const char* string2, unsigned int length){
 	char* auxiliary = string1;
 
 	while(*auxiliary != '\0'){
 		auxiliary++;
 	}
 
-	while(lenght != 0 && (*auxiliary = *string2++) != '\0'){
-		lenght--;
+	while(length != 0 && (*auxiliary = *string2++) != '\0'){
+		length--;
 		auxiliary++;
 	}
 
@@ -155,13 +155,13 @@ char* EToolkit::CString::strncat(char* string1, const char* string2, unsigned in
 	return string1;
 }
 
-int EToolkit::CString::strncmp(const char* string1, const char* string2, unsigned int lenght){
-	if(lenght == 0){
+int EToolkit::CString::strncmp(const char* string1, const char* string2, unsigned int length){
+	if(length == 0){
 		return 0;
 	}
 
-	while(lenght-- > 0 && *string1 == *string2){
-		if(lenght == 0 || *string1 == '\0'){
+	while(length-- > 0 && *string1 == *string2){
+		if(length == 0 || *string1 == '\0'){
 			return 0;
 		}
 		string1++;
@@ -174,15 +174,15 @@ int EToolkit::CString::strncmp(const char* string1, const char* string2, unsigne
 	return ((lastCharacterString1 < lastCharacterString2) ? -1 : (lastCharacterString1 > lastCharacterString2));
 }
 
-char* EToolkit::CString::strncpy(char* destination, const char* source, unsigned int lenght){
+char* EToolkit::CString::strncpy(char* destination, const char* source, unsigned int length){
 	char* destinationAuxiliary = destination;
 	const char* sourceAuxiliary = source;
 
-	while(lenght > 0){
-		lenght--;
+	while(length > 0){
+		length--;
 		if((*destinationAuxiliary++ = *sourceAuxiliary++) == '\0'){
 
-			CString::memset(destinationAuxiliary, '\0', lenght);
+			CString::memset(destinationAuxiliary, '\0', length);
 			break;
 		}
 	}
@@ -233,9 +233,9 @@ char* EToolkit::CString::strstr(const char* string1, const char* string2){
 		return (char*)string1;
 	}
 
-	unsigned int string2Lenght = CString::strlen(string2);
+	unsigned int string2Length = CString::strlen(string2);
 	for(; (string1 = CString::strchr(string1, *string2)) != 0; string1++){
-		if(CString::strncmp(string1, string2, string2Lenght) == 0){
+		if(CString::strncmp(string1, string2, string2Length) == 0){
 			return (char*)string1;
 		}
 	}

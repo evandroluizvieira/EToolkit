@@ -61,7 +61,7 @@ LRESULT EToolkit::BaseWindowPrivate::procedure(HWND hwnd, UINT message, WPARAM w
 bool EToolkit::BaseWindowPrivate::createWindow(const String& identifier){
 	const char* id = identifier.getData();
 
-	if(identifier.getLenght() == 0 || id == 0){
+	if(identifier.getLength() == 0 || id == 0){
 		throw(WindowsAPIException("identifier cannot be empty"));
 	}
 
@@ -118,7 +118,7 @@ void EToolkit::BaseWindowPrivate::destroyWindow(){
 bool EToolkit::BaseWindowPrivate::createGLWindow(const String& identifier){
 	const char* id = identifier.getData();
 
-	if(identifier.getLenght() == 0 || id == 0){
+	if(identifier.getLength() == 0 || id == 0){
 		throw(WindowsAPIException("identifier cannot be empty"));
 	}
 

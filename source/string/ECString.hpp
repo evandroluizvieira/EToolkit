@@ -90,19 +90,19 @@ namespace EToolkit{
 			 * @description: Same as C library function strncat.
 			 * @note: See in: http://www.cplusplus.com/reference/cstring/strncat/.
 			 */
-			static char* strncat(char* string1, const char* string2, unsigned int lenght);
+			static char* strncat(char* string1, const char* string2, unsigned int length);
 
 			/*
 			 * @description: Same as C library function strncmp.
 			 * @note: See in: http://www.cplusplus.com/reference/cstring/strncmp/.
 			 */
-			static int strncmp(const char* string1, const char* string2, unsigned int lenght);
+			static int strncmp(const char* string1, const char* string2, unsigned int length);
 
 			/*
 			 * @description: Same as C library function strncpy.
 			 * @note: See in: http://www.cplusplus.com/reference/cstring/strncpy/.
 			 */
-			static char* strncpy(char* destination, const char* source, unsigned int lenght);
+			static char* strncpy(char* destination, const char* source, unsigned int length);
 
 			/*
 			 * @description: Same as C library function strpbrk.

@@ -131,7 +131,7 @@ namespace EToolkit{
 
 			/*
 			 * @description: Operator to get the character of the given 'index'.
-			 * @return: Copy of the character, 'index' must be lower than lenght.
+			 * @return: Copy of the character, 'index' must be lower than length.
 			 */
 			char get(unsigned int index) const;
 
@@ -157,7 +157,7 @@ namespace EToolkit{
 			 * @description: Function to get the number of characters in text.
 			 * @return: Copy of number of the characters.
 			 */
-			unsigned int getLenght() const;
+			unsigned int getLength() const;
 
 			/*
 			 * @description: Check if the number of characters on text is 0.

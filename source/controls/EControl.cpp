@@ -85,11 +85,11 @@ void EToolkit::Control::setVisility(bool visible){
 EToolkit::String EToolkit::Control::getText() const{
 	String text;
 	if(data != 0 && data->hwnd != 0){
-		int textLenght = ::GetWindowTextLength(data->hwnd);
-		if(textLenght > 0){
-			textLenght++;
-			char buffer[textLenght];
-			if(::GetWindowText(data->hwnd, buffer, textLenght) > 0){
+		int textLength = ::GetWindowTextLength(data->hwnd);
+		if(textLength > 0){
+			textLength++;
+			char buffer[textLength];
+			if(::GetWindowText(data->hwnd, buffer, textLength) > 0){
 				text = buffer;
 			}
 		}
