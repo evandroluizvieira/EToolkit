@@ -1,0 +1,2 @@
+#include "../source/containers/EStaticArray.hpp"
+#include "../source/containers/EDynamicArray.hpp"

@@ -39,14 +39,14 @@ LRESULT EToolkit::BaseWindowPrivate::procedure(HWND hwnd, UINT message, WPARAM w
 	}
 
 	if(message == WM_DESTROY){
-		std::vector<EToolkit::BaseWindow*>& TotalWindows = ApplicationPrivate::BaseWindows();
-		for(size_t i = 0; i < TotalWindows.size(); i++){
-			BaseWindow* baseWindow = TotalWindows.at(i);
+		DynamicArray<EToolkit::BaseWindow*>& TotalWindows = ApplicationPrivate::BaseWindows();
+		for(unsigned int i = 0; i < TotalWindows.getSize(); i++){
+			BaseWindow* baseWindow = TotalWindows.get(i);
 			if(baseWindow != 0){
 				ControlPrivate* controlPrivate = baseWindow->data;
 				if(controlPrivate != 0){
 					if(controlPrivate->id == id){
-						TotalWindows.erase(TotalWindows.begin() + i);
+						TotalWindows.remove(i);
 					}
 				}
 			}

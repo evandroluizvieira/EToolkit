@@ -30,7 +30,7 @@ int EToolkit::Application::execute(){
 
 		ApplicationPrivate::GLWindowsInitialize();
 
-		while(running == true && ApplicationPrivate::BaseWindows().size() > 0){
+		while(running == true && ApplicationPrivate::BaseWindows().getSize() > 0){
 			if(::GetMessage(&msg, 0, 0, 0) == -1){
 				running = false;
 			}else{
@@ -68,7 +68,7 @@ int EToolkit::Application::execute(Game& game){
 
 	game.onInitializing();
 
-	while(running == true && ApplicationPrivate::BaseWindows().size() > 0){
+	while(running == true && ApplicationPrivate::BaseWindows().getSize() > 0){
 		previousTickCount = currentTickCount;
 		currentTickCount = ::GetTickCount();
 
@@ -76,8 +76,8 @@ int EToolkit::Application::execute(Game& game){
 			::DispatchMessage(&msg);
 		}
 
-		ApplicationPrivate::GLWindowsPaint();
 		game.onUpdate(currentTickCount - previousTickCount);
+		ApplicationPrivate::GLWindowsPaint();
 	}
 
 	ApplicationPrivate::GLWindowsFinalize();

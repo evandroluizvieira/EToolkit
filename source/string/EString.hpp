@@ -64,37 +64,37 @@ namespace EToolkit{
 			String& operator=(const String& string);
 
 			/*
-			 * @description: Operator what append the 'character' into a new text with current text.
+			 * @description: Operator that append the 'character' into a new text with current text.
 			 * @return: Copy of appended text.
 			 */
 			String operator+(char character) const;
 
 			/*
-			 * @description: Operator what append the 'string' into a new text with current text.
+			 * @description: Operator that append the 'string' into a new text with current text.
 			 * @return: Copy of appended text.
 			 */
 			String operator+(const char* string) const;
 
 			/*
-			 * @description: Operator what append the 'string' into a new text with current text.
+			 * @description: Operator that append the 'string' into a new text with current text.
 			 * @return: Copy of appended text.
 			 */
 			String operator+(const String& string) const;
 
 			/*
-			 * @description: Operator what append the 'character' into the current text.
+			 * @description: Operator that append the 'character' into the current text.
 			 * @return: Reference to itself.
 			 */
 			String& operator+=(char character);
 
 			/*
-			 * @description: Operator what append the 'string' into the current text.
+			 * @description: Operator that append the 'string' into the current text.
 			 * @return: Reference to itself.
 			 */
 			String& operator+=(const char* string);
 
 			/*
-			 * @description: Operator what append the 'string' into the current text.
+			 * @description: Operator that append the 'string' into the current text.
 			 * @return: Reference to itself.
 			 */
 			String& operator+=(const String& string);

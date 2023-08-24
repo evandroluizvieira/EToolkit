@@ -10,19 +10,18 @@ EToolkit::ApplicationPrivate::~ApplicationPrivate(){
 	running = false;
 }
 
-std::vector<EToolkit::BaseWindow*>& EToolkit::ApplicationPrivate::BaseWindows(){
-	static std::vector<BaseWindow*> windows;
+EToolkit::DynamicArray<EToolkit::BaseWindow*>& EToolkit::ApplicationPrivate::BaseWindows(){
+	static DynamicArray<BaseWindow*> windows;
 	return windows;
 }
 
-std::vector<EToolkit::GLWindow*> EToolkit::ApplicationPrivate::GLWindows(){
-	std::vector<GLWindow*> glWindows;
-
-	int totalWindows = BaseWindows().size();
-	for(int i = 0; i < totalWindows; i++){
-		BaseWindow* baseWindow = BaseWindows().at(i);
+EToolkit::DynamicArray<EToolkit::GLWindow*> EToolkit::ApplicationPrivate::GLWindows(){
+	DynamicArray<GLWindow*> glWindows;
+	unsigned int totalWindows = BaseWindows().getSize();
+	for(unsigned int i = 0; i < totalWindows; i++){
+		BaseWindow* baseWindow = BaseWindows().get(i);
 		if(baseWindow != 0 && baseWindow->getType() == Control::Type_GLWindow){
-			glWindows.push_back(reinterpret_cast<GLWindow*>(baseWindow));
+			glWindows.insertBack(reinterpret_cast<GLWindow*>(baseWindow));
 		}
 	}
 
@@ -30,9 +29,9 @@ std::vector<EToolkit::GLWindow*> EToolkit::ApplicationPrivate::GLWindows(){
 }
 
 void EToolkit::ApplicationPrivate::GLWindowsInitialize(){
-	int totalWindows = BaseWindows().size();
-	for(int i = 0; i < totalWindows; i++){
-		BaseWindow* baseWindow = BaseWindows().at(i);
+	unsigned int totalWindows = BaseWindows().getSize();
+	for(unsigned int i = 0; i < totalWindows; i++){
+		BaseWindow* baseWindow = BaseWindows().get(i);
 		if(baseWindow != 0 && baseWindow->getType() == Control::Type_GLWindow){
 			GLWindow* glWindow = reinterpret_cast<GLWindow*>(baseWindow);
 			if(glWindow != 0){
@@ -43,9 +42,9 @@ void EToolkit::ApplicationPrivate::GLWindowsInitialize(){
 }
 
 void EToolkit::ApplicationPrivate::GLWindowsFinalize(){
-	int totalWindows = BaseWindows().size();
-	for(int i = 0; i < totalWindows; i++){
-		BaseWindow* baseWindow = BaseWindows().at(i);
+	unsigned int totalWindows = BaseWindows().getSize();
+	for(unsigned int i = 0; i < totalWindows; i++){
+		BaseWindow* baseWindow = BaseWindows().get(i);
 		if(baseWindow != 0 && baseWindow->getType() == Control::Type_GLWindow){
 			GLWindow* glWindow = reinterpret_cast<GLWindow*>(baseWindow);
 			if(glWindow != 0){
@@ -56,9 +55,9 @@ void EToolkit::ApplicationPrivate::GLWindowsFinalize(){
 }
 
 void EToolkit::ApplicationPrivate::GLWindowsPaint(){
-	int totalWindows = BaseWindows().size();
-	for(int i = 0; i < totalWindows; i++){
-		BaseWindow* baseWindow = BaseWindows().at(i);
+	unsigned int totalWindows = BaseWindows().getSize();
+	for(unsigned int i = 0; i < totalWindows; i++){
+		BaseWindow* baseWindow = BaseWindows().get(i);
 		if(baseWindow != 0 && baseWindow->getType() == Control::Type_GLWindow){
 			BaseWindowPrivate* baseWindowPrivate = reinterpret_cast<BaseWindowPrivate*>(baseWindow->data);
 			if(baseWindowPrivate != 0){

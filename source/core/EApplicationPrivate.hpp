@@ -1,10 +1,9 @@
 #ifndef EAPPLICATIONPRIVATE_HPP
 #define EAPPLICATIONPRIVATE_HPP
 
+#include "../containers/EDynamicArray.hpp"
 #include "../windows/EBaseWindow.hpp"
 #include "../windows/EGLWindow.hpp"
-
-#include <vector>
 
 namespace EToolkit{
 	class ApplicationPrivate{
@@ -18,8 +17,8 @@ namespace EToolkit{
 			virtual ~ApplicationPrivate();
 
 		private:
-			static std::vector<EToolkit::BaseWindow*>& BaseWindows();
-			static std::vector<EToolkit::GLWindow*> GLWindows();
+			static DynamicArray<BaseWindow*>& BaseWindows();
+			static DynamicArray<EToolkit::GLWindow*> GLWindows();
 			static void GLWindowsInitialize();
 			static void GLWindowsFinalize();
 			static void GLWindowsPaint();

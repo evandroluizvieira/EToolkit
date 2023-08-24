@@ -17,7 +17,7 @@ EToolkit::Window::Window() :
 	String identifier = String::valueOfInteger(data->id);
 	BaseWindowPrivate* privateData = (BaseWindowPrivate*)data;
 	if(privateData->createWindow(identifier) == true){
-		ApplicationPrivate::BaseWindows().push_back(this);
+		ApplicationPrivate::BaseWindows().insertBack(this);
 	}
 }
 
