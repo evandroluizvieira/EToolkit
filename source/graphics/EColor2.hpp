@@ -17,11 +17,13 @@ namespace EToolkit{
 		public:
 			/*
 			 * @description: Default constructor that initialize object with the given 'gray' and 'alpha' values.
+			 * @return: None.
 			 */
 			Color2(Color2Type gray = 0, Color2Type alpha = 0);
 
 			/*
 			 * @description: Default destructor.
+			 * @return: None.
 			 */
 			~Color2();
 

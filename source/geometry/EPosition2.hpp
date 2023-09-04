@@ -17,11 +17,13 @@ namespace EToolkit{
 		public:
 			/*
 			 * @description: Default constructor that initialize object with the given 'x' and 'y' values.
+			 * @return: None.
 			 */
 			Position2(Position2Type x = 0, Position2Type y = 0);
 
 			/*
 			 * @description: Default destructor.
+			 * @return: None.
 			 */
 			~Position2();
 

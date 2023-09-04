@@ -17,11 +17,13 @@ namespace EToolkit{
 		public:
 			/*
 			 * @description: Default constructor that initialize object with the given 'red', 'green', 'blue' and 'alpha' values.
+			 * @return: None.
 			 */
 			Color4(Color4Type red = 0, Color4Type green = 0, Color4Type blue = 0, Color4Type alpha = 0);
 
 			/*
 			 * @description: Default destructor.
+			 * @return: None.
 			 */
 			~Color4();
 

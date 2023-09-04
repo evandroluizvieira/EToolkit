@@ -17,11 +17,13 @@ namespace EToolkit{
 		public:
 			/*
 			 * @description: Default constructor that initialize object with the given 'width', 'height' and 'depth' values.
+			 * @return: None.
 			 */
 			Size3(Size3Type width = 0, Size3Type height = 0, Size3Type depth = 0);
 
 			/*
 			 * @description: Default destructor.
+			 * @return: None.
 			 */
 			~Size3();
 

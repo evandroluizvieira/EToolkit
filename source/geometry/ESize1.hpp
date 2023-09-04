@@ -15,11 +15,13 @@ namespace EToolkit{
 		public:
 			/*
 			 * @description: Default constructor that initialize object with the given 'width' value.
+			 * @return: None.
 			 */
 			Size1(Size1Type width = 0);
 
 			/*
 			 * @description: Default destructor.
+			 * @return: None.
 			 */
 			~Size1();
 

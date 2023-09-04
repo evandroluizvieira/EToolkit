@@ -15,11 +15,13 @@ namespace EToolkit{
 		public:
 			/*
 			 * @description: Default constructor that initialize object with the given 'x' value.
+			 * @return: None.
 			 */
 			Position1(Position1Type x = 0);
 
 			/*
 			 * @description: Default destructor.
+			 * @return: None.
 			 */
 			~Position1();
 
