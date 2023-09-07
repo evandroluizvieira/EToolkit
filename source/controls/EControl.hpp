@@ -83,11 +83,12 @@ namespace EToolkit{
 			 * @return: true if visible and false otherwise.
 			 */
 			bool isVisible() const;
+
 			/*
 			 * @description: Set the container visible if 'visible' value is true and hide otherwise.
 			 * @return: None.
 			 */
-			void setVisility(bool visible);
+			void setVisibility(bool visible);
 
 			/*
 			 * @description: Get the text of the component.

@@ -70,7 +70,7 @@ bool EToolkit::Control::isVisible() const{
 	}
 }
 
-void EToolkit::Control::setVisility(bool visible){
+void EToolkit::Control::setVisibility(bool visible){
 	if(data == 0 || data->hwnd == 0){
 		return;
 	}
