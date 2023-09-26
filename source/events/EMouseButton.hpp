@@ -12,7 +12,7 @@ namespace EToolkit{
 	class MouseButton{
 		private:
 			/*
-			 * @description: Private default constructor what prevent object instantiation.
+			 * @description: Private default constructor that prevents object instantiation.
 			 * @return: None.
 			 */
 			MouseButton();

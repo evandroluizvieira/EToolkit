@@ -2,7 +2,7 @@
 #define ERESIZEWINDOWEVENT_HPP
 
 #include <EToolkit>
-#include <EEvents>
+#include <EEventsData>
 #include <ESize>
 
 /*

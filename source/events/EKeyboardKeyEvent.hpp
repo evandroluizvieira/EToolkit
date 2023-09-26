@@ -2,7 +2,7 @@
 #define EKEYBOARDKEYEVENT_HPP
 
 #include <EToolkit>
-#include <EEvents>
+#include <EEventsData>
 
 /*
  * @description: Evandro's toolkit.

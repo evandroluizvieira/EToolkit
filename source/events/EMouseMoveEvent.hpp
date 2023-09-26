@@ -2,7 +2,7 @@
 #define EMOUSEMOVEEVENT_HPP
 
 #include <EToolkit>
-#include <EEvents>
+#include <EEventsData>
 #include <EPosition>
 
 /*
