@@ -5,6 +5,10 @@
 
 //For further use.
 
+//#define EPUBLIC public:
+//#define EPROTECTED protected:
+//#define EPRIVATE private:
+
 /*
  * @description: Macro that includes a function to get the string name of the class.
  * @note: Used inside a public scope of the class header.

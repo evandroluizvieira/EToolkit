@@ -165,7 +165,6 @@ namespace EToolkit{
 			 */
 			bool isEmpty() const;
 
-		public:
 			/*
 			 * @description: Get value of 'value' in a new string.
 			 * @return: A string with 'true' if true or 'false' otherwise.

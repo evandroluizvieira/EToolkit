@@ -14,7 +14,7 @@ namespace EToolkit{
 	class ETOOLKIT_API CString{
 		private:
 			/*
-			 * @description: Private default constructor what prevent object instantiation.
+			 * @description: Private default constructor that prevents object instantiation.
 			 * @return: None.
 			 */
 			CString();

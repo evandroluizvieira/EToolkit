@@ -47,7 +47,6 @@ namespace EToolkit{
 			 */
 			virtual ~Control();
 
-		public:
 			/*
 			 * @description: Get the control type from 'Type' list.
 			 * @return: Copy of control type.

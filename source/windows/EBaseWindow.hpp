@@ -21,6 +21,8 @@ namespace EToolkit{
 
 	/*
 	 * @description: Base window class.
+	 * @note: Can't use, instead use 'Window' or 'GLWindow'.
+	 *
 	 */
 	class ETOOLKIT_API BaseWindow : public Control{
 			friend class ControlPrivate;
@@ -29,7 +31,7 @@ namespace EToolkit{
 
 		private:
 			/*
-			 * @description: Private default constructor what prevent object instantiation.
+			 * @description: Private default constructor that prevents object instantiation.
 			 * @return: None.
 			 */
 			BaseWindow();

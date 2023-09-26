@@ -1,6 +1,8 @@
 #ifndef EGAME_HPP
 #define EGAME_HPP
 
+#include <EToolkit>
+
 /*
  * @description: Evandro's toolkit.
  */
@@ -9,7 +11,7 @@ namespace EToolkit{
 	/*
 	 * @description: Base interface game class, used to process and draw the game in a GLWindow.
 	 */
-	class Game{
+	class ETOOLKIT_API Game{
 		friend class Application;
 
 		public:
@@ -25,7 +27,6 @@ namespace EToolkit{
 			 */
 			virtual ~Game();
 
-		public:
 			/*
 			 * @description: Default inheritable function which is called once on beginning of the application 'execute' function.
 			 * @return: None.
