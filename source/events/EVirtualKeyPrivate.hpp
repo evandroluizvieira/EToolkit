@@ -1,7 +1,7 @@
 #ifndef EVIRTUALKEYPRIVATE_HPP
 #define EVIRTUALKEYPRIVATE_HPP
 
-#include <EEvents>
+#include <EEventsData>
 
 namespace EToolkit{
 	class VirtualKeyPrivate{

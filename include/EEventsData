@@ -1,0 +1,5 @@
+#include "../source/events/EKeyboardKey.hpp"
+#include "../source/events/EMouseButton.hpp"
+#include "../source/events/EResizeWindow.hpp"
+#include "../source/events/EUpDownState.hpp"
+#include "../source/events/EVirtualKey.hpp"

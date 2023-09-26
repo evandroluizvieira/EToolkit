@@ -1,7 +1,7 @@
 #ifndef EKEYBOARDKEYPRIVATE_HPP
 #define EKEYBOARDKEYPRIVATE_HPP
 
-#include <EEvents>
+#include <EEventsData>
 
 namespace EToolkit{
 	class KeyboardKeyPrivate{

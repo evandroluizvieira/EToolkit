@@ -1,7 +1,7 @@
 #ifndef ERESIZEWINDOWPRIVATE_HPP
 #define ERESIZEWINDOWPRIVATE_HPP
 
-#include <EEvents>
+#include <EEventsData>
 
 namespace EToolkit{
 	class ResizeWindowPrivate{

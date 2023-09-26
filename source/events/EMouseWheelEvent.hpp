@@ -3,9 +3,8 @@
 
 #include <EToolkit>
 #include <EEvents>
+#include <EEventsData>
 #include <EPosition>
-
-#include "EMouseMoveEvent.hpp"
 
 /*
  * @description: Evandro's toolkit.
