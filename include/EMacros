@@ -1,2 +1,3 @@
-#include "../source/core/EStandardMacros.hpp"
+#include "../source/core/EMacrosArchitecture.hpp"
 #include "../source/core/EToolkitMacros.hpp"
+#include "../source/core/EStandardMacros.hpp"

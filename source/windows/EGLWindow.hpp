@@ -11,6 +11,7 @@ namespace EToolkit{
 
 	/*
 	 * @description: Main window with a OpenGL context.
+	 * @note: GLWindow are double buffered.
 	 */
 	class ETOOLKIT_API GLWindow : public BaseWindow{
 			friend class ApplicationPrivate;

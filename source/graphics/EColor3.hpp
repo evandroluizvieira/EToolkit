@@ -53,109 +53,109 @@ namespace EToolkit{
 			 * @description: Function to get an white color object.
 			 * @return: A copy of white object.
 			 */
-			static const Color3uc white();
+			static const Color3uc White();
 
 			/*
 			 * @description: Function to get an black color object.
 			 * @return: A copy of black object.
 			 */
-			static const Color3uc black();
+			static const Color3uc Black();
 
 			/*
 			 * @description: Function to get an light gray color object.
 			 * @return: A copy of light gray object.
 			 */
-			static const Color3uc lightGray();
+			static const Color3uc LightGray();
 
 			/*
 			 * @description: Function to get an gray color object.
 			 * @return: A copy of gray object.
 			 */
-			static const Color3uc gray();
+			static const Color3uc Gray();
 
 			/*
 			 * @description: Function to get an dark gray color object.
 			 * @return: A copy of dark gray object.
 			 */
-			static const Color3uc darkGray();
+			static const Color3uc DarkGray();
 
 			/*
 			 * @description: Function to get an red color object.
 			 * @return: A copy of red object.
 			 */
-			static const Color3uc red();
+			static const Color3uc Red();
 
 			/*
 			 * @description: Function to get an light maroon object.
 			 * @return: A copy of maroon object.
 			 */
-			static const Color3uc maroon();
+			static const Color3uc Maroon();
 
 			/*
 			 * @description: Function to get an blue color object.
 			 * @return: A copy of blue object.
 			 */
-			static const Color3uc blue();
+			static const Color3uc Blue();
 
 			/*
 			 * @description: Function to get an navy color object.
 			 * @return: A copy of navy object.
 			 */
-			static const Color3uc navy();
+			static const Color3uc Navy();
 
 			/*
 			 * @description: Function to get an yellow color object.
 			 * @return: A copy of yellow object.
 			 */
-			static const Color3uc yellow();
+			static const Color3uc Yellow();
 
 			/*
 			 * @description: Function to get an olive color object.
 			 * @return: A copy of olive object.
 			 */
-			static const Color3uc olive();
+			static const Color3uc Olive();
 
 			/*
 			 * @description: Function to get an lime color object.
 			 * @return: A copy of lime object.
 			 */
-			static const Color3uc lime();
+			static const Color3uc Lime();
 
 			/*
 			 * @description: Function to get an green color object.
 			 * @return: A copy of green object.
 			 */
-			static const Color3uc green();
+			static const Color3uc Green();
 
 			/*
 			 * @description: Function to get an cyan color object.
 			 * @return: A copy of cyan object.
 			 */
-			static const Color3uc cyan();
+			static const Color3uc Cyan();
 
 			/*
 			 * @description: Function to get an teal color object.
 			 * @return: A copy of teal object.
 			 */
-			static const Color3uc teal();
+			static const Color3uc Teal();
 
 			/*
 			 * @description: Function to get an fuchsia color object.
 			 * @return: A copy of fuchsia object.
 			 */
-			static const Color3uc fuchsia();
+			static const Color3uc Fuchsia();
 
 			/*
 			 * @description: Function to get an purple color object.
 			 * @return: A copy of purple object.
 			 */
-			static const Color3uc purple();
+			static const Color3uc Purple();
 	};
 
 	/*
 	 * @description: Color class, used to store red, green and blue channel information in a 'float', that has values in range of 0 to 1 in each channel.
 	 */
-	class Color3f : public Color3<float> {
+	class Color3f : public Color3<float>{
 		public:
 			/*
 			 * @description: Default constructor that initialize object with the given 'red', 'green' and 'blue' values.
@@ -174,103 +174,103 @@ namespace EToolkit{
 			 * @description: Function to get an white color object.
 			 * @return: A copy of white object.
 			 */
-			static const Color3f white();
+			static const Color3f White();
 
 			/*
 			 * @description: Function to get an black color object.
 			 * @return: A copy of black object.
 			 */
-			static const Color3f black();
+			static const Color3f Black();
 
 			/*
 			 * @description: Function to get an light gray color object.
 			 * @return: A copy of light gray object.
 			 */
-			static const Color3f lightGray();
+			static const Color3f LightGray();
 
 			/*
 			 * @description: Function to get an gray color object.
 			 * @return: A copy of gray object.
 			 */
-			static const Color3f gray();
+			static const Color3f Gray();
 
 			/*
 			 * @description: Function to get an dark gray color object.
 			 * @return: A copy of dark gray object.
 			 */
-			static const Color3f darkGray();
+			static const Color3f DarkGray();
 
 			/*
 			 * @description: Function to get an red color object.
 			 * @return: A copy of red object.
 			 */
-			static const Color3f red();
+			static const Color3f Red();
 
 			/*
 			 * @description: Function to get an light maroon object.
 			 * @return: A copy of maroon object.
 			 */
-			static const Color3f maroon();
+			static const Color3f Maroon();
 
 			/*
 			 * @description: Function to get an blue color object.
 			 * @return: A copy of blue object.
 			 */
-			static const Color3f blue();
+			static const Color3f Blue();
 
 			/*
 			 * @description: Function to get an navy color object.
 			 * @return: A copy of navy object.
 			 */
-			static const Color3f navy();
+			static const Color3f Navy();
 
 			/*
 			 * @description: Function to get an yellow color object.
 			 * @return: A copy of yellow object.
 			 */
-			static const Color3f yellow();
+			static const Color3f Yellow();
 
 			/*
 			 * @description: Function to get an olive color object.
 			 * @return: A copy of olive object.
 			 */
-			static const Color3f olive();
+			static const Color3f Olive();
 
 			/*
 			 * @description: Function to get an lime color object.
 			 * @return: A copy of lime object.
 			 */
-			static const Color3f lime();
+			static const Color3f Lime();
 
 			/*
 			 * @description: Function to get an green color object.
 			 * @return: A copy of green object.
 			 */
-			static const Color3f green();
+			static const Color3f Green();
 
 			/*
 			 * @description: Function to get an cyan color object.
 			 * @return: A copy of cyan object.
 			 */
-			static const Color3f cyan();
+			static const Color3f Cyan();
 
 			/*
 			 * @description: Function to get an teal color object.
 			 * @return: A copy of teal object.
 			 */
-			static const Color3f teal();
+			static const Color3f Teal();
 
 			/*
 			 * @description: Function to get an fuchsia color object.
 			 * @return: A copy of fuchsia object.
 			 */
-			static const Color3f fuchsia();
+			static const Color3f Fuchsia();
 
 			/*
 			 * @description: Function to get an purple color object.
 			 * @return: A copy of purple object.
 			 */
-			static const Color3f purple();
+			static const Color3f Purple();
 	};
 }
 
@@ -294,71 +294,71 @@ EToolkit::Color3uc::~Color3uc(){
 
 }
 
-const EToolkit::Color3uc EToolkit::Color3uc::white(){
+const EToolkit::Color3uc EToolkit::Color3uc::White(){
 	return Color3uc(255, 255, 255);
 }
 
-const EToolkit::Color3uc EToolkit::Color3uc::black(){
+const EToolkit::Color3uc EToolkit::Color3uc::Black(){
 	return Color3uc(0, 0, 0);
 }
 
-const EToolkit::Color3uc EToolkit::Color3uc::lightGray(){
+const EToolkit::Color3uc EToolkit::Color3uc::LightGray(){
 	return Color3uc(191, 191, 191);
 }
 
-const EToolkit::Color3uc EToolkit::Color3uc::gray(){
+const EToolkit::Color3uc EToolkit::Color3uc::Gray(){
 	return Color3uc(127, 127, 127);
 }
 
-const EToolkit::Color3uc EToolkit::Color3uc::darkGray(){
+const EToolkit::Color3uc EToolkit::Color3uc::DarkGray(){
 	return Color3uc(63, 63, 63);
 }
 
-const EToolkit::Color3uc EToolkit::Color3uc::red(){
+const EToolkit::Color3uc EToolkit::Color3uc::Red(){
 		return Color3uc(255, 0, 0);
 }
 
-const EToolkit::Color3uc EToolkit::Color3uc::maroon(){
+const EToolkit::Color3uc EToolkit::Color3uc::Maroon(){
 	return Color3uc(127, 0, 0);
 }
 
-const EToolkit::Color3uc EToolkit::Color3uc::blue(){
+const EToolkit::Color3uc EToolkit::Color3uc::Blue(){
 	return Color3uc(0, 0, 255);
 }
 
-const EToolkit::Color3uc EToolkit::Color3uc::navy(){
+const EToolkit::Color3uc EToolkit::Color3uc::Navy(){
 	return Color3uc(0, 0, 127);
 }
 
-const EToolkit::Color3uc EToolkit::Color3uc::yellow(){
+const EToolkit::Color3uc EToolkit::Color3uc::Yellow(){
 	return Color3uc(255, 255, 0);
 }
 
-const EToolkit::Color3uc EToolkit::Color3uc::olive(){
+const EToolkit::Color3uc EToolkit::Color3uc::Olive(){
 	return Color3uc(127, 127, 0);
 }
 
-const EToolkit::Color3uc EToolkit::Color3uc::lime(){
+const EToolkit::Color3uc EToolkit::Color3uc::Lime(){
 	return Color3uc(0, 255, 0);
 }
 
-const EToolkit::Color3uc EToolkit::Color3uc::green(){
+const EToolkit::Color3uc EToolkit::Color3uc::Green(){
 	return Color3uc(0, 127, 0);
 }
 
-const EToolkit::Color3uc EToolkit::Color3uc::cyan(){
+const EToolkit::Color3uc EToolkit::Color3uc::Cyan(){
 	return Color3uc(0, 255, 255);
 }
 
-const EToolkit::Color3uc EToolkit::Color3uc::teal(){
+const EToolkit::Color3uc EToolkit::Color3uc::Teal(){
 	return Color3uc(0, 127, 127);
 }
 
-const EToolkit::Color3uc EToolkit::Color3uc::fuchsia(){
+const EToolkit::Color3uc EToolkit::Color3uc::Fuchsia(){
 	return Color3uc(255, 0, 255);
 }
 
-const EToolkit::Color3uc EToolkit::Color3uc::purple(){
+const EToolkit::Color3uc EToolkit::Color3uc::Purple(){
 	return Color3uc(127, 0, 127);
 }
 
@@ -372,71 +372,71 @@ EToolkit::Color3f::~Color3f(){
 
 }
 
-const EToolkit::Color3f EToolkit::Color3f::white(){
+const EToolkit::Color3f EToolkit::Color3f::White(){
 	return Color3f(1.0f, 1.0f, 1.0f);
 }
 
-const EToolkit::Color3f EToolkit::Color3f::black(){
+const EToolkit::Color3f EToolkit::Color3f::Black(){
 	return Color3f(0.0f, 0.0f, 0.0f);
 }
 
-const EToolkit::Color3f EToolkit::Color3f::lightGray(){
+const EToolkit::Color3f EToolkit::Color3f::LightGray(){
 	return Color3f(0.75f, 0.75f, 0.75f);
 }
 
-const EToolkit::Color3f EToolkit::Color3f::gray(){
+const EToolkit::Color3f EToolkit::Color3f::Gray(){
 	return Color3f(0.5f, 0.5f, 0.5f);
 }
 
-const EToolkit::Color3f EToolkit::Color3f::darkGray(){
+const EToolkit::Color3f EToolkit::Color3f::DarkGray(){
 	return Color3f(0.25f, 0.25f, 0.25f);
 }
 
-const EToolkit::Color3f EToolkit::Color3f::red(){
+const EToolkit::Color3f EToolkit::Color3f::Red(){
 	return Color3f(1.0f, 0.0f, 0.0f);
 }
 
-const EToolkit::Color3f EToolkit::Color3f::maroon(){
+const EToolkit::Color3f EToolkit::Color3f::Maroon(){
 	return Color3f(0.5f, 0.0f, 0.0f);
 }
 
-const EToolkit::Color3f EToolkit::Color3f::blue(){
+const EToolkit::Color3f EToolkit::Color3f::Blue(){
 	return Color3f(0.0f, 0.0f, 1.0f);
 }
 
-const EToolkit::Color3f EToolkit::Color3f::navy(){
+const EToolkit::Color3f EToolkit::Color3f::Navy(){
 	return Color3f(0.0f, 0.0f, 0.5f);
 }
 
-const EToolkit::Color3f EToolkit::Color3f::yellow(){
+const EToolkit::Color3f EToolkit::Color3f::Yellow(){
 	return Color3f(1.0f, 1.0f, 0.0f);
 }
 
-const EToolkit::Color3f EToolkit::Color3f::olive(){
+const EToolkit::Color3f EToolkit::Color3f::Olive(){
 	return Color3f(0.5f, 0.5f, 0.0f);
 }
 
-const EToolkit::Color3f EToolkit::Color3f::lime(){
+const EToolkit::Color3f EToolkit::Color3f::Lime(){
 	return Color3f(0.0f, 1.0f, 0.0f);
 }
 
-const EToolkit::Color3f EToolkit::Color3f::green(){
+const EToolkit::Color3f EToolkit::Color3f::Green(){
 	return Color3f(0.0f, 0.5f, 0.0f);
 }
 
-const EToolkit::Color3f EToolkit::Color3f::cyan(){
+const EToolkit::Color3f EToolkit::Color3f::Cyan(){
 	return Color3f(0.0f, 1.0f, 1.0f);
 }
 
-const EToolkit::Color3f EToolkit::Color3f::teal(){
+const EToolkit::Color3f EToolkit::Color3f::Teal(){
 	return Color3f(0.0f, 0.5f, 0.5f);
 }
 
-const EToolkit::Color3f EToolkit::Color3f::fuchsia(){
+const EToolkit::Color3f EToolkit::Color3f::Fuchsia(){
 	return Color3f(1.0f, 0.0f, 1.0f);
 }
 
-const EToolkit::Color3f EToolkit::Color3f::purple(){
+const EToolkit::Color3f EToolkit::Color3f::Purple(){
 	return Color3f(0.5f, 0.0f, 0.5f);
 }
 
