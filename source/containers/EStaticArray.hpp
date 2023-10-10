@@ -19,6 +19,7 @@ namespace EToolkit{
 			/*
 			 * @description: Default constructor that initialize object with the given array 'size'.
 			 * @return: None.
+			 * @note: 'size' must be greater than zero.
 			 */
 			StaticArray(unsigned int size);
 
@@ -92,6 +93,12 @@ namespace EToolkit{
 			 * @return: True if yes or false otherwise.
 			 */
 			bool isEqual(const StaticArray<DataType>& other);
+
+			/*
+			 * @description: Function that checks if any of the data are equal to the given 'data'.
+			 * @return: True if yes or false otherwise.
+			 */
+			bool contains(const DataType& data) const;
 
 			/*
 			 * @description: Function to get the size of the data array.
@@ -218,6 +225,15 @@ bool EToolkit::StaticArray<DataType>::isEqual(const StaticArray<DataType>& other
 	return false;
 }
 
+template<class DataType>
+bool EToolkit::StaticArray<DataType>::contains(const DataType& data) const{
+	for(unsigned int i = 0; i < size; i++){
+		if(this->data[i] == data){
+			return true;
+		}
+	}
+	return false;
+}
 
 template<class DataType>
 unsigned int EToolkit::StaticArray<DataType>::getSize() const{

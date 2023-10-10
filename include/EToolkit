@@ -1,1 +1,2 @@
 #include "../source/core/EToolkit.hpp"
+#include "../source/core/EToolkitTypes.hpp"
