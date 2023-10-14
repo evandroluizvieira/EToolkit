@@ -34,7 +34,13 @@ namespace EToolkit{
 			virtual ~Vector4D();
 
 			/*
-			 * @description: Procedure that set the value of axis w with the given 'w' value.
+			 * @description: Function to get the 'Vector4DType' of the axis w.
+			 * @return: Reference of the axis w data.
+			 */
+			inline Vector4DType& w();
+
+			/*
+			 * @description: Function that set the value of axis w with the given 'w' value.
 			 * @return: None.
 			 */
 			inline void setW(const Vector4DType& w);
@@ -49,13 +55,13 @@ namespace EToolkit{
 
 template<class Vector4DType>
 EToolkit::Vector4D<Vector4DType>::Vector4D(bool zeroed) :
-	Vector3D<Vector4DType, Vector4DLength>(zeroed){
+	Vector3D<Vector4DType, 4>(zeroed){
 
 }
 
 template<class Vector4DType>
 EToolkit::Vector4D<Vector4DType>::Vector4D(const Vector4DType& x, const Vector4DType& y, const Vector4DType& z, const Vector4DType& w) :
-	Vector3D<Vector4DType, Vector4DLength>(){
+	Vector3D<Vector4DType, 4>(){
 	setX(x);
 	setY(y);
 	setZ(z);
@@ -69,13 +75,18 @@ EToolkit::Vector4D<Vector4DType>::~Vector4D(){
 }
 
 template<class Vector4DType>
+Vector4DType& EToolkit::Vector4D<Vector4DType>::w(){
+	return this->data[3];
+}
+
+template<class Vector4DType>
 void EToolkit::Vector4D<Vector4DType>::setW(const Vector4DType& w){
-	data[3] = w;
+	this->data[3] = w;
 }
 
 template<class Vector4DType>
 Vector4DType EToolkit::Vector4D<Vector4DType>::getW() const{
-	return data[3];
+	return this->data[3];
 }
 
 #endif /* EVECTOR4D_HPP */

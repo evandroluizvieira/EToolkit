@@ -35,10 +35,22 @@ namespace EToolkit{
 			MatrixType& operator()(unsigned int row, unsigned int column);
 
 			/*
+			 * @description: Operator that applies addition with the given 'scalar' value to each element of this matrix.
+			 * @return: A copy of a Matrix<MatrixType, MatrixRows, MatrixColumns>.
+			 */
+			Matrix<MatrixType, MatrixRows, MatrixColumns> operator+(const MatrixType& scalar) const;
+
+			/*
 			 * @description: Operator that applies addition with the given 'other' matrix.
 			 * @return: A copy of a Matrix<MatrixType, MatrixRows, MatrixColumns>.
 			 */
 			Matrix<MatrixType, MatrixRows, MatrixColumns> operator+(const Matrix<MatrixType, MatrixRows, MatrixColumns>& other) const;
+
+			/*
+			 * @description: Operator that applies subtraction with the given 'scalar' value to each element of this matrix.
+			 * @return: A copy of a Matrix<MatrixType, MatrixRows, MatrixColumns>.
+			 */
+			Matrix<MatrixType, MatrixRows, MatrixColumns> operator-(const MatrixType& scalar) const;
 
 			/*
 			 * @description: Operator that applies subtraction with the given 'other' matrix.
@@ -47,13 +59,13 @@ namespace EToolkit{
 			Matrix<MatrixType, MatrixRows, MatrixColumns> operator-(const Matrix<MatrixType, MatrixRows, MatrixColumns>& other) const;
 
 			/*
-			 * @description: Operator that applies dot product with the given 'scalar' value.
+			 * @description: Operator that applies multiplication with the given 'scalar' value to each element of this matrix.
 			 * @return: A copy of a Matrix<MatrixType, MatrixRows, MatrixColumns>.
 			 */
 			Matrix<MatrixType, MatrixRows, MatrixColumns> operator*(const MatrixType& scalar) const;
 
 			/*
-			 * @description: Operator that applies dot product with the given 'other' matrix.
+			 * @description: Operator that applies matrix multiplication with the given 'other' matrix.
 			 * @return: A copy of a Matrix<MatrixType, MatrixRows, MatrixResultColumns>.
 			 */
 			template <unsigned int MatrixResultColumns>
@@ -78,13 +90,6 @@ namespace EToolkit{
 			unsigned int getColumns() const;
 
 			/*
-			 * @description: Function to get the determinant of the matrix.
-			 * @return: Determinant value.
-			 * @note: This matrix must be squared.
-			 */
-			MatrixType getDeterminant() const;
-
-			/*
 			 * @description: Function to get the transpose matrix.
 			 * @return: A copy of transpose matrix.
 			 */
@@ -96,7 +101,7 @@ namespace EToolkit{
 			 * @return: A copy of identity matrix.
 			 * @note: This matrix must be squared.
 			 */
-			static Matrix<MatrixType, MatrixRows, MatrixColumns> Identity() const;
+			static Matrix<MatrixType, MatrixRows, MatrixColumns> Identity();
 	};
 }
 
@@ -104,7 +109,7 @@ template<class MatrixType, unsigned int MatrixRows, unsigned int MatrixColumns>
 EToolkit::Matrix<MatrixType, MatrixRows, MatrixColumns>::Matrix(bool zeroed) :
 	StaticArray<MatrixType>(MatrixRows * MatrixColumns){
 	if(zeroed == true){
-		fill(0);
+		this->fill(0);
 	}
 }
 
@@ -118,17 +123,33 @@ MatrixType& EToolkit::Matrix<MatrixType, MatrixRows, MatrixColumns>::operator()(
 	if(row >= MatrixRows || column >= MatrixColumns){
 		throw OutOfBoundsException();
 	}else{
-		return data[row * MatrixColumns + column];
+		return this->data[row * MatrixColumns + column];
 	}
+}
+
+template<class MatrixType, unsigned int MatrixRows, unsigned int MatrixColumns>
+EToolkit::Matrix<MatrixType, MatrixRows, MatrixColumns> EToolkit::Matrix<MatrixType, MatrixRows, MatrixColumns>::operator+(const MatrixType& scalar) const{
+	Matrix<MatrixType, MatrixRows, MatrixColumns> result(false);
+	for(unsigned int i = 0; i < this->size; ++i){
+		result.data[i] = this->data[i] + scalar;
+	}
+	return result;
 }
 
 template<class MatrixType, unsigned int MatrixRows, unsigned int MatrixColumns>
 EToolkit::Matrix<MatrixType, MatrixRows, MatrixColumns> EToolkit::Matrix<MatrixType, MatrixRows, MatrixColumns>::operator+(const Matrix<MatrixType, MatrixRows, MatrixColumns>& other) const{
 	Matrix<MatrixType, MatrixRows, MatrixColumns> result(false);
-	for(unsigned int i = 0; i < MatrixRows; ++i){
-		for(unsigned int j = 0; j < MatrixColumns; ++j){
-			result(i, j) = data[i * MatrixColumns + j] + other(i, j);
-		}
+	for(unsigned int i = 0; i < this->size; ++i){
+		result.data[i] = this->data[i] + other.data[i];
+	}
+	return result;
+}
+
+template<class MatrixType, unsigned int MatrixRows, unsigned int MatrixColumns>
+EToolkit::Matrix<MatrixType, MatrixRows, MatrixColumns> EToolkit::Matrix<MatrixType, MatrixRows, MatrixColumns>::operator-(const MatrixType& scalar) const{
+	Matrix<MatrixType, MatrixRows, MatrixColumns> result(false);
+	for(unsigned int i = 0; i < this->size; ++i){
+		result.data[i] = this->data[i] - scalar;
 	}
 	return result;
 }
@@ -136,10 +157,8 @@ EToolkit::Matrix<MatrixType, MatrixRows, MatrixColumns> EToolkit::Matrix<MatrixT
 template<class MatrixType, unsigned int MatrixRows, unsigned int MatrixColumns>
 EToolkit::Matrix<MatrixType, MatrixRows, MatrixColumns> EToolkit::Matrix<MatrixType, MatrixRows, MatrixColumns>::operator-(const Matrix<MatrixType, MatrixRows, MatrixColumns>& other) const{
 	Matrix<MatrixType, MatrixRows, MatrixColumns> result(false);
-	for(unsigned int i = 0; i < MatrixRows; ++i){
-		for(unsigned int j = 0; j < MatrixColumns; ++j){
-			result(i, j) = data[i * MatrixColumns + j] - other(i, j);
-		}
+	for(unsigned int i = 0; i < this->size; ++i){
+		result.data[i] = this->data[i] - other.data[i];
 	}
 	return result;
 }
@@ -147,8 +166,8 @@ EToolkit::Matrix<MatrixType, MatrixRows, MatrixColumns> EToolkit::Matrix<MatrixT
 template<class MatrixType, unsigned int MatrixRows, unsigned int MatrixColumns>
 EToolkit::Matrix<MatrixType, MatrixRows, MatrixColumns> EToolkit::Matrix<MatrixType, MatrixRows, MatrixColumns>::operator*(const MatrixType& scalar) const{
 	Matrix<MatrixType, MatrixRows, MatrixColumns> result(false);
-	for(unsigned int i = 0; i < size; i++){
-		result.data[i] = data[i] * scalar;
+	for(unsigned int i = 0; i < this->size; ++i){
+		result.data[i] = this->data[i] * scalar;
 	}
 	return result;
 }
@@ -157,17 +176,17 @@ template<class MatrixType, unsigned int MatrixRows, unsigned int MatrixColumns>
 template <unsigned int MatrixResultColumns>
 EToolkit::Matrix<MatrixType, MatrixRows, MatrixResultColumns>
 EToolkit::Matrix<MatrixType, MatrixRows, MatrixColumns>::operator*(const Matrix<MatrixType, MatrixColumns, MatrixResultColumns>& other) const{
-    Matrix<MatrixType, MatrixRows, MatrixResultColumns> result(false);
-    for(unsigned int i = 0; i < MatrixRows; ++i){
-        for(unsigned int j = 0; j < MatrixResultColumns; ++j){
-            result(i, j) = 0;
-            for(unsigned int k = 0; k < MatrixColumns; ++k){
-                result(i, j) += data[i * MatrixColumns + k] * other(k, j);
-            }
-        }
-    }
-
-    return result;
+	Matrix<MatrixType, MatrixRows, MatrixResultColumns> result(false);
+	for(unsigned int i = 0; i < MatrixRows; ++i){
+		for(unsigned int j = 0; j < MatrixResultColumns; ++j){
+			unsigned int dataIt = i * MatrixResultColumns + j;
+			result.data[dataIt] = 0;
+			for(unsigned int k = 0; k < MatrixColumns; ++k){
+				result.data[dataIt] += this->data[i * MatrixColumns + k] * other.data[k * MatrixResultColumns + j];
+			}
+		}
+	}
+	return result;
 }
 
 template <class MatrixType, unsigned int MatrixRows, unsigned int MatrixColumns>
@@ -185,56 +204,26 @@ unsigned int EToolkit::Matrix<MatrixType, MatrixRows, MatrixColumns>::getColumns
 	return MatrixColumns;
 }
 
-template <class MatrixType, unsigned int MatrixRows, unsigned int MatrixColumns>
-MatrixType EToolkit::Matrix<MatrixType, MatrixRows, MatrixColumns>::getDeterminant() const{
-	if(MatrixRows == 1){
-		return data[0];
-	}
-
-	MatrixType determinant = 0;
-
-	// For larger matrices, calculate using cofactor expansion
-	for(unsigned int col = 0; col < MatrixColumns; ++col){
-
-		// Calculate the cofactor
-		Matrix<MatrixType, MatrixRows - 1, MatrixColumns - 1> subMatrix(false);
-		for(unsigned int i = 1; i < MatrixRows; ++i){
-			for(unsigned int j = 0, k = 0; j < MatrixColumns; ++j){
-				if(j != col){
-					subMatrix(i - 1, k++) = data[i * MatrixColumns + j];
-				}
-			}
-		}
-
-		// Add the contribution of this column to the determinant
-		if(col % 2 == 0){
-			determinant += data[col] * subMatrix.determinant();
-		}else{
-			determinant -= data[col] * subMatrix.determinant();
-		}
-	}
-
-	return determinant;
-}
-
 template<class MatrixType, unsigned int MatrixRows, unsigned int MatrixColumns>
 EToolkit::Matrix<MatrixType, MatrixRows, MatrixColumns> EToolkit::Matrix<MatrixType, MatrixRows, MatrixColumns>::getTranspose() const{
 	Matrix<MatrixType, MatrixColumns, MatrixRows> result(false);
 	for(unsigned int i = 0; i < MatrixRows; ++i){
 		for(unsigned int j = 0; j < MatrixColumns; ++j){
-			result(j, i) = data[i * MatrixColumns + j];
+			result.data[j * MatrixRows + i] = this->data[i * MatrixColumns + j];
 		}
 	}
 	return result;
 }
 
 template<class MatrixType, unsigned int MatrixRows, unsigned int MatrixColumns>
-EToolkit::Matrix<MatrixType, MatrixRows, MatrixColumns> EToolkit::Matrix<MatrixType, MatrixRows, MatrixColumns>::Identity() const{
-	Matrix<MatrixType, MatrixRows, MatrixColumns> result;
-	for(unsigned int row = 0; row < MatrixRows; row++){
-		for(unsigned int column = 0; column < MatrixColumns; column++){
+EToolkit::Matrix<MatrixType, MatrixRows, MatrixColumns> EToolkit::Matrix<MatrixType, MatrixRows, MatrixColumns>::Identity(){
+	Matrix<MatrixType, MatrixRows, MatrixColumns> result(false);
+	for(unsigned int row = 0; row < MatrixRows; ++row){
+		for (unsigned int column = 0; column < MatrixColumns; ++column){
 			if(row == column){
-				result.data[row][column] = 1;
+				result.data[row * MatrixColumns + column] = 1;
+			}else{
+				result.data[row * MatrixColumns + column] = 0;
 			}
 		}
 	}

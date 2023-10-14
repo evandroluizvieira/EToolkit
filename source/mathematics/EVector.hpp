@@ -135,7 +135,7 @@ template<class VectorType, unsigned int VectorLength>
 EToolkit::Vector<VectorType, VectorLength>::Vector(bool zeroed) :
 	StaticArray<VectorType>(VectorLength){
 	if(zeroed == true){
-		fill(0);
+		this->fill(0);
 	}
 }
 
@@ -148,7 +148,7 @@ template<class VectorType, unsigned int VectorLength>
 EToolkit::Vector<VectorType, VectorLength> EToolkit::Vector<VectorType, VectorLength>::operator-() const{
 	Vector<VectorType, VectorLength> result;
 	for(unsigned int i = 0; i < VectorLength; i++){
-		result.data[i] = -data[i];
+		result.data[i] = -this->data[i];
 	}
 	return result;
 }
@@ -157,7 +157,7 @@ template<class VectorType, unsigned int VectorLength>
 EToolkit::Vector<VectorType, VectorLength> EToolkit::Vector<VectorType, VectorLength>::operator+(const VectorType& scalar) const{
 	Vector<VectorType, VectorLength> result;
 	for(unsigned int i = 0; i < VectorLength; i++){
-		result.data[i] = data[i] + scalar;
+		result.data[i] = this->data[i] + scalar;
 	}
 	return result;
 }
@@ -166,7 +166,7 @@ template<class VectorType, unsigned int VectorLength>
 EToolkit::Vector<VectorType, VectorLength> EToolkit::Vector<VectorType, VectorLength>::operator+(const Vector<VectorType, VectorLength>& other) const{
 	Vector<VectorType, VectorLength> result;
 	for(unsigned int i = 0; i < VectorLength; i++){
-		result.data[i] = data[i] + other.data[i];
+		result.data[i] = this->data[i] + other.data[i];
 	}
 	return result;
 }
@@ -174,7 +174,7 @@ EToolkit::Vector<VectorType, VectorLength> EToolkit::Vector<VectorType, VectorLe
 template<class VectorType, unsigned int VectorLength>
 EToolkit::Vector<VectorType, VectorLength>& EToolkit::Vector<VectorType, VectorLength>::operator+=(const VectorType& scalar){
 	for(unsigned int i = 0; i < VectorLength; i++){
-		data[i] = data[i] + scalar;
+		this->data[i] = this->data[i] + scalar;
 	}
 	return *this;
 }
@@ -182,7 +182,7 @@ EToolkit::Vector<VectorType, VectorLength>& EToolkit::Vector<VectorType, VectorL
 template<class VectorType, unsigned int VectorLength>
 EToolkit::Vector<VectorType, VectorLength>& EToolkit::Vector<VectorType, VectorLength>::operator+=(const Vector<VectorType, VectorLength>& other){
 	for(unsigned int i = 0; i < VectorLength; i++){
-		data[i] = data[i] + other.data[i];
+		this->data[i] = this->data[i] + other.data[i];
 	}
 	return *this;
 }
@@ -191,7 +191,7 @@ template<class VectorType, unsigned int VectorLength>
 EToolkit::Vector<VectorType, VectorLength> EToolkit::Vector<VectorType, VectorLength>::operator-(const VectorType& scalar) const{
 	Vector<VectorType, VectorLength> result;
 	for(unsigned int i = 0; i < VectorLength; i++){
-		result.data[i] = data[i] - scalar;
+		result.data[i] = this->data[i] - scalar;
 	}
 	return result;
 }
@@ -200,7 +200,7 @@ template<class VectorType, unsigned int VectorLength>
 EToolkit::Vector<VectorType, VectorLength> EToolkit::Vector<VectorType, VectorLength>::operator-(const Vector<VectorType, VectorLength>& other) const{
 	Vector<VectorType, VectorLength> result;
 	for(unsigned int i = 0; i < VectorLength; i++){
-		result.data[i] = data[i] - other.data[i];
+		result.data[i] = this->data[i] - other.data[i];
 	}
 	return result;
 }
@@ -208,7 +208,7 @@ EToolkit::Vector<VectorType, VectorLength> EToolkit::Vector<VectorType, VectorLe
 template<class VectorType, unsigned int VectorLength>
 EToolkit::Vector<VectorType, VectorLength>& EToolkit::Vector<VectorType, VectorLength>::operator-=(const VectorType& scalar){
 	for(unsigned int i = 0; i < VectorLength; i++){
-		data[i] = data[i] - scalar;
+		this->data[i] = this->data[i] - scalar;
 	}
 	return *this;
 }
@@ -216,7 +216,7 @@ EToolkit::Vector<VectorType, VectorLength>& EToolkit::Vector<VectorType, VectorL
 template<class VectorType, unsigned int VectorLength>
 EToolkit::Vector<VectorType, VectorLength>& EToolkit::Vector<VectorType, VectorLength>::operator-=(const Vector<VectorType, VectorLength>& other){
 	for(unsigned int i = 0; i < VectorLength; i++){
-		data[i] = data[i] - other.data[i];
+		this->data[i] = this->data[i] - other.data[i];
 	}
 	return *this;
 }
@@ -225,7 +225,7 @@ template<class VectorType, unsigned int VectorLength>
 EToolkit::Vector<VectorType, VectorLength> EToolkit::Vector<VectorType, VectorLength>::operator*(const VectorType& scalar) const{
 	Vector<VectorType, VectorLength> result;
 	for(unsigned int i = 0; i < VectorLength; i++){
-		result.data[i] = data[i] * scalar;
+		result.data[i] = this->data[i] * scalar;
 	}
 	return result;
 }
@@ -234,7 +234,7 @@ template<class VectorType, unsigned int VectorLength>
 EToolkit::Vector<VectorType, VectorLength> EToolkit::Vector<VectorType, VectorLength>::operator*(const Vector<VectorType, VectorLength>& other) const{
 	Vector<VectorType, VectorLength> result;
 	for(unsigned int i = 0; i < VectorLength; i++){
-		result.data[i] = data[i] * other.data[i];
+		result.data[i] = this->data[i] * other.data[i];
 	}
 	return result;
 }
@@ -242,7 +242,7 @@ EToolkit::Vector<VectorType, VectorLength> EToolkit::Vector<VectorType, VectorLe
 template<class VectorType, unsigned int VectorLength>
 EToolkit::Vector<VectorType, VectorLength>& EToolkit::Vector<VectorType, VectorLength>::operator*=(const VectorType& scalar){
 	for(unsigned int i = 0; i < VectorLength; i++){
-		data[i] = data[i] * scalar;
+		this->data[i] = this->data[i] * scalar;
 	}
 	return *this;
 }
@@ -250,7 +250,7 @@ EToolkit::Vector<VectorType, VectorLength>& EToolkit::Vector<VectorType, VectorL
 template<class VectorType, unsigned int VectorLength>
 EToolkit::Vector<VectorType, VectorLength>& EToolkit::Vector<VectorType, VectorLength>::operator*=(const Vector<VectorType, VectorLength>& other){
 	for(unsigned int i = 0; i < VectorLength; i++){
-		data[i] = data[i] * other.data[i];
+		this->data[i] = this->data[i] * other.data[i];
 	}
 	return *this;
 }
@@ -259,7 +259,7 @@ template<class VectorType, unsigned int VectorLength>
 EToolkit::Vector<VectorType, VectorLength> EToolkit::Vector<VectorType, VectorLength>::operator/(const VectorType& scalar) const{
 	Vector<VectorType, VectorLength> result;
 	for(unsigned int i = 0; i < VectorLength; i++){
-		result.data[i] = data[i] / scalar;
+		result.data[i] = this->data[i] / scalar;
 	}
 	return result;
 }
@@ -268,7 +268,7 @@ template<class VectorType, unsigned int VectorLength>
 EToolkit::Vector<VectorType, VectorLength> EToolkit::Vector<VectorType, VectorLength>::operator/(const Vector<VectorType, VectorLength>& other) const{
 	Vector<VectorType, VectorLength> result;
 	for(unsigned int i = 0; i < VectorLength; i++){
-		result.data[i] = data[i] / other.data[i];
+		result.data[i] = this->data[i] / other.data[i];
 	}
 	return result;
 }
@@ -276,7 +276,7 @@ EToolkit::Vector<VectorType, VectorLength> EToolkit::Vector<VectorType, VectorLe
 template<class VectorType, unsigned int VectorLength>
 EToolkit::Vector<VectorType, VectorLength>& EToolkit::Vector<VectorType, VectorLength>::operator/=(const VectorType& scalar){
 	for(unsigned int i = 0; i < VectorLength; i++){
-		data[i] = data[i] / scalar;
+		this->data[i] = this->data[i] / scalar;
 	}
 	return *this;
 }
@@ -284,7 +284,7 @@ EToolkit::Vector<VectorType, VectorLength>& EToolkit::Vector<VectorType, VectorL
 template<class VectorType, unsigned int VectorLength>
 EToolkit::Vector<VectorType, VectorLength>& EToolkit::Vector<VectorType, VectorLength>::operator/=(const Vector<VectorType, VectorLength>& other){
 	for(unsigned int i = 0; i < VectorLength; i++){
-		data[i] = data[i] / other.data[i];
+		this->data[i] = this->data[i] / other.data[i];
 	}
 	return *this;
 }

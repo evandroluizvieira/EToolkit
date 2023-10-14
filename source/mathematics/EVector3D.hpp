@@ -34,7 +34,13 @@ namespace EToolkit{
 			virtual ~Vector3D();
 
 			/*
-			 * @description: Procedure that set the value of axis z with the given 'z' value.
+			 * @description: Function to get the 'Vector3DType' of the axis z.
+			 * @return: Reference of the axis z data.
+			 */
+			inline Vector3DType& z();
+
+			/*
+			 * @description: Function that set the value of axis z with the given 'z' value.
 			 * @return: None.
 			 */
 			inline void setZ(const Vector3DType& z);
@@ -68,13 +74,18 @@ EToolkit::Vector3D<Vector3DType, Vector3DLength>::~Vector3D(){
 }
 
 template<class Vector3DType, unsigned int Vector3DLength>
+Vector3DType& EToolkit::Vector3D<Vector3DType, Vector3DLength>::z(){
+	return this->data[2];
+}
+
+template<class Vector3DType, unsigned int Vector3DLength>
 void EToolkit::Vector3D<Vector3DType, Vector3DLength>::setZ(const Vector3DType& z){
-	data[2] = z;
+	this->data[2] = z;
 }
 
 template<class Vector3DType, unsigned int Vector3DLength>
 Vector3DType EToolkit::Vector3D<Vector3DType, Vector3DLength>::getZ() const{
-	return data[2];
+	return this->data[2];
 }
 
 #endif /* EVECTOR3D_HPP */

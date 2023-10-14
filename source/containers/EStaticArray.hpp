@@ -15,6 +15,17 @@ namespace EToolkit{
 	 */
 	template<class DataType>
 	class StaticArray{
+		template<class VectorType, unsigned int VectorLength>
+		friend class Vector;
+		template<class Vector2DType, unsigned int Vector2DLength>
+		friend class Vector2D;
+		template<class Vector3DType, unsigned int Vector3DLength>
+		friend class Vector3D;
+		template<class Vector4DType>
+		friend class Vector4D;
+		template<class MatrixType, unsigned int MatrixRows, unsigned int MatrixColumns>
+		friend class Matrix;
+
 		public:
 			/*
 			 * @description: Default constructor that initialize object with the given array 'size'.
