@@ -4,6 +4,8 @@
 #include <EContainer>
 #include <EException>
 
+#include <initializer_list>
+
 /*
  * @description: Evandro's Toolkit.
  */
@@ -21,6 +23,20 @@ namespace EToolkit{
 			 * @return: None.
 			 */
 			Matrix(bool zeroed = true);
+
+			/*
+			 * @description: Default constructor that initialize object with the 'list' if is valid otherwise initializes everything with cleared data.
+			 * @return: None.
+			 * @note: Elements in 'list' will be added only if 'MatrixRows*MatrixColumns' are equal to 'list.size()'.
+			 */
+			Matrix(const std::initializer_list<MatrixType>& list);
+
+			/*
+			 * @description: Default constructor that initialize object with the 'list' if is valid otherwise initializes everything with cleared data.
+			 * @return: None.
+			 * @note: Elements in 'list' will be added only if 'MatrixRows*MatrixColumns' are equal to the sum of the number of elements in the 'list' and all sublist.
+			 */
+			Matrix(const std::initializer_list<std::initializer_list<MatrixType>>& list);
 
 			/*
 			 * @description: Default destructor.
@@ -109,6 +125,50 @@ template<class MatrixType, unsigned int MatrixRows, unsigned int MatrixColumns>
 EToolkit::Matrix<MatrixType, MatrixRows, MatrixColumns>::Matrix(bool zeroed) :
 	StaticArray<MatrixType>(MatrixRows * MatrixColumns){
 	if(zeroed == true){
+		this->fill(0);
+	}
+}
+
+template<class MatrixType, unsigned int MatrixRows, unsigned int MatrixColumns>
+EToolkit::Matrix<MatrixType, MatrixRows, MatrixColumns>::Matrix(const std::initializer_list<MatrixType>& list) :
+	StaticArray<MatrixType>(MatrixRows * MatrixColumns){
+	if(this->size == list.size()){
+		unsigned int i = 0;
+		for(const MatrixType& item : list){
+			this->data[i++] = item;
+		}
+	}else{
+		this->fill(0);
+	}
+}
+
+template<class MatrixType, unsigned int MatrixRows, unsigned int MatrixColumns>
+EToolkit::Matrix<MatrixType, MatrixRows, MatrixColumns>::Matrix(const std::initializer_list<std::initializer_list<MatrixType>>& list) :
+	StaticArray<MatrixType>(MatrixRows * MatrixColumns){
+	bool validFormat = true;
+	if(list.size() == MatrixRows){
+		for(const auto& rowList : list){
+			if(rowList.size() != MatrixColumns){
+				validFormat = false;
+				break;
+			}
+		}
+	}else{
+		validFormat = false;
+	}
+
+	if(validFormat == true){
+		int col = 0;
+		int row = 0;
+		for(const auto& rowList : list){
+			col = 0;
+			for(const auto& item : rowList){
+				this->data[row * MatrixColumns + col] = item;
+				col++;
+			}
+			row++;
+		}
+	}else{
 		this->fill(0);
 	}
 }

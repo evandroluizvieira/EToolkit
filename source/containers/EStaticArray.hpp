@@ -3,6 +3,7 @@
 
 #include <EException>
 
+#include <initializer_list>
 #include <new>
 
 /*
@@ -35,11 +36,18 @@ namespace EToolkit{
 			StaticArray(unsigned int size);
 
 			/*
-			 * @description: Default constructor that initialize object with the given 'array' and fill with it's values.
+			 * @description: Default constructor that initialize object with the given 'other' array and fill with it's values.
 			 * @return: None.
 			 * @note: The values are copied before or until the sizes match.
 			 */
 			StaticArray(const StaticArray<DataType>& other);
+
+			/*
+			 * @description: Default constructor that initialize object with the 'list'.
+			 * @return: None.
+			 * @note: 'list' size must be greater than zero.
+			 */
+			StaticArray(const std::initializer_list<DataType>& list);
 
 			/*
 			 * @description: Default inheritable destructor that clear the object.
@@ -150,6 +158,25 @@ EToolkit::StaticArray<DataType>::StaticArray(const StaticArray<DataType>& other)
 		}else{
 			for(unsigned int i = 0; i < size; i++){
 				data[i] = other.data[i];
+			}
+		}
+	}
+}
+
+template<class DataType>
+EToolkit::StaticArray<DataType>::StaticArray(const std::initializer_list<DataType>& list) :
+	data(0), size(list.size()){
+	if(size == 0){
+		throw MemoryAllocationException();
+	}else{
+		data = new (std::nothrow) DataType[size];
+		if(data == 0){
+			this->size = 0;
+			throw MemoryAllocationException();
+		}else{
+			size_t it = 0;
+			for(const DataType& value : list){
+				data[it++] = value;
 			}
 		}
 	}
