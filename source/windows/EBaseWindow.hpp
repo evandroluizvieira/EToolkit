@@ -63,28 +63,28 @@ namespace EToolkit{
 
 		protected:
 			/*
-			 * @description: Default inheritable function called whenever the windows gains or looses focus, gains when 'focus' is true and looses otherwise.
+			 * @description: Default inheritable function called whenever this window gains or looses focus, gains when 'focus' is true and looses otherwise.
 			 * @return: None.
 			 */
 			virtual void onFocus(bool focus);
 
 			/*
-			 * @description: Default inheritable function called whenever the windows is being enabled or disabled, enabled when 'enable' is true and disabled otherwise.
+			 * @description: Default inheritable function called whenever this window is being enabled or disabled, enabled when 'enable' is true and disabled otherwise.
 			 * @return: None.
 			 */
 			virtual void onEnable(bool enable);
 
 			/*
-			 * @description: Default inheritable function called whenever the windows is being shown or hidden, shown when 'visible' is true and hidden otherwise.
+			 * @description: Default inheritable function called whenever this window is being shown or hidden, shown when 'visible' is true and hidden otherwise.
 			 * @return: None.
 			 */
 			virtual void onVisible(bool visible);
 
 			/*
-			 * @description: Default inheritable function called in every time text is changed.
+			 * @description: Default inheritable function called in every time title is changed.
 			 * @return: None.
 			 */
-			virtual void onTextChanged(const String& newText);
+			virtual void onTitleChanged(const String& newText);
 
 			/*
 			 * @description: Default inheritable function called in every movimentation event.

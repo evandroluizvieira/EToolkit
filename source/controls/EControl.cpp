@@ -22,7 +22,7 @@ EToolkit::Control::Type EToolkit::Control::getType() const{
 	return type;
 }
 
-bool EToolkit::Control::haveFocus() const{
+bool EToolkit::Control::hasFocus() const{
 	if(data != 0){
 		return ::GetFocus() == data->hwnd;
 	}else{

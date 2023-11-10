@@ -5,25 +5,38 @@
 
 namespace EToolkit{
 	class Control;
+	class BaseWindow;
+	class Button;
+	class Label;
 
 	class ControlPrivate{
+		friend class BaseWindow;
 		friend class BaseWindowPrivate;
 		friend class Control;
 		friend class GLWindow;
 		friend class Window;
+		friend class Button;
+		friend class Label;
 
 		public:
 			ControlPrivate(Control* owner);
 			virtual ~ControlPrivate();
 
 		private:
-			void processBasicEvents(UINT message, WPARAM wParam, LPARAM lParam);
-			void processBaseWindowEvents(UINT message, WPARAM wParam, LPARAM lParam);
+			void processAllEvents(UINT message, WPARAM wParam, LPARAM lParam);
+			void processBaseWindowEvents(BaseWindow* baseWindow, UINT message, WPARAM wParam, LPARAM lParam);
+			void processButtonEvents(Button* button, UINT message, WPARAM wParam, LPARAM lParam);
+			void processLabelEvents(Label* button, UINT message, WPARAM wParam, LPARAM lParam);
+
+		private:
+			bool hasStyle(DWORD checkStyle);
+			void addStyle(DWORD style, bool refresh = true);
+			void removeStyle(DWORD style, bool refresh = true);
 
 		private:
 			Control* owner;
 			HWND hwnd;
-			int id;
+			unsigned int id;
 			int type;
 	};
 }

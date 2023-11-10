@@ -29,3 +29,26 @@ EToolkit::Window::~Window(){
 	BaseWindowPrivate* privateData = (BaseWindowPrivate*)data;
 	privateData->destroyWindow();
 }
+
+
+void EToolkit::Window::remove(Control* control){
+	if(data == 0 || control == 0){
+		return;
+	}
+
+	BaseWindowPrivate* baseWindowData = (BaseWindowPrivate*)data;
+	baseWindowData->removeControl(control);
+}
+
+EToolkit::DynamicArray<EToolkit::Control*> EToolkit::Window::getControls(){
+	DynamicArray<Control*> result;
+	BaseWindowPrivate* baseWindowData = (BaseWindowPrivate*)data;
+	if(baseWindowData != 0){
+		unsigned int controlsSize = baseWindowData->controls.getSize();
+		for(unsigned int i = 0; i < controlsSize; ++i){
+			result.insertBack(baseWindowData->controls.get(i));
+		}
+	}
+	return result;
+}
+

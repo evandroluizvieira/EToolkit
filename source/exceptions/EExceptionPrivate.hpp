@@ -1,7 +1,7 @@
 #ifndef EEXCEPTIONPRIVATE_HPP
 #define EEXCEPTIONPRIVATE_HPP
 
-#include <EString>
+#include "../string/EString.hpp"
 
 namespace EToolkit{
 	class ExceptionPrivate{

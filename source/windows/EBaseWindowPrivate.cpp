@@ -1,3 +1,4 @@
+#include "../controls/EButton.hpp"
 #include "../controls/EControl.hpp"
 #include "../core/EApplicationPrivate.hpp"
 #include "../exceptions/EWindowsAPIException.hpp"
@@ -10,7 +11,7 @@ EToolkit::BaseWindowPrivate::BaseWindowPrivate(Control* owner) :
 }
 
 EToolkit::BaseWindowPrivate::~BaseWindowPrivate(){
-
+	clearControls();
 }
 
 LRESULT CALLBACK EToolkit::BaseWindowPrivate::WindowMainProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam){
@@ -35,7 +36,18 @@ LRESULT CALLBACK EToolkit::BaseWindowPrivate::WindowMainProcedure(HWND hwnd, UIN
 
 LRESULT EToolkit::BaseWindowPrivate::procedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam){
 	if(this->hwnd == hwnd){
-		processBasicEvents(message, wParam, lParam);
+		processAllEvents(message, wParam, lParam);
+
+		if(message == WM_COMMAND){
+			unsigned int controlsSize = controls.getSize();
+			for(unsigned int i = 0; i < controlsSize; ++i){
+				Control* c = controls.get(i);
+				if(LOWORD(wParam) == c->data->id){
+					c->data->processAllEvents(message, wParam, lParam);
+					break;
+				}
+			}
+		}
 	}
 
 	if(message == WM_DESTROY){
@@ -47,6 +59,7 @@ LRESULT EToolkit::BaseWindowPrivate::procedure(HWND hwnd, UINT message, WPARAM w
 				if(controlPrivate != 0){
 					if(controlPrivate->id == id){
 						TotalWindows.remove(i);
+						break;
 					}
 				}
 			}
@@ -113,6 +126,8 @@ void EToolkit::BaseWindowPrivate::destroyWindow(){
 			atom = 0;
 		}
 	}
+
+	clearControls();
 }
 
 bool EToolkit::BaseWindowPrivate::createGLWindow(const String& identifier){
@@ -306,4 +321,44 @@ void EToolkit::BaseWindowPrivate::activeGL(bool makeCurrent){
 	}else{
 		::wglMakeCurrent(0, 0);
 	}
+}
+
+void EToolkit::BaseWindowPrivate::addControl(Control* control){
+	if(control == 0){
+		return;
+	}
+
+	controls.insertBack(control);
+}
+
+void EToolkit::BaseWindowPrivate::removeControl(Control* control){
+	unsigned int controlsSize = controls.getSize();
+	for(unsigned int i = 0; i < controlsSize; ++i){
+		Control* c = controls.get(i);
+		if(c == control){
+			controls.remove(i);
+			::SetParent(c->data->hwnd, NULL);
+
+			if(c->data->type == Control::Type::Type_Button){
+				Button* b = dynamic_cast<Button*>(c);
+				delete b;
+			}
+
+			return;
+		}
+	}
+}
+
+void EToolkit::BaseWindowPrivate::clearControls(){
+	unsigned int controlsSize = controls.getSize();
+	for(unsigned int i = 0; i < controlsSize; ++i){
+		Control* c = controls.get(i);
+		if(c != 0 && c->data != 0){
+			if(c->data->type == Control::Type::Type_Button){
+				Button* b = dynamic_cast<Button*>(c);
+				delete b;
+			}
+		}
+	}
+	controls.clear();
 }

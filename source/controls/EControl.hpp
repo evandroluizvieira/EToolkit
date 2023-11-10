@@ -23,6 +23,8 @@ namespace EToolkit{
 		friend class BaseWindowPrivate;
 		friend class GLWindow;
 		friend class Window;
+		friend class Button;
+		friend class Label;
 
 		public:
 			/*
@@ -31,7 +33,9 @@ namespace EToolkit{
 			enum Type{
 				Type_None,
 				Type_Window,
-				Type_GLWindow
+				Type_GLWindow,
+				Type_Button,
+				Type_Label
 			};
 
 		public:
@@ -57,7 +61,7 @@ namespace EToolkit{
 			 * @description: Check if this container have the keyboard focus.
 			 * @return: true if have it and false otherwise.
 			 */
-			bool haveFocus() const;
+			bool hasFocus() const;
 
 			/*
 			 * @description: Set the keyboard focus to the component if 'active' is true and looses otherwise.

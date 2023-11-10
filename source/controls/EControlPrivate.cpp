@@ -1,5 +1,7 @@
 #include "../controls/EControl.hpp"
 #include "../controls/EControlPrivate.hpp"
+#include "../controls/EButton.hpp"
+#include "../controls/ELabel.hpp"
 #include "../events/EKeyboardKeyEvent.hpp"
 #include "../events/EKeyboardKeyPrivate.hpp"
 #include "../events/EMouseButton.hpp"
@@ -20,7 +22,7 @@ EToolkit::ControlPrivate::ControlPrivate(Control* owner) :
 	owner(owner), hwnd(0), type(Control::Type::Type_None){
 
 	//win api good practice start from 100
-	static int ControlsID = 100;
+	static unsigned int ControlsID = 100;
 	id = ++ControlsID;
 }
 
@@ -28,19 +30,25 @@ EToolkit::ControlPrivate::~ControlPrivate(){
 
 }
 
-void EToolkit::ControlPrivate::processBasicEvents(UINT message, WPARAM wParam, LPARAM lParam){
+void EToolkit::ControlPrivate::processAllEvents(UINT message, WPARAM wParam, LPARAM lParam){
 	if(owner == 0){
 		return;
 	}
 
 	if(type == Control::Type_Window || type == Control::Type_GLWindow){
-		processBaseWindowEvents(message, wParam, lParam);
+		processBaseWindowEvents((BaseWindow*)owner, message, wParam, lParam);
+	}
+
+	if(type == Control::Type_Button){
+		processButtonEvents((Button*)owner, message, wParam, lParam);
+	}
+
+	if(type == Control::Type_Label){
+		processLabelEvents((Label*)owner, message, wParam, lParam);
 	}
 }
 
-void EToolkit::ControlPrivate::processBaseWindowEvents(UINT message, WPARAM wParam, LPARAM lParam){
-	BaseWindow* baseWindow = (BaseWindow*)owner;
-
+void EToolkit::ControlPrivate::processBaseWindowEvents(BaseWindow* baseWindow, UINT message, WPARAM wParam, LPARAM lParam){
 	switch(message){
 		case WM_SETFOCUS:
 			baseWindow->onFocus(true);
@@ -65,7 +73,7 @@ void EToolkit::ControlPrivate::processBaseWindowEvents(UINT message, WPARAM wPar
 			break;
 
 		case WM_SETTEXT:
-			baseWindow->onTextChanged((char*)lParam);
+			baseWindow->onTitleChanged((char*)lParam);
 			break;
 
 		case WM_MOVE:
@@ -107,5 +115,72 @@ void EToolkit::ControlPrivate::processBaseWindowEvents(UINT message, WPARAM wPar
 		case WM_MBUTTONUP:
 			baseWindow->onMouseButton(MouseButtonEvent(Position2i(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)), VirtualKeyPrivate::getVirtualKeyFrom(wParam), MouseButton::MouseButton_Middle, UpDownState::State_Up));
 			break;
+	}
+}
+
+void EToolkit::ControlPrivate::processButtonEvents(Button* button, UINT message, WPARAM wParam, LPARAM lParam){
+	switch(HIWORD(wParam)){
+		case BN_CLICKED:
+			button->onClick(false);
+			break;
+
+		case BN_DBLCLK:
+			button->onClick(true);
+			break;
+
+		case BN_KILLFOCUS:
+			button->onFocus(false);
+			break;
+
+		case BN_SETFOCUS:
+			button->onFocus(true);
+			break;
+	}
+}
+
+void EToolkit::ControlPrivate::processLabelEvents(Label* label, UINT message, WPARAM wParam, LPARAM lParam){
+	switch(HIWORD(wParam)){
+		case STN_CLICKED:
+			label->onClick(false);
+			break;
+
+		case STN_DBLCLK:
+			label->onClick(true);
+			break;
+	}
+}
+
+bool EToolkit::ControlPrivate::hasStyle(DWORD checkStyle){
+	LONG_PTR style = ::GetWindowLongPtr(hwnd, GWL_STYLE);
+	return (style & checkStyle) != 0;
+}
+
+void EToolkit::ControlPrivate::addStyle(DWORD styleToAdd, bool refresh){
+	if(hwnd == 0){
+		return;
+	}
+
+	LONG_PTR style = ::GetWindowLongPtr(hwnd, GWL_STYLE);
+	if((style & styleToAdd) == 0){
+		style |= styleToAdd;
+		::SetWindowLongPtr(hwnd, GWL_STYLE, style);
+		if(refresh == true){
+			::RedrawWindow(hwnd, NULL, NULL, RDW_ERASE | RDW_FRAME | RDW_INVALIDATE | RDW_ALLCHILDREN);
+		}
+	}
+}
+
+void EToolkit::ControlPrivate::removeStyle(DWORD styleToRemove, bool refresh){
+	if(hwnd == 0){
+		return;
+	}
+
+	LONG_PTR style = ::GetWindowLongPtr(hwnd, GWL_STYLE);
+	if((style & styleToRemove) != 0){
+		style &= ~styleToRemove;
+		::SetWindowLongPtr(hwnd, GWL_STYLE, style);
+		if(refresh == true){
+			::RedrawWindow(hwnd, NULL, NULL, RDW_ERASE | RDW_FRAME | RDW_INVALIDATE | RDW_ALLCHILDREN);
+		}
 	}
 }

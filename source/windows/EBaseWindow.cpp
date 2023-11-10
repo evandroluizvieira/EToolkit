@@ -32,7 +32,7 @@ void EToolkit::BaseWindow::onVisible(bool visible){
 
 }
 
-void EToolkit::BaseWindow::onTextChanged(const String& newText){
+void EToolkit::BaseWindow::onTitleChanged(const String& newText){
 
 }
 
