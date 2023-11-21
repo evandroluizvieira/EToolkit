@@ -14,17 +14,17 @@ It provides convenient abstractions for Windows-specific operations, making it e
 The library is open source and licensed under the BSL 1.0 license.
 
 The code is organized into several key segments (folders), each serving a specific purpose:
-- containers: Contains data container classes like dynamic and static arrays.
-- controls: Houses user interface control components, including generic controls and buttons.
-- core: Includes essential core components, such as the application class, macros, types, and utility headers.
-- events: Focuses on event handling classes for user input, like keyboard, mouse, and window-related events.
-- exceptions: Manages exception-related classes, covering general and specific exceptions.
-- geometry: Contains classes for handling geometric concepts, such as positions, sizes, and bounds in various dimensions.
-- graphics: Includes classes for specifying colors in different dimensions, essential for graphical applications.
-- mathematics: Provides mathematical functions and classes for matrices, projections, transformations, and vectors in multiple dimensions.
-- string: Manages string-related classes, including C-style and C++ style strings.
-- synchronization: Focuses on thread synchronization and management, featuring mutual exclusion mechanisms.
-- windows: Contains classes and headers for window creation and management, for graphical user interface (GUI) applications.
+- **containers:** Contains data container classes like dynamic and static arrays.
+- **controls:** Houses user interface control components, like labels and buttons.
+- **core:** Includes essential core components, such as the application class, macros, types, and utility headers.
+- **events:** Focuses on event handling classes for user input, like keyboard, mouse, and window-related events.
+- **exceptions:** Manages exception-related classes, covering general and specific exceptions.
+- **geometry:** Contains classes for handling geometric concepts, such as positions, sizes, and bounds in various dimensions.
+- **graphics:** Includes classes for specifying colors in different dimensions, essential for graphical applications.
+- **mathematics:** Provides mathematical functions and classes for matrices, projections, transformations, and vectors in multiple dimensions.
+- **string:** Manages string-related classes, including C-style and C++ style strings.
+- **synchronization:** Focuses on thread synchronization and management, featuring mutual exclusion mechanisms.
+- **windows:** Contains classes and headers for window creation and management, for graphical user interface (GUI) applications.
 
 ## Installation
 To get started, clone the repository:
