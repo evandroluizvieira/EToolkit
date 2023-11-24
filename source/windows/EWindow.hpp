@@ -31,13 +31,12 @@ namespace EToolkit{
 			/*
 			 * @description: Function that remove (and deletes) the 'control' from the window.
 			 * @return: None.
-			 * @note: Have to be one of the controls in the window.
 			 */
 			void remove(Control* control);
 
 			/*
 			 * @description: Function to get all pointers of the controls from the window.
-			 * @return: An array with all pointers in the window.
+			 * @return: An array with all controls pointers in the window.
 			 */
 			DynamicArray<Control*> getControls();
 	};

@@ -11,6 +11,9 @@
 
 EToolkit::Button::Button(Window& parent) :
 	Control(){
+	if(parent.data == 0 || parent.data->hwnd == 0){
+		throw(WindowsAPIException("invalid window parent"));
+	}
 
 	data = new (std::nothrow) ControlPrivate(this);
 	if(data == 0){
@@ -23,10 +26,6 @@ EToolkit::Button::Button(Window& parent) :
 		data = 0;
 
 		throw(WindowsAPIException("cannot get module handle"));
-	}
-
-	if(parent.data == 0 || parent.data->hwnd == 0){
-		throw(WindowsAPIException("invalid window parent"));
 	}
 
 	data->hwnd = ::CreateWindowEx(0, WC_BUTTON, "Button",  WS_CHILD | BS_PUSHBUTTON | BS_NOTIFY | BS_TEXT | BS_CENTER | BS_VCENTER, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, parent.data->hwnd, (HMENU)data->id, instance, 0);

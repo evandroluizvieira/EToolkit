@@ -7,7 +7,6 @@
  * @description: Evandro's Toolkit.
  */
 namespace EToolkit{
-	//forward declaration of private class
 	class StringPrivate;
 
 	/*

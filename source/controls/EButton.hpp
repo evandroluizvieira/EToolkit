@@ -122,7 +122,7 @@ namespace EToolkit{
 
 		protected:
 			/*
-			 * @description: Inheritable function called when triggered by keyboard key space bar or mouse button release.
+			 * @description: Inheritable function called when triggered by keyboard key space bar release or left mouse button release.
 			 * @return: None.
 			 * @note: When the second consecutive mouse button release occurs 'doubleClick' is true.
 			 */

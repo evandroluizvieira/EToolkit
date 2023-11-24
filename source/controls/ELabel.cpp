@@ -9,11 +9,11 @@
 #include <commctrl.h>
 #include <new>
 
-#include <iostream>
-using namespace std;
-
 EToolkit::Label::Label(Window& parent, const String& text, bool addSunkenBorder) :
 	Control(){
+	if(parent.data == 0 || parent.data->hwnd == 0){
+		throw(WindowsAPIException("invalid window parent"));
+	}
 
 	data = new (std::nothrow) ControlPrivate(this);
 	if(data == 0){
@@ -26,10 +26,6 @@ EToolkit::Label::Label(Window& parent, const String& text, bool addSunkenBorder)
 		data = 0;
 
 		throw(WindowsAPIException("cannot get module handle"));
-	}
-
-	if(parent.data == 0 || parent.data->hwnd == 0){
-		throw(WindowsAPIException("invalid window parent"));
 	}
 
 	const char* labelText = 0;
@@ -90,9 +86,7 @@ void EToolkit::Label::setTextAlignment(TextAlignment alignment){
 		}else if(alignment == TextAlignment::Center){
 			data->addStyle(SS_CENTER);
 		}else if(alignment == TextAlignment::Right){
-			cout << "A data->hasStyle(SS_RIGHT) " << data->hasStyle(SS_RIGHT) << endl;
 			data->addStyle(SS_RIGHT);
-			cout << "B data->hasStyle(SS_RIGHT) " << data->hasStyle(SS_RIGHT) << endl;
 		}
 	}
 }
