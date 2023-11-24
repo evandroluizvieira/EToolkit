@@ -7,16 +7,63 @@
 EToolkit::BaseWindow::BaseWindow() :
 	Control(){
 	data = new (std::nothrow) BaseWindowPrivate(this);
-	if(data == 0){
+	if(data == nullptr){
 		throw MemoryAllocationException();
 	}
 }
 
 EToolkit::BaseWindow::~BaseWindow(){
-	if(data != 0){
-		BaseWindowPrivate* baseWindowData = (BaseWindowPrivate*)data;
-		delete baseWindowData;
-		data = 0;
+	BaseWindowPrivate* dataBaseWindow = dynamic_cast<BaseWindowPrivate*>(data);
+	if(dataBaseWindow == nullptr){
+		return;
+	}
+
+	delete dataBaseWindow;
+	data = nullptr;
+}
+
+void EToolkit::BaseWindow::setMenuBar(MenuBar* menuBar){
+	BaseWindowPrivate* dataBaseWindow = dynamic_cast<BaseWindowPrivate*>(data);
+	if(dataBaseWindow == nullptr || dataBaseWindow->hwnd == nullptr){
+		return;
+	}
+
+	if(menuBar == nullptr || menuBar->hmenu == nullptr){
+		return;
+	}
+
+	if(::SetMenu(dataBaseWindow->hwnd, menuBar->hmenu) == 0){
+		throw WindowsAPIException("cannot set menu bar into window");
+	}
+
+	menuBar->owner = this;
+	dataBaseWindow->menuBar = menuBar;
+}
+
+void EToolkit::BaseWindow::removeMenuBar(){
+	BaseWindowPrivate* dataBaseWindow = dynamic_cast<BaseWindowPrivate*>(data);
+	if(dataBaseWindow == nullptr || dataBaseWindow->hwnd == nullptr || dataBaseWindow->menuBar == nullptr){
+		return;
+	}
+
+	::SetMenu(dataBaseWindow->hwnd, NULL);
+
+	delete dataBaseWindow->menuBar;
+	dataBaseWindow->menuBar = 0;
+}
+
+EToolkit::MenuBar* EToolkit::BaseWindow::getMenuBar() const{
+	BaseWindowPrivate* dataBaseWindow = dynamic_cast<BaseWindowPrivate*>(data);
+	if(dataBaseWindow != nullptr){
+		return dataBaseWindow->menuBar;
+	}
+
+	return nullptr;
+}
+
+void EToolkit::BaseWindow::close(){
+	if(data != nullptr && data->hwnd != nullptr){
+		::SendMessage(data->hwnd, WM_CLOSE, 0, 0);
 	}
 }
 

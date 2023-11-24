@@ -11,7 +11,6 @@
  * @description: Evandro's toolkit.
  */
 namespace EToolkit{
-	//forward declaration of private class
 	class ControlPrivate;
 
 	/*
@@ -23,6 +22,9 @@ namespace EToolkit{
 		friend class BaseWindowPrivate;
 		friend class GLWindow;
 		friend class Window;
+		friend class Menu;
+		friend class MenuBar;
+		friend class MenuItem;
 		friend class Button;
 		friend class Label;
 

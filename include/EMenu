@@ -1,0 +1,5 @@
+#include "../source/menus/EMenu.hpp"
+#include "../source/menus/EMenuBar.hpp"
+#include "../source/menus/EMenuItemBase.hpp"
+#include "../source/menus/EMenuItem.hpp"
+#include "../source/menus/ESubMenu.hpp"

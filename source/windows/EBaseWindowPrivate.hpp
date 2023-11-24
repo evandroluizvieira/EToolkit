@@ -8,7 +8,6 @@
 
 #include <windows.h>
 
-
 namespace EToolkit{
 	class Control;
 
@@ -48,7 +47,10 @@ namespace EToolkit{
 			ATOM atom;
 			HDC hdc;
 			HGLRC hglrc;
+
+			MenuBar* menuBar;
 			DynamicArray<Control*> controls;
+
 	};
 }
 

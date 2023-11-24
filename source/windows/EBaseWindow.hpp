@@ -3,6 +3,7 @@
 
 #include <EToolkit>
 #include <EControl>
+#include <EMenu>
 #include <EPosition>
 #include <EString>
 
@@ -16,7 +17,6 @@
  * @description: Evandro's Toolkit.
  */
 namespace EToolkit{
-	//forward declaration of private class
 	class BaseWindowPrivate;
 
 	/*
@@ -60,6 +60,31 @@ namespace EToolkit{
 			inline void setTitle(const String& title){
 				setText(title);
 			}
+
+			/*
+			 * @description: Function that set menu bar for the window.
+			 * @return: None.
+			 */
+			void setMenuBar(MenuBar* menuBar);
+
+			/*
+			 * @description: Function that removes (and deletes) the menu bar from the window if there is any.
+			 * @return: None.
+			 */
+			void removeMenuBar();
+
+			/*
+			 * @description: Function to get the menu bar if exists or null pointer otherwise.
+			 * @return: An pointer in the window.
+			 */
+			MenuBar* getMenuBar() const;
+
+			/*
+			 * @description: Function that closes the window.
+			 * @return: None.
+			 * @note: After closing everything in the window will be deleted.
+			 */
+			void close();
 
 		protected:
 			/*

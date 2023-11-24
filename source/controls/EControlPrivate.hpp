@@ -12,9 +12,12 @@ namespace EToolkit{
 	class ControlPrivate{
 		friend class BaseWindow;
 		friend class BaseWindowPrivate;
-		friend class Control;
 		friend class GLWindow;
 		friend class Window;
+		friend class Menu;
+		friend class MenuBar;
+		friend class MenuItem;
+		friend class Control;
 		friend class Button;
 		friend class Label;
 

@@ -2,11 +2,13 @@
 #include "../controls/EControl.hpp"
 #include "../core/EApplicationPrivate.hpp"
 #include "../exceptions/EWindowsAPIException.hpp"
+#include "../menus/EMenuBar.hpp"
+#include "../menus/EMenuItem.hpp"
 #include "../windows/EBaseWindow.hpp"
 #include "../windows/EBaseWindowPrivate.hpp"
 
 EToolkit::BaseWindowPrivate::BaseWindowPrivate(Control* owner) :
-	ControlPrivate(owner), atom(0), hdc(0), hglrc(0){
+	ControlPrivate(owner), atom(0), hdc(0), hglrc(0), menuBar(0){
 
 }
 
@@ -33,17 +35,25 @@ LRESULT CALLBACK EToolkit::BaseWindowPrivate::WindowMainProcedure(HWND hwnd, UIN
 	}
 }
 
-
 LRESULT EToolkit::BaseWindowPrivate::procedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam){
 	if(this->hwnd == hwnd){
 		processAllEvents(message, wParam, lParam);
 
 		if(message == WM_COMMAND){
+			//menu events
+			if(menuBar != nullptr && menuBar->hmenu != nullptr){
+				unsigned int itemsSize = menuBar->items.getSize();
+				for(unsigned int i = 0; i < itemsSize; ++i){
+					MenuItem::InkoveCallback(menuBar->items.get(i), LOWORD(wParam));
+				}
+			}
+
+			//controls events
 			unsigned int controlsSize = controls.getSize();
 			for(unsigned int i = 0; i < controlsSize; ++i){
-				Control* c = controls.get(i);
-				if(LOWORD(wParam) == c->data->id){
-					c->data->processAllEvents(message, wParam, lParam);
+				Control* control = controls.get(i);
+				if(LOWORD(wParam) == control->data->id){
+					control->data->processAllEvents(message, wParam, lParam);
 					break;
 				}
 			}
