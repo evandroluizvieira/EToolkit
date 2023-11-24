@@ -22,6 +22,7 @@ The code is organized into several key segments (folders), each serving a specif
 - **geometry:** Contains classes for handling geometric concepts, such as positions, sizes, and bounds in various dimensions.
 - **graphics:** Includes classes for specifying colors in different dimensions, essential for graphical applications.
 - **mathematics:** Provides mathematical functions and classes for matrices, projections, transformations, and vectors in multiple dimensions.
+- **menus:** Orchestrates menu interactions, streamlining user navigation intuitively and efficiently
 - **string:** Manages string-related classes, including C-style and C++ style strings.
 - **synchronization:** Focuses on thread synchronization and management, featuring mutual exclusion mechanisms.
 - **windows:** Contains classes and headers for window creation and management, for graphical user interface (GUI) applications.
