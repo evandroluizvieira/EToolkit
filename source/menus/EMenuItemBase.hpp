@@ -2,14 +2,12 @@
 #define EMENUITEMBASE_HPP
 
 #include <EToolkit>
-#include <EString>
-
 
 /*
  * @description: Evandro's Toolkit.
  */
 namespace EToolkit{
-	class Menu;
+	class MenuItemBasePrivate;
 
 	/*
 	 * @description: Menu generic item that serves base of MenuItem and SubMenu.
@@ -17,45 +15,25 @@ namespace EToolkit{
 	class ETOOLKIT_API MenuItemBase{
 		friend class Menu;
 		friend class MenuItem;
+		friend class MenuItemPrivate;
 		friend class SubMenu;
 
-		public:
+		private:
 			/*
-			 * @description: List of menu type objects.
-			 */
-			enum class Type{
-				//Non defined type.
-				Unknown,
-
-				//Menu item object.
-				MenuItem,
-
-				//Sub menu object.
-				SubMenu
-			};
-
-			/*
-			 * @description: Default constructor.
+			 * @description: Private default constructor that prevents object instantiation.
 			 * @return: None.
 			 */
 			MenuItemBase();
 
+		public:
 			/*
 			 * @description: Default inheritable destructor.
 			 * @return: None.
 			 */
 			virtual ~MenuItemBase();
 
-			/*
-			 * @description: Get the menu type from 'Type' list.
-			 * @return: Copy of menu type.
-			 */
-			Type getType() const;
-
 		private:
-			Menu* parent;
-			Type type;
-			String text;
+			MenuItemBasePrivate* menuItemBasePrivate;
 	};
 }
 

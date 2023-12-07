@@ -1,26 +1,34 @@
-#include "../controls/EControlPrivate.hpp"
+#include "../containers/EDynamicArray.hpp"
 #include "../menus/EMenu.hpp"
+#include "../menus/EMenuPrivate.hpp"
 #include "../menus/EMenuItem.hpp"
+#include "../menus/EMenuItemPrivate.hpp"
 #include "../menus/EMenuItemBase.hpp"
+#include "../menus/EMenuItemBasePrivate.hpp"
 #include "../menus/ESubMenu.hpp"
-#include "../windows/EBaseWindow.hpp"
+
+#include <windows.h>
 
 EToolkit::Menu::Menu() :
-	owner(nullptr), hmenu(nullptr){
+	menuPrivate(nullptr){
 
 }
 
 EToolkit::Menu::~Menu(){
-	unsigned int itemsSize = items.getSize();
+	if(menuPrivate == nullptr){
+		return;
+	}
+
+	unsigned int itemsSize = menuPrivate->items.getSize();
 	for(unsigned int i = 0; i < itemsSize; ++i){
-		MenuItemBase* current = items.get(i);
-		if(current != nullptr){
-			if(current->getType() == MenuItemBase::Type::MenuItem){
+		MenuItemBase* current = menuPrivate->items.get(i);
+		if(current != nullptr && current->menuItemBasePrivate != nullptr){
+			if(current->menuItemBasePrivate->type == MenuItemBasePrivate::Type::MenuItem){
 	            MenuItem* item = dynamic_cast<MenuItem*>(current);
 	            if(item != nullptr){
 	            	delete item;
 	            }
-			}else if(current->getType() == MenuItemBase::Type::SubMenu){
+			}else if(current->menuItemBasePrivate->type == MenuItemBasePrivate::Type::SubMenu){
 	            SubMenu* subMenu = dynamic_cast<SubMenu*>(current);
 	            if(subMenu != nullptr){
 	            	delete subMenu;
@@ -30,157 +38,119 @@ EToolkit::Menu::~Menu(){
 			}
 		}
 	}
-	items.clear();
+	menuPrivate->items.clear();
 
-	if(hmenu != nullptr){
-		::DestroyMenu(hmenu);
-		hmenu = nullptr;
+	if(menuPrivate->hmenu != nullptr){
+		::DestroyMenu(menuPrivate->hmenu);
+		menuPrivate->hmenu = nullptr;
 	}
+
+	delete menuPrivate;
+	menuPrivate = nullptr;
 }
 
 void EToolkit::Menu::add(MenuItem* menuItem){
-	if(hmenu == nullptr || menuItem == nullptr){
+	if(menuPrivate == nullptr || menuPrivate->hmenu == nullptr || menuItem == nullptr || menuItem->menuItemBasePrivate == nullptr){
 		return;
 	}
 
-	if(::AppendMenu(hmenu, MF_STRING, menuItem->id, menuItem->getText().getData()) != 0){
-		items.insertBack(menuItem);
-		menuItem->parent = this;
-	}
-}
+	MenuItemPrivate* menuItemPrivate = dynamic_cast<MenuItemPrivate*>(menuItem->menuItemBasePrivate);
+	if(menuItemPrivate != nullptr){
+		if(::AppendMenu(menuPrivate->hmenu, MF_STRING, menuItemPrivate->id, menuItem->getText().getData()) != 0){
+			menuPrivate->redrawMenuBar();
 
-void EToolkit::Menu::add(SubMenu* subMenu){
-	if(hmenu == nullptr || subMenu == nullptr){
-		return;
-	}
-
-	if(subMenu->hmenu != nullptr){
-		if(AppendMenu(hmenu, MF_POPUP, reinterpret_cast<UINT_PTR>(subMenu->hmenu), subMenu->getText().getData()) != 0){
-			if(owner != nullptr && owner->data != nullptr && owner->data->hwnd != nullptr){
-				::DrawMenuBar(owner->data->hwnd);
-			}
-
-			items.insertBack(subMenu);
-			subMenu->parent = this;
-		}else{
-	        DestroyMenu(subMenu->hmenu);
-	        subMenu->hmenu = nullptr;
+			menuPrivate->items.insertBack(menuItem);
+			menuItem->menuItemBasePrivate->parent = this;
 		}
 	}
 }
 
 void EToolkit::Menu::remove(MenuItem* menuItem){
-	if(hmenu == nullptr || menuItem == nullptr){
+	if(menuPrivate == nullptr || menuPrivate->hmenu == nullptr || menuItem == nullptr || menuItem->menuItemBasePrivate == nullptr){
 		return;
 	}
 
-	int itemsCount = ::GetMenuItemCount(hmenu);
-	for(int i = 0; i < itemsCount; ++i){
-		UINT id = ::GetMenuItemID(hmenu, i);
-		if(id == menuItem->id){
-			::RemoveMenu(hmenu, i, MF_BYPOSITION);
+	MenuItemPrivate* menuItemPrivate = dynamic_cast<MenuItemPrivate*>(menuItem->menuItemBasePrivate);
+	if(menuItemPrivate == nullptr){
+		return;
+	}
 
-			unsigned int itemsSize = items.getSize();
+	int itemsCount = ::GetMenuItemCount(menuPrivate->hmenu);
+	for(int i = 0; i < itemsCount; ++i){
+		UINT id = ::GetMenuItemID(menuPrivate->hmenu, i);
+		if(id == menuItemPrivate->id){
+			::RemoveMenu(menuPrivate->hmenu, i, MF_BYPOSITION);
+
+			unsigned int itemsSize = menuPrivate->items.getSize();
 			for(unsigned int j = 0; j < itemsSize; ++j){
-				if(menuItem == items.get(j)){
-					items.remove(j);
+				if(menuItem == menuPrivate->items.get(j)){
+					menuPrivate->items.remove(j);
 					break;
 				}
 			}
 
-			if(owner != nullptr && owner->data != nullptr && owner->data->hwnd != nullptr){
-				::DrawMenuBar(owner->data->hwnd);
-			}
-
 			delete menuItem;
+
+			menuPrivate->redrawMenuBar();
+
 			break;
 		}
 	}
 }
 
-void EToolkit::Menu::remove(SubMenu* subMenu){
-	if(hmenu == nullptr || subMenu == nullptr){
+void EToolkit::Menu::add(SubMenu* subMenu){
+	if(menuPrivate == nullptr || menuPrivate->hmenu == nullptr || subMenu == nullptr ||
+		subMenu->menuPrivate == nullptr || subMenu->menuPrivate->hmenu == nullptr ||
+		subMenu->menuItemBasePrivate == nullptr){
 		return;
 	}
 
-	int itemsCount = ::GetMenuItemCount(hmenu);
-	for(int i = 0; i < itemsCount; ++i){
-		HMENU subMenuHandle = ::GetSubMenu(hmenu, i);
-		if(subMenuHandle == subMenu->hmenu){
-			::RemoveMenu(hmenu, i, MF_BYPOSITION);
+	if(AppendMenu(menuPrivate->hmenu, MF_POPUP, (UINT_PTR)(subMenu->menuPrivate->hmenu), subMenu->getText().getData()) != 0){
+		menuPrivate->redrawMenuBar();
 
-			unsigned int itemsSize = items.getSize();
+		menuPrivate->items.insertBack(subMenu);
+		subMenu->menuItemBasePrivate->parent = this;
+	}else{
+		::DestroyMenu(subMenu->menuPrivate->hmenu);
+		subMenu->menuPrivate->hmenu = nullptr;
+	}
+}
+
+void EToolkit::Menu::remove(SubMenu* subMenu){
+	if(menuPrivate == nullptr || menuPrivate->hmenu == nullptr || subMenu == nullptr){
+		return;
+	}
+
+	int itemsCount = ::GetMenuItemCount(menuPrivate->hmenu);
+	for(int i = 0; i < itemsCount; ++i){
+		HMENU subMenuHandle = ::GetSubMenu(menuPrivate->hmenu, i);
+		if(subMenuHandle == subMenu->menuPrivate->hmenu){
+			::RemoveMenu(menuPrivate->hmenu, i, MF_BYPOSITION);
+
+			unsigned int itemsSize = menuPrivate->items.getSize();
 			for(unsigned int j = 0; j < itemsSize; ++j){
-				if(subMenu == items.get(j)){
-					items.remove(j);
+				if(subMenu == menuPrivate->items.get(j)){
+					menuPrivate->items.remove(j);
 					break;
 				}
 			}
 
 			delete subMenu;
 
-			if(owner != nullptr && owner->data != nullptr && owner->data->hwnd != nullptr){
-				::DrawMenuBar(owner->data->hwnd);
-			}
+			menuPrivate->redrawMenuBar();
+
 			break;
 		}
 	}
 }
 
-//void EToolkit::Menu::remove(MenuItemBase* menuItemBase){
-//	if(hmenu == nullptr || menuItemBase == nullptr){
-//		return;
-//	}
-//
-//	MenuItemBase::Type type = menuItemBase->getType();
-//	int itemsCount = ::GetMenuItemCount(hmenu);
-//	if(type == MenuItemBase::Type::MenuItem){
-//		for(int i = 0; i < itemsCount; ++i){
-//			MenuItem* menuItem = dynamic_cast<MenuItem*>(menuItemBase);
-//			if(menuItem != nullptr){
-//				UINT id = ::GetMenuItemID(hmenu, i);
-//				if(id == menuItem->id){
-//					::RemoveMenu(hmenu, i, MF_BYPOSITION);
-//
-//					unsigned int itemsSize = items.getSize();
-//					for(unsigned int j = 0; j < itemsSize; ++j){
-//						if(menuItem == items.get(j)){
-//							items.remove(j);
-//							break;
-//						}
-//					}
-//
-//					delete menuItem;
-//					break;
-//				}
-//			}
-//		}
-//	}else if(type == MenuItemBase::Type::SubMenu){
-//		for(int i = 0; i < itemsCount; ++i){
-//			SubMenu* subMenu = dynamic_cast<MenuItem*>(menuItemBase);
-//			if(subMenu != nullptr){
-//				UINT_PTR subMenuHandle = ::GetSubMenu(hmenu, i);
-//				if(subMenuHandle == (UINT_PTR)subMenu->hmenu){
-//					::RemoveMenu(hmenu, i, MF_BYPOSITION);
-//
-//					unsigned int itemsSize = items.getSize();
-//					for(unsigned int j = 0; j < itemsSize; ++j){
-//						if(subMenu == items.get(j)){
-//							items.remove(j);
-//							break;
-//						}
-//					}
-//
-//					remove(subMenu);
-//
-//					delete subMenu;
-//					break;
-//				}
-//			}
-//		}
-//	}
-//}
-
 EToolkit::DynamicArray<EToolkit::MenuItemBase*> EToolkit::Menu::getItems() const{
-	return items;
+	DynamicArray<MenuItemBase*> result;
+	if(menuPrivate != nullptr){
+		unsigned int itemsSize = menuPrivate->items.getSize();
+		for(unsigned int i = 0; i < itemsSize; ++i){
+			result.insertBack(menuPrivate->items.get(i));
+		}
+	}
+	return result;
 }

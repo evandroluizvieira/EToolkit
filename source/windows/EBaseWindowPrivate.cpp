@@ -2,8 +2,10 @@
 #include "../controls/EControl.hpp"
 #include "../core/EApplicationPrivate.hpp"
 #include "../exceptions/EWindowsAPIException.hpp"
+#include "../menus/EMenu.hpp"
+#include "../menus/EMenuPrivate.hpp"
 #include "../menus/EMenuBar.hpp"
-#include "../menus/EMenuItem.hpp"
+#include "../menus/EMenuItemPrivate.hpp"
 #include "../windows/EBaseWindow.hpp"
 #include "../windows/EBaseWindowPrivate.hpp"
 
@@ -36,15 +38,17 @@ LRESULT CALLBACK EToolkit::BaseWindowPrivate::WindowMainProcedure(HWND hwnd, UIN
 }
 
 LRESULT EToolkit::BaseWindowPrivate::procedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam){
+
 	if(this->hwnd == hwnd){
 		processAllEvents(message, wParam, lParam);
 
 		if(message == WM_COMMAND){
 			//menu events
-			if(menuBar != nullptr && menuBar->hmenu != nullptr){
-				unsigned int itemsSize = menuBar->items.getSize();
+			if(menuBar != nullptr && menuBar->menuPrivate != nullptr){
+				unsigned int itemsSize = menuBar->menuPrivate->items.getSize();
 				for(unsigned int i = 0; i < itemsSize; ++i){
-					MenuItem::InkoveCallback(menuBar->items.get(i), LOWORD(wParam));
+					MenuItemBase* itemBase = menuBar->menuPrivate->items.get(i);
+					MenuItemPrivate::InkoveCallback(itemBase, LOWORD(wParam));
 				}
 			}
 

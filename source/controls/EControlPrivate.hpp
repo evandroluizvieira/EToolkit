@@ -15,8 +15,7 @@ namespace EToolkit{
 		friend class GLWindow;
 		friend class Window;
 		friend class Menu;
-		friend class MenuBar;
-		friend class MenuItem;
+		friend class MenuPrivate;
 		friend class Control;
 		friend class Button;
 		friend class Label;

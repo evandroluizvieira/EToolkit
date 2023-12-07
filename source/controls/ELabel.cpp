@@ -5,9 +5,9 @@
 #include "../windows/EWindow.hpp"
 #include "../windows/EBaseWindowPrivate.hpp"
 
+#include <new>
 #include <windows.h>
 #include <commctrl.h>
-#include <new>
 
 EToolkit::Label::Label(Window& parent, const String& text, bool addSunkenBorder) :
 	Control(){

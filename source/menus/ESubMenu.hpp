@@ -1,18 +1,16 @@
-#ifndef EMENUPAGE_HPP
-#define EMENUPAGE_HPP
+#ifndef ESUBMENU_HPP
+#define ESUBMENU_HPP
 
 #include <EToolkit>
+#include <EMenu>
 #include <EString>
-
-#include "../menus/EMenu.hpp"
-#include "../menus/EMenuItemBase.hpp"
 
 /*
  * @description: Evandro's Toolkit.
  */
 namespace EToolkit{
 
-/*
+	/*
 	 * @description: Menu bar that serves as a navigation and organizational tool to be used in a window.
 	 */
 	class ETOOLKIT_API SubMenu : public Menu, public MenuItemBase{
@@ -37,4 +35,4 @@ namespace EToolkit{
 	};
 }
 
-#endif /* EMENUPAGE_HPP */
+#endif /* ESUBMENU_HPP */

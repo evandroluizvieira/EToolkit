@@ -1,8 +1,12 @@
 #include "../exceptions/EMemoryAllocationException.hpp"
+#include "../menus/EMenu.hpp"
+#include "../menus/EMenuPrivate.hpp"
+#include "../menus/EMenuBar.hpp"
 #include "../windows/EBaseWindow.hpp"
 #include "../windows/EBaseWindowPrivate.hpp"
 
 #include <new>
+#include <windows.h>
 
 EToolkit::BaseWindow::BaseWindow() :
 	Control(){
@@ -28,15 +32,15 @@ void EToolkit::BaseWindow::setMenuBar(MenuBar* menuBar){
 		return;
 	}
 
-	if(menuBar == nullptr || menuBar->hmenu == nullptr){
+	if(menuBar == nullptr || menuBar->menuPrivate == nullptr || menuBar->menuPrivate->hmenu == nullptr){
 		return;
 	}
 
-	if(::SetMenu(dataBaseWindow->hwnd, menuBar->hmenu) == 0){
+	if(::SetMenu(dataBaseWindow->hwnd, menuBar->menuPrivate->hmenu) == 0){
 		throw WindowsAPIException("cannot set menu bar into window");
 	}
 
-	menuBar->owner = this;
+	menuBar->menuPrivate->owner = this;
 	dataBaseWindow->menuBar = menuBar;
 }
 

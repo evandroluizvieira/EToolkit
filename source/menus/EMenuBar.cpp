@@ -1,21 +1,25 @@
-#include "../controls/EControl.hpp"
-#include "../controls/EControlPrivate.hpp"
 #include "../exceptions/EMemoryAllocationException.hpp"
 #include "../exceptions/EWindowsAPIException.hpp"
+#include "../menus/EMenuPrivate.hpp"
 #include "../menus/EMenuBar.hpp"
-#include "../menus/EMenuItem.hpp"
-#include "../windows/EBaseWindow.hpp"
-#include "../windows/EBaseWindowPrivate.hpp"
 
+#include <new>
 #include <windows.h>
 
 EToolkit::MenuBar::MenuBar() :
 	Menu(){
 
-	hmenu = ::CreateMenu();
-	if(hmenu == nullptr){
+	menuPrivate = new (std::nothrow) MenuPrivate();
+	if(menuPrivate == nullptr){
+		throw MemoryAllocationException();
+	}
+
+	menuPrivate->hmenu = ::CreateMenu();
+	if(menuPrivate->hmenu == nullptr){
 		throw WindowsAPIException("cannot create menu bar");
 	}
+
+	menuPrivate->type = MenuPrivate::Type::MenuBar;
 }
 
 EToolkit::MenuBar::~MenuBar(){

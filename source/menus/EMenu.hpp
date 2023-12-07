@@ -4,22 +4,26 @@
 #include <EToolkit>
 #include <EContainer>
 
-#include <windows.h>
-
 /*
  * @description: Evandro's Toolkit.
  */
 namespace EToolkit{
-	class BaseWindow;
+	class MenuPrivate;
 	class MenuItemBase;
 	class MenuItem;
 	class SubMenu;
 
+	/*
+	 * @description: Generic menu  that serves base of MenuBar and SubMenu.
+	 * @note: MenuItem and SubMenu objects added here need to be pointers.
+	 *
+	 */
 	class ETOOLKIT_API Menu{
 		friend class BaseWindow;
 		friend class BaseWindowPrivate;
 		friend class MenuBar;
 		friend class MenuItem;
+		friend class MenuItemPrivate;
 		friend class SubMenu;
 
 		public:
@@ -60,22 +64,13 @@ namespace EToolkit{
 			void remove(SubMenu* subMenu);
 
 			/*
-			 * @description: Function that remove (and deletes) the 'menuItemBase' from the menu.
-			 * @return: None.
-			 * @note: If 'menuItemBase.getType()' is 'MenuItemBase::Type::SubMenu'this will remove all its MenuItemBase recursively.
-			 */
-			//void remove(MenuItemBase* menuItemBase);
-
-			/*
 			 * @description: Function to get all pointers of the menu items base.
 			 * @return: An array with all items pointers in the menu.
 			 */
 			DynamicArray<MenuItemBase*> getItems() const;
 
 		private:
-			BaseWindow* owner;
-			HMENU hmenu;
-			DynamicArray<MenuItemBase*> items;
+			MenuPrivate* menuPrivate;
 	};
 }
 

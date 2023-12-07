@@ -2,10 +2,8 @@
 #define EMENUITEM_HPP
 
 #include <EToolkit>
-#include <EContainer>
+#include <EMenu>
 #include <EString>
-
-#include "../menus/EMenuItemBase.hpp"
 
 #include <functional>
 
@@ -18,10 +16,8 @@ namespace EToolkit{
 	 * @description: Menu bar that serves as a navigation and organizational tool to be used in a window.
 	 */
 	class ETOOLKIT_API MenuItem : public MenuItemBase{
-		friend class Menu;
-
 		public:
-			//Type to be used to trigger when the are keyboard key enter press or mouse left button release.
+			//Type to be used to trigger when the keyboard key enter press or mouse left button release.
 			using OnClickEvent = std::function<void()>;
 
 			/*
@@ -53,12 +49,6 @@ namespace EToolkit{
 			 * @return: None.
 			 */
 			void setText(const String& text);
-
-			static void InkoveCallback(MenuItemBase* menuItemBase, unsigned int param);
-
-		private:
-			unsigned int id;
-			MenuItem::OnClickEvent callback;
 	};
 }
 

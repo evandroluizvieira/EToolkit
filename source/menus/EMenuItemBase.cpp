@@ -1,14 +1,11 @@
 #include "../menus/EMenuItemBase.hpp"
+#include "../menus/EMenuItemBasePrivate.hpp"
 
 EToolkit::MenuItemBase::MenuItemBase() :
-	parent(nullptr), type(Type::Unknown){
+	menuItemBasePrivate(nullptr){
 
 }
 
 EToolkit::MenuItemBase::~MenuItemBase(){
 
-}
-
-EToolkit::MenuItemBase::Type EToolkit::MenuItemBase::getType() const{
-	return type;
 }

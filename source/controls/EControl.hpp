@@ -23,6 +23,7 @@ namespace EToolkit{
 		friend class GLWindow;
 		friend class Window;
 		friend class Menu;
+		friend class MenuPrivate;
 		friend class MenuBar;
 		friend class MenuItem;
 		friend class Button;
