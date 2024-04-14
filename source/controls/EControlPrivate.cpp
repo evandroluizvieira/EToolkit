@@ -19,7 +19,7 @@
 #include <windowsx.h>
 
 EToolkit::ControlPrivate::ControlPrivate(Control* owner) :
-	owner(owner), hwnd(0), type(Control::Type::Type_None){
+	owner(owner), hwnd(NULL), type(Control::Type::Type_None){
 
 	//win api good practice start from 100
 	static unsigned int ControlsID = 100;
@@ -31,7 +31,7 @@ EToolkit::ControlPrivate::~ControlPrivate(){
 }
 
 void EToolkit::ControlPrivate::processAllEvents(UINT message, WPARAM wParam, LPARAM lParam){
-	if(owner == 0){
+	if(owner == nullptr){
 		return;
 	}
 
@@ -156,7 +156,7 @@ bool EToolkit::ControlPrivate::hasStyle(DWORD checkStyle){
 }
 
 void EToolkit::ControlPrivate::addStyle(DWORD styleToAdd, bool refresh){
-	if(hwnd == 0){
+	if(hwnd == NULL){
 		return;
 	}
 
@@ -171,7 +171,7 @@ void EToolkit::ControlPrivate::addStyle(DWORD styleToAdd, bool refresh){
 }
 
 void EToolkit::ControlPrivate::removeStyle(DWORD styleToRemove, bool refresh){
-	if(hwnd == 0){
+	if(hwnd == NULL){
 		return;
 	}
 

@@ -11,27 +11,27 @@
 
 EToolkit::Button::Button(Window& parent) :
 	Control(){
-	if(parent.data == 0 || parent.data->hwnd == 0){
+	if(parent.data == nullptr || parent.data->hwnd == NULL){
 		throw(WindowsAPIException("invalid window parent"));
 	}
 
 	data = new (std::nothrow) ControlPrivate(this);
-	if(data == 0){
+	if(data == nullptr){
 		throw MemoryAllocationException();
 	}
 
-	HINSTANCE instance = ::GetModuleHandle(0);
-	if(instance == 0){
+	HINSTANCE instance = ::GetModuleHandle(NULL);
+	if(instance == NULL){
 		delete data;
-		data = 0;
+		data = nullptr;
 
 		throw(WindowsAPIException("cannot get module handle"));
 	}
 
 	data->hwnd = ::CreateWindowEx(0, WC_BUTTON, "Button",  WS_CHILD | BS_PUSHBUTTON | BS_NOTIFY | BS_TEXT | BS_CENTER | BS_VCENTER, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, parent.data->hwnd, (HMENU)data->id, instance, 0);
-	if(data->hwnd == 0){
+	if(data->hwnd == NULL){
 		delete data;
-		data = 0;
+		data = nullptr;
 
 		throw(WindowsAPIException("cannot create push button"));
 	}
@@ -43,17 +43,17 @@ EToolkit::Button::Button(Window& parent) :
 }
 
 EToolkit::Button::~Button(){
-	if(data != 0){
+	if(data != nullptr){
 		::DestroyWindow(data->hwnd);
-		data->hwnd = 0;
+		data->hwnd = NULL;
 
 		delete data;
-		data = 0;
+		data = nullptr;
 	}
 }
 
 EToolkit::Button::TextHorizontalPosition EToolkit::Button::getTextHorizontalPosition() const{
-	if(data != 0){
+	if(data != nullptr){
 		if(data->hasStyle(BS_CENTER) == true){
 			return TextHorizontalPosition::Center;
 		}
@@ -70,7 +70,7 @@ EToolkit::Button::TextHorizontalPosition EToolkit::Button::getTextHorizontalPosi
 }
 
 EToolkit::Button::TextVerticalPosition EToolkit::Button::getTextVerticalPosition() const{
-	if(data != 0){
+	if(data != nullptr){
 		if(data->hasStyle(BS_VCENTER) == true){
 			return TextVerticalPosition::Center;
 		}
@@ -87,7 +87,7 @@ EToolkit::Button::TextVerticalPosition EToolkit::Button::getTextVerticalPosition
 }
 
 void EToolkit::Button::setTextPosition(TextHorizontalPosition horizontal, TextVerticalPosition vertical){
-	if(data != 0){
+	if(data != nullptr){
 		if(horizontal != TextHorizontalPosition::Unknown){
 			data->removeStyle(BS_CENTER | BS_LEFT | BS_RIGHT, false);
 
@@ -115,7 +115,7 @@ void EToolkit::Button::setTextPosition(TextHorizontalPosition horizontal, TextVe
 }
 
 bool EToolkit::Button::isSetTextMultipleLines() const{
-	if(data != 0){
+	if(data != nullptr){
 		return data->hasStyle(BS_MULTILINE);
 	}
 
@@ -123,19 +123,19 @@ bool EToolkit::Button::isSetTextMultipleLines() const{
 }
 
 void EToolkit::Button::setTextMultipleLines(){
-	if(data != 0){
+	if(data != nullptr){
 		data->addStyle(BS_MULTILINE);
 	}
 }
 
 void EToolkit::Button::unsetTextMultipleLines(){
-	if(data != 0){
+	if(data != nullptr){
 		data->removeStyle(BS_MULTILINE);
 	}
 }
 
 bool EToolkit::Button::isSetFlatDesign() const{
-	if(data != 0){
+	if(data != nullptr){
 		return data->hasStyle(BS_FLAT);
 	}
 
@@ -143,13 +143,13 @@ bool EToolkit::Button::isSetFlatDesign() const{
 }
 
 void EToolkit::Button::setFlatDesign(){
-	if(data != 0){
+	if(data != nullptr){
 		data->addStyle(BS_FLAT);
 	}
 }
 
 void EToolkit::Button::unsetFlatDesign(){
-	if(data != 0){
+	if(data != nullptr){
 		data->removeStyle(BS_FLAT);
 	}
 }

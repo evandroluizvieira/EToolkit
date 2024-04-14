@@ -52,7 +52,7 @@ namespace EToolkit{
 			 * @return: None.
 			 * @note: Only constructor can handle sunken border design.
 			 */
-			Label(Window& parent, const String& text = "", bool addSunkenBorder = false);
+			Label(Window& parent, const String& text, bool addSunkenBorder = false);
 
 			/*
 			 * @description: Default inheritable destructor.

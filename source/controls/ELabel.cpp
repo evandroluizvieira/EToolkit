@@ -11,19 +11,19 @@
 
 EToolkit::Label::Label(Window& parent, const String& text, bool addSunkenBorder) :
 	Control(){
-	if(parent.data == 0 || parent.data->hwnd == 0){
+	if(parent.data == nullptr || parent.data->hwnd == NULL){
 		throw(WindowsAPIException("invalid window parent"));
 	}
 
 	data = new (std::nothrow) ControlPrivate(this);
-	if(data == 0){
+	if(data == nullptr){
 		throw MemoryAllocationException();
 	}
 
-	HINSTANCE instance = ::GetModuleHandle(0);
-	if(instance == 0){
+	HINSTANCE instance = ::GetModuleHandle(NULL);
+	if(instance == NULL){
 		delete data;
-		data = 0;
+		data = nullptr;
 
 		throw(WindowsAPIException("cannot get module handle"));
 	}
@@ -41,9 +41,9 @@ EToolkit::Label::Label(Window& parent, const String& text, bool addSunkenBorder)
 	}
 
 	data->hwnd = ::CreateWindowEx(0, WC_STATIC, labelText, style, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, parent.data->hwnd, (HMENU)data->id, instance, 0);
-	if(data->hwnd == 0){
+	if(data->hwnd == NULL){
 		delete data;
-		data = 0;
+		data = nullptr;
 
 		throw(WindowsAPIException("cannot create push button"));
 	}
@@ -55,17 +55,17 @@ EToolkit::Label::Label(Window& parent, const String& text, bool addSunkenBorder)
 }
 
 EToolkit::Label::~Label(){
-	if(data != 0){
+	if(data != nullptr){
 		::DestroyWindow(data->hwnd);
-		data->hwnd = 0;
+		data->hwnd = NULL;
 
 		delete data;
-		data = 0;
+		data = nullptr;
 	}
 }
 
 bool EToolkit::Label::isSetTextAlignment(TextAlignment alignment) const{
-	if(data != 0){
+	if(data != nullptr){
 		if(alignment == TextAlignment::Left){
 			return data->hasStyle(SS_LEFT);
 		}else if(alignment == TextAlignment::Center){
@@ -78,7 +78,7 @@ bool EToolkit::Label::isSetTextAlignment(TextAlignment alignment) const{
 }
 
 void EToolkit::Label::setTextAlignment(TextAlignment alignment){
-	if(data != 0){
+	if(data != nullptr){
 		data->removeStyle(SS_LEFT | SS_CENTER | SS_RIGHT, true);
 
 		if(alignment == TextAlignment::Left){
@@ -92,7 +92,7 @@ void EToolkit::Label::setTextAlignment(TextAlignment alignment){
 }
 
 bool EToolkit::Label::isSetTextEllipsis(TextEllipsis type) const{
-	if(data != 0){
+	if(data != nullptr){
 		if(type == TextEllipsis::End){
 			return data->hasStyle(SS_ENDELLIPSIS);
 		}else if(type == TextEllipsis::Word){
@@ -105,7 +105,7 @@ bool EToolkit::Label::isSetTextEllipsis(TextEllipsis type) const{
 }
 
 void EToolkit::Label::setTextEllipsis(TextEllipsis type){
-	if(data != 0){
+	if(data != nullptr){
 		if(type == TextEllipsis::End){
 			data->addStyle(SS_ENDELLIPSIS);
 		}else if(type == TextEllipsis::Word){
@@ -117,7 +117,7 @@ void EToolkit::Label::setTextEllipsis(TextEllipsis type){
 }
 
 void EToolkit::Label::unsetTextEllipsis(TextEllipsis type){
-	if(data != 0){
+	if(data != nullptr){
 		if(type == TextEllipsis::End){
 			data->removeStyle(SS_ENDELLIPSIS);
 		}else if(type == TextEllipsis::Word){

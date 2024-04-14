@@ -6,7 +6,7 @@
 #include <windows.h>
 
 EToolkit::Control::Control() :
-	data(0){
+	data(nullptr){
 
 }
 
@@ -16,14 +16,14 @@ EToolkit::Control::~Control(){
 
 EToolkit::Control::Type EToolkit::Control::getType() const{
 	Type type = Type::Type_None;
-	if(data != 0){
+	if(data != nullptr){
 		type = (Type)data->type;
 	}
 	return type;
 }
 
 bool EToolkit::Control::hasFocus() const{
-	if(data != 0){
+	if(data != nullptr){
 		return ::GetFocus() == data->hwnd;
 	}else{
 		return false;
@@ -31,19 +31,19 @@ bool EToolkit::Control::hasFocus() const{
 }
 
 void EToolkit::Control::setFocusability(bool active){
-	if(data == 0 || data->hwnd == 0){
+	if(data == nullptr || data->hwnd == NULL){
 		return;
 	}
 
 	if(active == true){
 		::SetFocus(data->hwnd);
 	}else{
-		::SetFocus(0);
+		::SetFocus(NULL);
 	}
 }
 
 bool EToolkit::Control::isEnable() const{
-	if(data != 0 && data->hwnd != 0 && ::IsWindowEnabled(data->hwnd) != 0){
+	if(data != nullptr && data->hwnd != NULL && ::IsWindowEnabled(data->hwnd) != 0){
 		return true;
 	}else{
 		return false;
@@ -51,7 +51,7 @@ bool EToolkit::Control::isEnable() const{
 }
 
 void EToolkit::Control::setEnability(bool enable){
-	if(data == 0 || data->hwnd == 0){
+	if(data == nullptr || data->hwnd == NULL){
 		return;
 	}
 
@@ -63,7 +63,7 @@ void EToolkit::Control::setEnability(bool enable){
 }
 
 bool EToolkit::Control::isVisible() const{
-	if(data != 0 && data->hwnd != 0 && ::IsWindowVisible(data->hwnd) != 0){
+	if(data != nullptr && data->hwnd != NULL && ::IsWindowVisible(data->hwnd) != 0){
 		return true;
 	}else{
 		return false;
@@ -71,7 +71,7 @@ bool EToolkit::Control::isVisible() const{
 }
 
 void EToolkit::Control::setVisibility(bool visible){
-	if(data == 0 || data->hwnd == 0){
+	if(data == nullptr || data->hwnd == NULL){
 		return;
 	}
 
@@ -84,7 +84,7 @@ void EToolkit::Control::setVisibility(bool visible){
 
 EToolkit::String EToolkit::Control::getText() const{
 	String text;
-	if(data != 0 && data->hwnd != 0){
+	if(data != nullptr && data->hwnd != NULL){
 		int textLength = ::GetWindowTextLength(data->hwnd);
 		if(textLength > 0){
 			textLength++;
@@ -98,7 +98,7 @@ EToolkit::String EToolkit::Control::getText() const{
 }
 
 void EToolkit::Control::setText(const String& text){
-	if(data != 0 && data->hwnd != 0){
+	if(data != nullptr && data->hwnd != NULL){
 		if(::SetWindowText(data->hwnd, text.data->data) == 0){
 			throw WindowsAPIException("invalid 'SetWindowText'");
 		}
@@ -143,7 +143,7 @@ void EToolkit::Control::setSize(int width, int height){
 
 EToolkit::Bounds2i EToolkit::Control::getBounds() const{
 	Bounds2i bounds;
-	if(data != 0 && data->hwnd != 0){
+	if(data != nullptr && data->hwnd != NULL){
 		RECT rect = {0, 0, 0, 0};
 		if(::GetWindowRect(data->hwnd, &rect) == 0){
 			throw WindowsAPIException("invalid 'GetWindowRect'");
@@ -155,7 +155,7 @@ EToolkit::Bounds2i EToolkit::Control::getBounds() const{
 }
 
 void EToolkit::Control::setBounds(const Bounds2i& bounds){
-	if(data != 0 && data->hwnd != 0){
+	if(data != nullptr && data->hwnd != NULL){
 		if(::MoveWindow(data->hwnd, bounds.x, bounds.y, bounds.width, bounds.height, TRUE) == 0){
 			throw WindowsAPIException("invalid 'MoveWindow'");
 		}
