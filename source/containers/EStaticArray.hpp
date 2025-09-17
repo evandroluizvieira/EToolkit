@@ -67,6 +67,13 @@ namespace EToolkit{
 			 */
 			DataType& operator[](unsigned int index);
 
+			/**
+			 * @brief Access element at given index (read-only for const objects).
+			 * @param index Position in the array.
+			 * @return Const reference to the data at the index.
+			 */
+			const DataType& operator[](unsigned int index) const;
+
 			/*
 			 * @description: Operator that check if the 'size' and all elements values are equals to elements of the given 'other' vector.
 			 * @return: True if yes or false otherwise.
@@ -205,6 +212,15 @@ EToolkit::StaticArray<DataType>& EToolkit::StaticArray<DataType>::operator=(cons
 
 template<class DataType>
 DataType& EToolkit::StaticArray<DataType>::operator[](unsigned int index){
+	if(index >= size){
+		throw OutOfBoundsException();
+	}else{
+		return data[index];
+	}
+}
+
+template<class DataType>
+const DataType& EToolkit::StaticArray<DataType>::operator[](unsigned int index) const {
 	if(index >= size){
 		throw OutOfBoundsException();
 	}else{

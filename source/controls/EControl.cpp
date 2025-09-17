@@ -111,15 +111,15 @@ EToolkit::Position2i EToolkit::Control::getPosition() const{
 
 void EToolkit::Control::setPosition(const Position2i& position){
 	Bounds2i bounds = getBounds();
-	bounds.x = position.x;
-	bounds.y = position.y;
+	bounds.setX(position.getX());
+	bounds.setY(position.getY());
 	setBounds(bounds);
 }
 
 void EToolkit::Control::setPosition(int x, int y){
 	Bounds2i bounds = getBounds();
-	bounds.x = x;
-	bounds.y = y;
+	bounds.setX(x);
+	bounds.setY(y);
 	setBounds(bounds);
 }
 
@@ -129,15 +129,15 @@ EToolkit::Size2i EToolkit::Control::getSize() const{
 
 void EToolkit::Control::setSize(const Size2i& size){
 	Bounds2i bounds = getBounds();
-	bounds.width = size.width;
-	bounds.height = size.height;
+	bounds.setWidth(size.getWidth());
+	bounds.setHeight(size.getHeight());
 	setBounds(bounds);
 }
 
 void EToolkit::Control::setSize(int width, int height){
 	Bounds2i bounds = getBounds();
-	bounds.width = width;
-	bounds.height = height;
+	bounds.setWidth(width);
+	bounds.setHeight(height);
 	setBounds(bounds);
 }
 
@@ -156,7 +156,7 @@ EToolkit::Bounds2i EToolkit::Control::getBounds() const{
 
 void EToolkit::Control::setBounds(const Bounds2i& bounds){
 	if(data != nullptr && data->hwnd != NULL){
-		if(::MoveWindow(data->hwnd, bounds.x, bounds.y, bounds.width, bounds.height, TRUE) == 0){
+		if(::MoveWindow(data->hwnd, bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), TRUE) == 0){
 			throw WindowsAPIException("invalid 'MoveWindow'");
 		}
 	}
