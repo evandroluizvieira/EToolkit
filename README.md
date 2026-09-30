@@ -33,6 +33,34 @@ To get started, clone the repository:
 git clone https://github.com/evandroluizvieira/EToolkit.git
 ```
 
+## Containers
+
+The container API provides the following contracts and implementations:
+
+- `IContainer<DataType, SizeType>` — common size, data, clear, empty, comparison, and swap operations.
+- `IIterable<DataType>` — mutable, constant, and constant-only iteration operations.
+- `IStaticContainer<DataType, SizeType, SizeValue>` — fixed-size container contract; `SizeValue` must be greater than zero.
+- `IDynamicContainer<DataType, SizeType>` — runtime size, capacity, insertion, removal, resize, and reserve operations.
+- `StaticArray<DataType, SizeType, SizeValue>` — compile-time-sized array implementation.
+- `DynamicArray<DataType>` — runtime-sized array implementation.
+
+The public forwarding header is `include/EContainer`.
+
+## Tests and build
+
+The project uses one out-of-source CMake build directory at the repository root. Test source files
+remain under `test/`, while generated binaries and CTest metadata are written below `build/test/`.
+The tests are organized by production class and use a local assertion runner implemented in
+`test/TestAssertions.hpp`. The test code does not use GoogleTest, GoogleMock, FetchContent, or
+another external test framework. CTest is only the test execution and reporting tool provided by
+CMake; it is not the assertion framework used by the tests.
+
+```text
+cmake -S . -B build -G Ninja
+cmake --build build
+ctest --test-dir build --output-on-failure
+```
+
 ## Build
 Preprocessor flags:
 ```

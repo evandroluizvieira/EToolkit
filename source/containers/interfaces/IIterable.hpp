@@ -30,11 +30,6 @@ namespace EToolkit{
     class IIterable{
         public:
             /**
-             * @brief Virtual destructor for proper inheritance
-             */
-            virtual ~IIterable() = default;
-
-            /**
              * @brief Default constructor
              */
             IIterable() = default;
@@ -45,17 +40,26 @@ namespace EToolkit{
             IIterable(const IIterable& other) = default;
 
             /**
-             * @brief Copy assignment operator
-             */
-            IIterable& operator=(const IIterable& other) = default;
-
-            /**
              * @brief Move constructor
              */
             IIterable(IIterable&& other) = default;
 
             /**
+             * @brief Virtual destructor for proper inheritance
+             */
+            virtual ~IIterable() = default;
+
+            /**
+             * @brief Copy assignment operator
+             * @param other Iterable interface to copy
+             * @return Reference to this interface
+             */
+            IIterable& operator=(const IIterable& other) = default;
+
+            /**
              * @brief Move assignment operator
+             * @param other Iterable interface to move
+             * @return Reference to this interface
              */
             IIterable& operator=(IIterable&& other) = default;
 

@@ -1,2 +1,6 @@
+#include "../source/containers/interfaces/IContainer.hpp"
+#include "../source/containers/interfaces/IDynamicContainer.hpp"
+#include "../source/containers/interfaces/IIterable.hpp"
+#include "../source/containers/interfaces/IStaticContainer.hpp"
 #include "../source/containers/EStaticArray.hpp"
 #include "../source/containers/EDynamicArray.hpp"

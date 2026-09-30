@@ -21,11 +21,6 @@ namespace EToolkit{
     class IContainer{
         public:
             /**
-             * @brief Virtual destructor for proper inheritance and resource cleanup
-             */
-            virtual ~IContainer() = default;
-
-            /**
              * @brief Default constructor
              */
             IContainer() = default;
@@ -36,14 +31,19 @@ namespace EToolkit{
             IContainer(const IContainer& other) = default;
 
             /**
-             * @brief Copy assignment operator
-             */
-            IContainer& operator=(const IContainer& other) = default;
-
-            /**
              * @brief Move constructor
              */
             IContainer(IContainer&& other) = default;
+
+            /**
+             * @brief Virtual destructor for proper inheritance and resource cleanup
+             */
+            virtual ~IContainer() = default;
+
+            /**
+             * @brief Copy assignment operator
+             */
+            IContainer& operator=(const IContainer& other) = default;
 
             /**
              * @brief Move assignment operator
@@ -51,26 +51,32 @@ namespace EToolkit{
             IContainer& operator=(IContainer&& other) = default;
 
             /**
+             * @brief Equality comparison operator
+             */
+            bool operator==(const IContainer& other) const;
+
+            /**
+             * @brief Inequality comparison operator
+             */
+            bool operator!=(const IContainer& other) const;
+
+            /**
              * @brief Gets the number of elements in the container
-             * @return Number of elements in the container
              */
             virtual SizeType getSize() const = 0;
 
             /**
              * @brief Checks if the container is empty
-             * @return True if container has no elements, false otherwise
              */
             bool isEmpty() const;
 
             /**
-             * @brief Gets pointer to the underlying data array
-             * @return Const pointer to the data array
+             * @brief Gets a const pointer to the underlying data
              */
             virtual const DataType* getData() const = 0;
 
             /**
-             * @brief Gets pointer to the underlying data array
-             * @return Pointer to the data array
+             * @brief Gets a pointer to the underlying data
              */
             virtual DataType* getData() = 0;
 
@@ -85,24 +91,10 @@ namespace EToolkit{
              */
             virtual void swap(IContainer& other) = 0;
 
-            /**
-             * @brief Equality comparison operator
-             * @param other Another container to compare with
-             * @return True if containers have same size and elements, false otherwise
-             */
-            bool operator==(const IContainer& other) const;
-
-            /**
-             * @brief Inequality comparison operator
-             * @param other Another container to compare with
-             * @return True if containers are different, false otherwise
-             */
-            bool operator!=(const IContainer& other) const;
-
         protected:
             /**
-             * @brief Helper method for equality comparison
-             * @description Compares sizes and element-by-element contents
+             * @brief Compares sizes and element-by-element contents
+             * @param other Another container to compare with
              */
             bool isEqual(const IContainer& other) const;
     };
