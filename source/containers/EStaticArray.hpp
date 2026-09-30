@@ -4,18 +4,27 @@
 #include <EException>
 
 #include <initializer_list>
-#include <new>
 
-/*
- * @description: Evandro's Toolkit.
+#include "interfaces/IIterable.hpp"
+#include "interfaces/IStaticContainer.hpp"
+
+/**
+ * @brief Evandro's Toolkit.
  */
 namespace EToolkit{
 
-	/*
-	 * @description: Class that represent a 1 dimensional static size array.
+	/**
+	 * @brief One-dimensional compile-time-sized array.
+	 * @tparam DataType Type of the elements stored in the array.
+	 * @tparam SizeType Type used for indices and the size value.
+	 * @tparam SizeValue Number of elements in the array.
+	 * @note SizeValue must be greater than zero. A zero-sized StaticArray
+	 *       is rejected at compile time.
+	 * @implements IStaticContainer<DataType, SizeType, SizeValue>
+	 * @implements IIterable<DataType>
 	 */
-	template<class DataType>
-	class StaticArray{
+	template<class DataType, class SizeType = unsigned int, SizeType SizeValue = 1>
+	class StaticArray : public IStaticContainer<DataType, SizeType, SizeValue>, public IIterable<DataType>{
 		template<class VectorType, unsigned int VectorLength>
 		friend class Vector;
 		template<class Vector2DType, unsigned int Vector2DLength>
@@ -28,270 +37,390 @@ namespace EToolkit{
 		friend class Matrix;
 
 		public:
-			/*
-			 * @description: Default constructor that initialize object with the given array 'size'.
-			 * @return: None.
-			 * @note: 'size' must be greater than zero.
+			/**
+			 * @brief Constructs an empty static array.
 			 */
-			StaticArray(unsigned int size);
+			StaticArray() = default;
 
-			/*
-			 * @description: Default constructor that initialize object with the given 'other' array and fill with it's values.
-			 * @return: None.
-			 * @note: The values are copied before or until the sizes match.
-			 */
-			StaticArray(const StaticArray<DataType>& other);
-
-			/*
-			 * @description: Default constructor that initialize object with the 'list'.
-			 * @return: None.
-			 * @note: 'list' size must be greater than zero.
+			/**
+			 * @brief Constructs an array from an initializer list.
+			 * @param list Values copied into the array until it is full.
 			 */
 			StaticArray(const std::initializer_list<DataType>& list);
 
-			/*
-			 * @description: Default inheritable destructor that clear the object.
-			 * @return: None.
+			/**
+			 * @brief Constructs a copy of another static array.
+			 * @param other Array whose contents are copied.
+			 * @note Explicitly declared to preserve copy construction when move operations
+			 *       are also available.
 			 */
-			virtual ~StaticArray();
+			StaticArray(const StaticArray& other) = default;
 
-			/*
-			 * @description: Operator that set the content of the object with the given 'other' array.
-			 * @return: Reference to itself.
+			/**
+			 * @brief Constructs an array by moving another static array.
+			 * @param other Array whose elements are moved.
 			 */
-			StaticArray<DataType>& operator=(const StaticArray<DataType>& other);
+			StaticArray(StaticArray&& other) = default;
 
-			/*
-			 * @description: Operator to get the 'DataType' of the given 'index'.
-			 * @return: Reference of the data in the 'index' position if 'index' is valid.
+			/**
+			 * @brief Destroys the static array.
 			 */
-			DataType& operator[](unsigned int index);
+			virtual ~StaticArray() = default;
+
+			/**
+			 * @brief Assigns the contents of another static array.
+			 * @param other Array whose contents are copied.
+			 * @return Reference to this array.
+			 */
+			StaticArray& operator=(const StaticArray& other) = default;
+
+			/**
+			 * @brief Assigns the contents of another static array by move.
+			 * @param other Array whose contents are moved.
+			 * @return Reference to this array.
+			 */
+			StaticArray& operator=(StaticArray&& other) = default;
+
+			/**
+			 * @brief Accesses an element at the specified index.
+			 * @param index Position in the array.
+			 * @return Reference to the element at the specified position.
+			 * @throws OutOfBoundsException If index is outside the array.
+			 */
+			DataType& operator[](SizeType index) override;
 
 			/**
 			 * @brief Access element at given index (read-only for const objects).
 			 * @param index Position in the array.
 			 * @return Const reference to the data at the index.
 			 */
-			const DataType& operator[](unsigned int index) const;
+			const DataType& operator[](SizeType index) const override;
 
-			/*
-			 * @description: Operator that check if the 'size' and all elements values are equals to elements of the given 'other' vector.
-			 * @return: True if yes or false otherwise.
-			 * @note: Same as 'isEqual(other)'.
+			/**
+			 * @brief Gets the compile-time number of elements.
+			 * @return Number of elements in the array.
 			 */
-			bool operator==(const StaticArray<DataType>& other);
+			SizeType getSize() const override;
 
-			/*
-			 * @description: Operator that check if the 'size' and any of the elements values are not equals to elements of the given 'other' vector in the same position.
-			 * @return: True if yes or false otherwise.
-			 * @note: Same as '!isEqual(other)'.
+			/**
+			 * @brief Accesses an element with bounds checking.
+			 * @param index Position in the array.
+			 * @return Reference to the element at the specified position.
+			 * @throws OutOfBoundsException If index is outside the array.
 			 */
-			bool operator!=(const StaticArray<DataType>& other);
+			DataType& at(SizeType index) override;
 
-			/*
-			 * @description: Operator that clear all data.
-			 * @return: None.
-			 * @note: Same as 'clear()'.
+			/**
+			 * @brief Accesses an element with bounds checking on a const array.
+			 * @param index Position in the array.
+			 * @return Const reference to the element at the specified position.
+			 * @throws OutOfBoundsException If index is outside the array.
+			 */
+			const DataType& at(SizeType index) const override;
+
+			/**
+			 * @brief Gets the first element.
+			 * @return Reference to the first element.
+			 */
+			DataType& getFront() override;
+
+			/**
+			 * @brief Gets the first element from a const array.
+			 * @return Const reference to the first element.
+			 */
+			const DataType& getFront() const override;
+
+			/**
+			 * @brief Gets the last element.
+			 * @return Reference to the last element.
+			 */
+			DataType& getBack() override;
+
+			/**
+			 * @brief Gets the last element from a const array.
+			 * @return Const reference to the last element.
+			 */
+			const DataType& getBack() const override;
+
+			/**
+			 * @brief Fills every element with a value.
+			 * @param data Value assigned to every element.
+			 */
+			void fill(const DataType& data) override;
+
+			/**
+			 * @brief Gets a pointer to the underlying storage.
+			 * @return Pointer to the first element.
+			 */
+			DataType* getData() override;
+
+			/**
+			 * @brief Gets a const pointer to the underlying storage.
+			 * @return Const pointer to the first element.
+			 */
+			const DataType* getData() const override;
+
+			/**
+			 * @brief Clears all elements using value initialization.
+			 */
+			void clear() override;
+
+			/**
+			 * @brief Swaps contents with another container of the same static type.
+			 * @param other Container whose contents are exchanged with this array.
+			 */
+			void swap(IContainer<DataType, SizeType>& other) override;
+
+			/**
+			 * @brief Gets an iterator to the first element.
+			 * @return Pointer to the first element.
+			 */
+			DataType* begin() override;
+
+			/**
+			 * @brief Gets a const iterator to the first element.
+			 * @return Const pointer to the first element.
+			 */
+			const DataType* begin() const override;
+
+			/**
+			 * @brief Gets an iterator past the last element.
+			 * @return Pointer past the last element.
+			 */
+			DataType* end() override;
+
+			/**
+			 * @brief Gets a const iterator past the last element.
+			 * @return Const pointer past the last element.
+			 */
+			const DataType* end() const override;
+
+			/**
+			 * @brief Gets a const iterator to the first element.
+			 * @return Const pointer to the first element.
+			 */
+			const DataType* cbegin() const override;
+
+			/**
+			 * @brief Gets a const iterator past the last element.
+			 * @return Const pointer past the last element.
+			 */
+			const DataType* cend() const override;
+
+			/**
+			 * @brief Compares this array with another static array.
+			 * @param other Array to compare with.
+			 * @return `true` when both arrays contain equal values.
+			 */
+			bool operator==(const StaticArray& other) const;
+
+			/**
+			 * @brief Compares this array with another static array for inequality.
+			 * @param other Array to compare with.
+			 * @return `true` when at least one value differs.
+			 */
+			bool operator!=(const StaticArray& other) const;
+
+			/**
+			 * @brief Clears all elements in the array.
 			 */
 			void operator!();
 
-			/*
-			 * @description: Function that fill object with zero value in each position of the array.
-			 * @return: None.
-			 * @note: Same as 'fill(0)'.
-			 */
-			void clear();
-
-			/*
-			 * @description: Function that fill object with the given 'data' value in each position of the array.
-			 * @return: None.
-			 */
-			void fill(const DataType& data);
-
-			/*
-			 * @description: Function that change with each other the object data in 'index1' and 'index2' position of the array.
-			 * @return: None.
+			/**
+			 * @brief Swaps two elements by index.
+			 * @param index1 Index of the first element.
+			 * @param index2 Index of the second element.
+			 * @throws OutOfBoundsException If either index is outside the array.
 			 */
 			void swap(unsigned int index1, unsigned int index2);
 
-			/*
-			 * @description: Function that check if the 'size' and all elements values are equals to elements of the given 'other' vector.
-			 * @return: True if yes or false otherwise.
+			/**
+			 * @brief Checks whether two static arrays contain equal values.
+			 * @param other Array to compare with.
+			 * @return `true` when all corresponding values are equal.
 			 */
-			bool isEqual(const StaticArray<DataType>& other);
+			bool isEqual(const StaticArray& other) const;
 
-			/*
-			 * @description: Function that checks if any of the data are equal to the given 'data'.
-			 * @return: True if yes or false otherwise.
+			/**
+			 * @brief Checks whether the array contains a value.
+			 * @param data Value to find.
+			 * @return `true` when the value is present.
 			 */
 			bool contains(const DataType& data) const;
 
-			/*
-			 * @description: Function to get the size of the data array.
-			 * @return: Copy of the size.
-			 */
-			unsigned int getSize() const;
-
 		private:
-			DataType* data;
-			unsigned int size;
+			DataType data[SizeValue];
 	};
 }
 
-template<class DataType>
-EToolkit::StaticArray<DataType>::StaticArray(unsigned int size) :
-	data(0), size(size){
-	if(size == 0){
-		throw MemoryAllocationException();
-	}else{
-		data = new (std::nothrow) DataType[size];
-		if(data == 0){
-			this->size = 0;
-			throw MemoryAllocationException();
+template<class DataType, class SizeType, SizeType SizeValue>
+EToolkit::StaticArray<DataType, SizeType, SizeValue>::StaticArray(const std::initializer_list<DataType>& list) :
+	IStaticContainer<DataType, SizeType, SizeValue>(), IIterable<DataType>(){
+	SizeType index = 0;
+	for(const DataType& value : list){
+		if(index == SizeValue){
+			break;
 		}
+		data[index++] = value;
 	}
 }
 
-template<class DataType>
-EToolkit::StaticArray<DataType>::StaticArray(const StaticArray<DataType>& other) :
-	data(0), size(other.size){
-	if(size == 0){
-		throw MemoryAllocationException();
-	}else{
-		data = new (std::nothrow) DataType[size];
-		if(data == 0){
-			this->size = 0;
-			throw MemoryAllocationException();
-		}else{
-			for(unsigned int i = 0; i < size; i++){
-				data[i] = other.data[i];
-			}
-		}
-	}
+template<class DataType, class SizeType, SizeType SizeValue>
+DataType& EToolkit::StaticArray<DataType, SizeType, SizeValue>::operator[](SizeType index){
+	return at(index);
 }
 
-template<class DataType>
-EToolkit::StaticArray<DataType>::StaticArray(const std::initializer_list<DataType>& list) :
-	data(0), size(list.size()){
-	if(size == 0){
-		throw MemoryAllocationException();
-	}else{
-		data = new (std::nothrow) DataType[size];
-		if(data == 0){
-			this->size = 0;
-			throw MemoryAllocationException();
-		}else{
-			size_t it = 0;
-			for(const DataType& value : list){
-				data[it++] = value;
-			}
-		}
-	}
+template<class DataType, class SizeType, SizeType SizeValue>
+const DataType& EToolkit::StaticArray<DataType, SizeType, SizeValue>::operator[](SizeType index) const{
+	return at(index);
 }
 
-template<class DataType>
-EToolkit::StaticArray<DataType>::~StaticArray(){
-	if(data != 0){
-		delete[] data;
-		data = 0;
-	}
-	size = 0;
+template<class DataType, class SizeType, SizeType SizeValue>
+SizeType EToolkit::StaticArray<DataType, SizeType, SizeValue>::getSize() const{
+	return SizeValue;
 }
 
-template<class DataType>
-EToolkit::StaticArray<DataType>& EToolkit::StaticArray<DataType>::operator=(const StaticArray<DataType>& other){
-	if(this != &other){
-		for(unsigned int i = 0; i < size; i++){
-			if(i < other.size){
-				data[i] = other.data[i];
-			}
-		}
-	}
-	return *this;
-}
-
-template<class DataType>
-DataType& EToolkit::StaticArray<DataType>::operator[](unsigned int index){
-	if(index >= size){
+template<class DataType, class SizeType, SizeType SizeValue>
+DataType& EToolkit::StaticArray<DataType, SizeType, SizeValue>::at(SizeType index){
+	if(index >= SizeValue){
 		throw OutOfBoundsException();
-	}else{
-		return data[index];
 	}
+	return data[index];
 }
 
-template<class DataType>
-const DataType& EToolkit::StaticArray<DataType>::operator[](unsigned int index) const {
-	if(index >= size){
+template<class DataType, class SizeType, SizeType SizeValue>
+const DataType& EToolkit::StaticArray<DataType, SizeType, SizeValue>::at(SizeType index) const{
+	if(index >= SizeValue){
 		throw OutOfBoundsException();
-	}else{
-		return data[index];
+	}
+	return data[index];
+}
+
+template<class DataType, class SizeType, SizeType SizeValue>
+DataType& EToolkit::StaticArray<DataType, SizeType, SizeValue>::getFront(){
+	return data[0];
+}
+
+template<class DataType, class SizeType, SizeType SizeValue>
+const DataType& EToolkit::StaticArray<DataType, SizeType, SizeValue>::getFront() const{
+	return data[0];
+}
+
+template<class DataType, class SizeType, SizeType SizeValue>
+DataType& EToolkit::StaticArray<DataType, SizeType, SizeValue>::getBack(){
+	return data[SizeValue - 1];
+}
+
+template<class DataType, class SizeType, SizeType SizeValue>
+const DataType& EToolkit::StaticArray<DataType, SizeType, SizeValue>::getBack() const{
+	return data[SizeValue - 1];
+}
+
+template<class DataType, class SizeType, SizeType SizeValue>
+void EToolkit::StaticArray<DataType, SizeType, SizeValue>::fill(const DataType& value){
+	for(SizeType index = 0; index < SizeValue; ++index){
+		data[index] = value;
 	}
 }
 
-template<class DataType>
-bool EToolkit::StaticArray<DataType>::operator==(const StaticArray<DataType>& other){
+template<class DataType, class SizeType, SizeType SizeValue>
+DataType* EToolkit::StaticArray<DataType, SizeType, SizeValue>::getData(){
+	return data;
+}
+
+template<class DataType, class SizeType, SizeType SizeValue>
+const DataType* EToolkit::StaticArray<DataType, SizeType, SizeValue>::getData() const{
+	return data;
+}
+
+template<class DataType, class SizeType, SizeType SizeValue>
+void EToolkit::StaticArray<DataType, SizeType, SizeValue>::clear(){
+	fill(DataType());
+}
+
+template<class DataType, class SizeType, SizeType SizeValue>
+void EToolkit::StaticArray<DataType, SizeType, SizeValue>::swap(IContainer<DataType, SizeType>& other){
+	StaticArray& staticOther = dynamic_cast<StaticArray&>(other);
+	for(SizeType index = 0; index < SizeValue; ++index){
+		DataType temporary = data[index];
+		data[index] = staticOther.data[index];
+		staticOther.data[index] = temporary;
+	}
+}
+
+template<class DataType, class SizeType, SizeType SizeValue>
+DataType* EToolkit::StaticArray<DataType, SizeType, SizeValue>::begin(){
+	return data;
+}
+
+template<class DataType, class SizeType, SizeType SizeValue>
+const DataType* EToolkit::StaticArray<DataType, SizeType, SizeValue>::begin() const{
+	return data;
+}
+
+template<class DataType, class SizeType, SizeType SizeValue>
+DataType* EToolkit::StaticArray<DataType, SizeType, SizeValue>::end(){
+	return data + SizeValue;
+}
+
+template<class DataType, class SizeType, SizeType SizeValue>
+const DataType* EToolkit::StaticArray<DataType, SizeType, SizeValue>::end() const{
+	return data + SizeValue;
+}
+
+template<class DataType, class SizeType, SizeType SizeValue>
+const DataType* EToolkit::StaticArray<DataType, SizeType, SizeValue>::cbegin() const{
+	return data;
+}
+
+template<class DataType, class SizeType, SizeType SizeValue>
+const DataType* EToolkit::StaticArray<DataType, SizeType, SizeValue>::cend() const{
+	return data + SizeValue;
+}
+
+template<class DataType, class SizeType, SizeType SizeValue>
+bool EToolkit::StaticArray<DataType, SizeType, SizeValue>::operator==(const StaticArray& other) const{
 	return isEqual(other);
 }
 
-template<class DataType>
-bool EToolkit::StaticArray<DataType>::operator!=(const StaticArray<DataType>& other){
+template<class DataType, class SizeType, SizeType SizeValue>
+bool EToolkit::StaticArray<DataType, SizeType, SizeValue>::operator!=(const StaticArray& other) const{
 	return !isEqual(other);
 }
 
-template<class DataType>
-void EToolkit::StaticArray<DataType>::operator!(){
+template<class DataType, class SizeType, SizeType SizeValue>
+void EToolkit::StaticArray<DataType, SizeType, SizeValue>::operator!(){
 	clear();
 }
 
-template<class DataType>
-void EToolkit::StaticArray<DataType>::clear(){
-	fill(0);
-}
-
-template<class DataType>
-void EToolkit::StaticArray<DataType>::fill(const DataType& data){
-	for(unsigned int i = 0; i < size; i++){
-		this->data[i] = data;
-	}
-}
-
-template<class DataType>
-void EToolkit::StaticArray<DataType>::swap(unsigned int index1, unsigned int index2){
-	if(index1 >= size || index2 >= size){
+template<class DataType, class SizeType, SizeType SizeValue>
+void EToolkit::StaticArray<DataType, SizeType, SizeValue>::swap(unsigned int index1, unsigned int index2){
+	if(index1 >= SizeValue || index2 >= SizeValue){
 		throw OutOfBoundsException();
-	}else{
-		DataType temporaryData = data[index1];
-		data[index1] = data[index2];
-		data[index2] = temporaryData;
 	}
+	DataType temporary = data[index1];
+	data[index1] = data[index2];
+	data[index2] = temporary;
 }
 
-template<class DataType>
-bool EToolkit::StaticArray<DataType>::isEqual(const StaticArray<DataType>& other){
-	if(size == other.size){
-		for(unsigned int i = 0; i < size; i++){
-			if(data[i] != other.data[i]){
-				return false;
-			}
+template<class DataType, class SizeType, SizeType SizeValue>
+bool EToolkit::StaticArray<DataType, SizeType, SizeValue>::isEqual(const StaticArray& other) const{
+	for(SizeType index = 0; index < SizeValue; ++index){
+		if(data[index] != other.data[index]){
+			return false;
 		}
-		return true;
 	}
-	return false;
+	return true;
 }
 
-template<class DataType>
-bool EToolkit::StaticArray<DataType>::contains(const DataType& data) const{
-	for(unsigned int i = 0; i < size; i++){
-		if(this->data[i] == data){
+template<class DataType, class SizeType, SizeType SizeValue>
+bool EToolkit::StaticArray<DataType, SizeType, SizeValue>::contains(const DataType& value) const{
+	for(SizeType index = 0; index < SizeValue; ++index){
+		if(data[index] == value){
 			return true;
 		}
 	}
 	return false;
-}
-
-template<class DataType>
-unsigned int EToolkit::StaticArray<DataType>::getSize() const{
-	return size;
 }
 
 #endif /* ESTATICARRAY_HPP */

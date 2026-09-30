@@ -3,212 +3,328 @@
 
 #include <EException>
 
+#include "interfaces/IDynamicContainer.hpp"
+#include "interfaces/IIterable.hpp"
+
 #include <new>
 
-/*
- * @description: Evandro's Toolkit.
+/**
+ * @brief Evandro's Toolkit.
  */
 namespace EToolkit{
 
-	/*
-	 * @description: Class that represent a 1 dimensional dynamic size array.
-	 * @note: This array holds a 'capacity' value that doubles when the 'size' reach the 'capacity' value.
+	/**
+	 * @brief One-dimensional dynamically sized array.
+	 * @tparam DataType Type of the elements stored in the array.
+	 * @implements IDynamicContainer<DataType, unsigned int>
+	 * @implements IIterable<DataType>
+	 * @note Capacity grows as elements are appended.
 	 */
 	template<class DataType>
-	class DynamicArray{
+	class DynamicArray : public IDynamicContainer<DataType, unsigned int>, public IIterable<DataType>{
 		public:
-			/*
-			 * @description: Default constructor.
-			 * @return: None.
+			/**
+			 * @brief Constructs an empty dynamic array.
 			 */
 			DynamicArray();
 
-			/*
-			 * @description: Constructor that initializes the object with a copy of the the given 'data'.
-			 * @return: None.
+			/**
+			 * @brief Constructs an array containing one value.
+			 * @param data Initial value.
 			 */
 			DynamicArray(const DataType& data);
 
-			/*
-			 * @description: Constructor that initializes the object with a copy of the the given 'other' array.
-			 * @return: None.
+			/**
+			 * @brief Constructs a copy of another dynamic array.
+			 * @param other Array to copy.
 			 */
 			DynamicArray(const DynamicArray<DataType>& other);
 
-			/*
-			 * @description: Default inheritable destructor that clear the object.
-			 * @return: None.
+			/**
+			 * @brief Constructs an array by taking ownership of another array's storage.
+			 * @param other Array whose storage is transferred.
+			 */
+			DynamicArray(DynamicArray<DataType>&& other);
+
+			/**
+			 * @brief Destroys the dynamic array.
 			 */
 			virtual ~DynamicArray();
 
-			/*
-			 * @description: Operator that set the content of the array with the given 'data'.
-			 * @return: Reference to itself.
+			/**
+			 * @brief Replaces the array contents with one value.
+			 * @param data Value assigned to the array.
+			 * @return Reference to this array.
 			 */
 			DynamicArray<DataType>& operator=(const DataType& data);
 
-			/*
-			 * @description: Operator that set the content of the array with the given 'other' array.
-			 * @return: Reference to itself.
+			/**
+			 * @brief Assigns the contents of another dynamic array.
+			 * @param other Array to copy.
+			 * @return Reference to this array.
 			 */
 			DynamicArray<DataType>& operator=(const DynamicArray<DataType>& other);
 
-			/*
-			 * @description: Operator that append this array and 'data' into a new array.
-			 * @return: Copy of appended array.
-			 * @note: Same as 'insertBack(other)'.
+			/**
+			 * @brief Assigns an array by taking ownership of another array's storage.
+			 * @param other Array whose storage is transferred.
+			 * @return Reference to this array.
+			 */
+			DynamicArray<DataType>& operator=(DynamicArray<DataType>&& other);
+
+			/**
+			 * @brief Returns a copy of this array with one value appended.
+			 * @param data Value to append.
+			 * @return Copy of the appended array.
 			 */
 			DynamicArray<DataType> operator+(const DataType& data) const;
 
-			/*
-			 * @description: Operator that append this array and 'other' array into a new array.
-			 * @return: Copy of appended array.
-			 * @note: Same as 'insertBack' for each element in 'other' array.
+			/**
+			 * @brief Returns a copy of this array with another array appended.
+			 * @param other Array to append.
+			 * @return Copy of the appended array.
 			 */
 			DynamicArray<DataType> operator+(const DynamicArray<DataType>& other) const;
 
-			/*
-			 * @description: Operator that append the 'data' into the current array.
-			 * @return: Reference to itself.
+			/**
+			 * @brief Appends one value to this array.
+			 * @param data Value to append.
+			 * @return Reference to this array.
 			 */
 			DynamicArray<DataType>& operator+=(DataType data);
 
-			/*
-			 * @description: Operator that append the 'other' array into the current array.
-			 * @return: Reference to itself.
+			/**
+			 * @brief Appends another array to this array.
+			 * @param other Array to append.
+			 * @return Reference to this array.
 			 */
 			DynamicArray<DataType>& operator+=(const DynamicArray<DataType>& other);
 
-			/*
-			 * @description: Operator that check if the 'size', 'capacity' and any of the elements values (in the same index) are equals to elements of the given 'other' array.
-			 * @return: True if yes or false otherwise.
-			 * @note: Same as 'isEqual(other)'.
+			/**
+			 * @brief Compares this array with another array.
+			 * @param other Array to compare with.
+			 * @return `true` when corresponding stored values are equal.
+			 * @note Can be called on const arrays.
 			 */
-			bool operator==(const DynamicArray<DataType>& other);
+			bool operator==(const DynamicArray<DataType>& other) const;
 
-			/*
-			 * @description: Operator that check if the 'size', 'capacity' and any of the elements values (in the same index) are not equals to elements of the given 'other' array.
-			 * @return: True if yes or false otherwise.
-			 * @note: Same as '!isEqual(other)'.
+			/**
+			 * @brief Compares this array with another array for inequality.
+			 * @param other Array to compare with.
+			 * @return `true` when at least one stored value differs.
+			 * @note Can be called on const arrays.
 			 */
-			bool operator!=(const DynamicArray<DataType>& other);
+			bool operator!=(const DynamicArray<DataType>& other) const;
 
-			/*
-			 * @description: Operator that reset the array with no data, with the initial 'size' and 'capacity'.
-			 * @return: None.
-			 * @note: Same as 'clear()'.
+			/**
+			 * @brief Clears the array and restores its initial capacity.
+			 * @throws MemoryAllocationException If replacement storage cannot be allocated.
+			 * @note Existing storage remains owned by the array until replacement storage
+			 *       has been allocated successfully.
 			 */
 			virtual void operator!();
 
-			/*
-			 * @description: Operator to get the 'DataType' of the given 'index'.
-			 * @return: Reference of the data in the 'index' position if 'index' is valid.
-			 * @note: Same as 'get(index)'.
+			/**
+			 * @brief Accesses an element at the specified index.
+			 * @param index Position in the array.
+			 * @return Reference to the element at the specified position.
+			 * @throws OutOfBoundsException If index is outside the array.
 			 */
 			DataType& operator[](unsigned int index);
 
-			/*
-			 * @description: Function that add 'data' at 'index' position in the array.
-			 * @return: None.
+			/**
+			 * @brief Accesses an element at the specified index on a const array.
+			 * @param index Position in the array.
+			 * @return Const reference to the element at the specified position.
+			 * @throws OutOfBoundsException If index is outside the array.
+			 */
+			const DataType& operator[](unsigned int index) const;
+
+			/**
+			 * @brief Gets the number of stored elements.
+			 * @return Number of elements currently stored.
+			 */
+			unsigned int getSize() const override;
+
+			/**
+			 * @brief Gets a const pointer to the underlying storage.
+			 * @return Const pointer to the first element.
+			 */
+			const DataType* getData() const override;
+
+			/**
+			 * @brief Gets a pointer to the underlying storage.
+			 * @return Pointer to the first element.
+			 */
+			DataType* getData() override;
+
+			/**
+			 * @brief Removes all elements and resets the array.
+			 * @throws MemoryAllocationException If replacement storage cannot be allocated.
+			 * @note Existing storage remains valid until replacement storage has been
+			 *       allocated successfully.
+			 */
+			void clear() override;
+
+			/**
+			 * @brief Exchanges contents with another container.
+			 * @param other Container whose contents are exchanged with this array.
+			 */
+			void swap(IContainer<DataType, unsigned int>& other) override;
+
+			/**
+			 * @brief Gets the allocated capacity.
+			 * @return Number of elements that can be stored without reallocating.
+			 */
+			unsigned int getCapacity() const override;
+
+			/**
+			 * @brief Changes the logical size of the array.
+			 * @param newSize Requested number of elements.
+			 */
+			void resize(unsigned int newSize) override;
+
+			/**
+			 * @brief Ensures that the array can hold the requested capacity.
+			 * @param newCapacity Requested capacity.
+			 */
+			void reserve(unsigned int newCapacity) override;
+
+			/**
+			 * @brief Gets an iterator to the first element.
+			 * @return Pointer to the first element.
+			 */
+			DataType* begin() override;
+
+			/**
+			 * @brief Gets a const iterator to the first element.
+			 * @return Const pointer to the first element.
+			 */
+			const DataType* begin() const override;
+
+			/**
+			 * @brief Gets an iterator past the last element.
+			 * @return Pointer past the last element.
+			 */
+			DataType* end() override;
+
+			/**
+			 * @brief Gets a const iterator past the last element.
+			 * @return Const pointer past the last element.
+			 */
+			const DataType* end() const override;
+
+			/**
+			 * @brief Gets a const iterator to the first element.
+			 * @return Const pointer to the first element.
+			 */
+			const DataType* cbegin() const override;
+
+			/**
+			 * @brief Gets a const iterator past the last element.
+			 * @return Const pointer past the last element.
+			 */
+			const DataType* cend() const override;
+
+			/**
+			 * @brief Inserts a value at the specified index.
+			 * @param data Value to insert.
+			 * @param index Destination index.
+			 * @throws OutOfBoundsException If index is greater than the size.
 			 */
 			void insert(const DataType& data, unsigned int index);
 
-			/*
-			 * @description: Function that add 'data' at the end of the array.
-			 * @return: None.
+			/**
+			 * @brief Inserts a value at the end of the array.
+			 * @param data Value to insert.
 			 */
 			void insertBack(const DataType& data);
 
-			/*
-			 * @description: Function that add 'data' at the end of the array.
-			 * @return: None.
+			/**
+			 * @brief Inserts a value at the beginning of the array.
+			 * @param data Value to insert.
 			 */
 			void insertFront(const DataType& data);
 
-			/*
-			 * @description: Function that remove 'data' from the 'index' position of the array.
-			 * @return: None.
+			/**
+			 * @brief Removes the value at the specified index.
+			 * @param index Index of the value to remove.
+			 * @throws OutOfBoundsException If index is outside the array.
 			 */
 			void remove(unsigned int index);
 
-			/*
-			 * @description: Function that remove the last data of the array.
-			 * @return: None.
+			/**
+			 * @brief Removes the last value when the array is not empty.
 			 */
 			void removeBack();
 
-			/*
-			 * @description: Function that remove the first data of the array.
-			 * @return: None.
+			/**
+			 * @brief Removes the first value when the array is not empty.
 			 */
 			void removeFront();
 
-			/*
-			 * @description: Function to get the 'DataType' of the given 'index'.
-			 * @return: Reference of the data in the 'index' position if 'index' is valid.
+			/**
+			 * @brief Accesses the value at the specified index.
+			 * @param index Position in the array.
+			 * @return Reference to the element at the specified position.
+			 * @throws OutOfBoundsException If index is outside the array.
 			 */
 			DataType& get(unsigned int index);
 
-			/*
-			 * @description: Operator to get the last 'DataType''.
-			 * @return: Reference of the last data, if there is.
+			/**
+			 * @brief Gets the last value.
+			 * @return Reference to the last value.
+			 * @throws OutOfBoundsException If the array is empty.
 			 */
 			DataType& getBack();
 
-			/*
-			 * @description: Operator to get the first 'DataType''.
-			 * @return: Reference of the first data, if there is.
+			/**
+			 * @brief Gets the first value.
+			 * @return Reference to the first value.
+			 * @throws OutOfBoundsException If the array is empty.
 			 */
 			DataType& getFront();
 
-			/*
-			 * @description: Function that reset the array and leave it with no data, with the initial 'size' and 'capacity'.
-			 * @return: None.
-			 */
-			void clear();
-
-			/*
-			 * @description: Function that change with each other the object data in 'index1' and 'index2' position of the array.
-			 * @return: None.
+			/**
+			 * @brief Exchanges two values by index.
+			 * @param index1 Index of the first value.
+			 * @param index2 Index of the second value.
+			 * @throws OutOfBoundsException If either index is outside the array.
 			 */
 			void swap(unsigned int index1, unsigned int index2);
 
-			/*
-			 * @description: Function that check if the 'size', 'capacity' and any of the elements values (in the same index) are equals to elements of the given 'other' array.
-			 * @return: True if yes or false otherwise.
+			/**
+			 * @brief Checks whether two dynamic arrays contain equal values.
+			 * @param other Array to compare with.
+			 * @return `true` when all corresponding stored values are equal.
+			 * @note Can be called on const arrays.
 			 */
-			bool isEqual(const DynamicArray<DataType>& other);
+			bool isEqual(const DynamicArray<DataType>& other) const;
 
-			/*
-			 * @description: Function to get the number of instances of 'DataType' in 'data'.
-			 * @return: Copy of the size.
+		protected:
+			/**
+			 * @brief Changes the allocated capacity.
+			 * @param newCapacity New capacity of the array.
 			 */
-			unsigned int getSize() const;
-
-			/*
-			 * @description: Function to get the maximum number of instances of 'DataType' that 'data' can have.
-			 * @return: Copy of the capacity.
-			 */
-			unsigned int getCapacity() const;
+			void resizeCapacity(unsigned int newCapacity);
 
 		private:
-			void resize(unsigned int newCapacity);
-
-		private:
-			DataType* data;
-			unsigned int size;
-			unsigned int capacity;
+			DataType*    data;     ///< Pointer to the allocated element storage
+			unsigned int size;     ///< Number of elements currently stored
+			unsigned int capacity; ///< Number of elements that can be stored
 	};
 }
 
 template<class DataType>
 EToolkit::DynamicArray<DataType>::DynamicArray() :
+	IDynamicContainer<DataType, unsigned int>(), IIterable<DataType>(),
 	data(0), size(0), capacity(0){
 	clear();
 }
 
 template<class DataType>
 EToolkit::DynamicArray<DataType>::DynamicArray(const DataType& value) :
+	IDynamicContainer<DataType, unsigned int>(), IIterable<DataType>(),
 	data(0), size(0), capacity(0){
 	clear();
 	data[0] = value;
@@ -217,6 +333,7 @@ EToolkit::DynamicArray<DataType>::DynamicArray(const DataType& value) :
 
 template<class DataType>
 EToolkit::DynamicArray<DataType>::DynamicArray(const DynamicArray<DataType>& other) :
+	IDynamicContainer<DataType, unsigned int>(other), IIterable<DataType>(other),
 	data(0), size(0), capacity(other.capacity){
 	if(capacity == 0){
 		throw MemoryAllocationException();
@@ -233,6 +350,15 @@ EToolkit::DynamicArray<DataType>::DynamicArray(const DynamicArray<DataType>& oth
 			}
 		}
 	}
+}
+
+template<class DataType>
+EToolkit::DynamicArray<DataType>::DynamicArray(DynamicArray<DataType>&& other) :
+	IDynamicContainer<DataType, unsigned int>(), IIterable<DataType>(),
+	data(other.data), size(other.size), capacity(other.capacity){
+	other.data = 0;
+	other.size = 0;
+	other.capacity = 0;
 }
 
 template<class DataType>
@@ -262,6 +388,20 @@ EToolkit::DynamicArray<DataType>& EToolkit::DynamicArray<DataType>::operator=(co
 		}
 	}
 
+	return *this;
+}
+
+template<class DataType>
+EToolkit::DynamicArray<DataType>& EToolkit::DynamicArray<DataType>::operator=(DynamicArray<DataType>&& other){
+	if(this != &other){
+		delete[] data;
+		data = other.data;
+		size = other.size;
+		capacity = other.capacity;
+		other.data = 0;
+		other.size = 0;
+		other.capacity = 0;
+	}
 	return *this;
 }
 
@@ -298,12 +438,12 @@ EToolkit::DynamicArray<DataType>& EToolkit::DynamicArray<DataType>::operator+=(c
 }
 
 template<class DataType>
-bool EToolkit::DynamicArray<DataType>::operator==(const DynamicArray<DataType>& other){
+bool EToolkit::DynamicArray<DataType>::operator==(const DynamicArray<DataType>& other) const{
 	return isEqual(other);
 }
 
 template<class DataType>
-bool EToolkit::DynamicArray<DataType>::operator!=(const DynamicArray<DataType>& other){
+bool EToolkit::DynamicArray<DataType>::operator!=(const DynamicArray<DataType>& other) const{
 	return !isEqual(other);
 }
 
@@ -317,26 +457,130 @@ DataType& EToolkit::DynamicArray<DataType>::operator[](unsigned int index){
 	return get(index);
 }
 
-
 template<class DataType>
-void EToolkit::DynamicArray<DataType>::insert(const DataType& value, unsigned int index){
+const DataType& EToolkit::DynamicArray<DataType>::operator[](unsigned int index) const{
 	if(index >= size){
 		throw OutOfBoundsException();
 	}
-    if(size >= capacity){
-        resize(capacity * 2);
-    }
-    for(unsigned int i = size; i > index; i--){
-        data[i] = data[i - 1];
-    }
-    data[index] = value;
-    size++;
+	return data[index];
+}
+
+
+template<class DataType>
+unsigned int EToolkit::DynamicArray<DataType>::getSize() const{
+	return size;
+}
+
+template<class DataType>
+const DataType* EToolkit::DynamicArray<DataType>::getData() const{
+	return data;
+}
+
+template<class DataType>
+DataType* EToolkit::DynamicArray<DataType>::getData(){
+	return data;
+}
+
+template<class DataType>
+void EToolkit::DynamicArray<DataType>::clear(){
+	DataType* newData = new (std::nothrow) DataType[2]();
+	if(newData == 0){
+		throw MemoryAllocationException();
+	}
+	delete[] data;
+	data = newData;
+	size = 0;
+	capacity = 2;
+}
+
+template<class DataType>
+void EToolkit::DynamicArray<DataType>::swap(IContainer<DataType, unsigned int>& other){
+	DynamicArray<DataType>& dynamicOther = dynamic_cast<DynamicArray<DataType>&>(other);
+	DataType* temporaryData = data;
+	data = dynamicOther.data;
+	dynamicOther.data = temporaryData;
+	unsigned int temporarySize = size;
+	size = dynamicOther.size;
+	dynamicOther.size = temporarySize;
+	unsigned int temporaryCapacity = capacity;
+	capacity = dynamicOther.capacity;
+	dynamicOther.capacity = temporaryCapacity;
+}
+
+template<class DataType>
+unsigned int EToolkit::DynamicArray<DataType>::getCapacity() const{
+	return capacity;
+}
+
+template<class DataType>
+void EToolkit::DynamicArray<DataType>::resize(unsigned int newSize){
+	if(newSize > capacity){
+		resizeCapacity(newSize);
+	}
+	if(newSize > size){
+		for(unsigned int i = size; i < newSize; ++i){
+			data[i] = DataType();
+		}
+	}
+	size = newSize;
+}
+
+template<class DataType>
+void EToolkit::DynamicArray<DataType>::reserve(unsigned int newCapacity){
+	if(newCapacity > capacity){
+		resizeCapacity(newCapacity);
+	}
+}
+
+template<class DataType>
+DataType* EToolkit::DynamicArray<DataType>::begin(){
+	return data;
+}
+
+template<class DataType>
+const DataType* EToolkit::DynamicArray<DataType>::begin() const{
+	return data;
+}
+
+template<class DataType>
+DataType* EToolkit::DynamicArray<DataType>::end(){
+	return data + size;
+}
+
+template<class DataType>
+const DataType* EToolkit::DynamicArray<DataType>::end() const{
+	return data + size;
+}
+
+template<class DataType>
+const DataType* EToolkit::DynamicArray<DataType>::cbegin() const{
+	return data;
+}
+
+template<class DataType>
+const DataType* EToolkit::DynamicArray<DataType>::cend() const{
+	return data + size;
+}
+
+template<class DataType>
+void EToolkit::DynamicArray<DataType>::insert(const DataType& value, unsigned int index){
+	if(index > size){
+		throw OutOfBoundsException();
+	}
+	if(size >= capacity){
+		resizeCapacity(capacity * 2);
+	}
+	for(unsigned int i = size; i > index; i--){
+		data[i] = data[i - 1];
+	}
+	data[index] = value;
+	size++;
 }
 
 template<class DataType>
 void EToolkit::DynamicArray<DataType>::insertBack(const DataType& value){
 	if(size >= capacity){
-		resize(capacity * 2);
+		resizeCapacity(capacity * 2);
 	}
 	data[size] = value;
 	size++;
@@ -345,7 +589,7 @@ void EToolkit::DynamicArray<DataType>::insertBack(const DataType& value){
 template<class DataType>
 void EToolkit::DynamicArray<DataType>::insertFront(const DataType& value){
 	if(size >= capacity){
-		resize(capacity * 2);
+		resizeCapacity(capacity * 2);
 	}
 	for(unsigned int i = size; i > 0; i--){
 		data[i] = data[i - 1];
@@ -359,14 +603,13 @@ void EToolkit::DynamicArray<DataType>::remove(unsigned int index){
 	if(index >= size){
 		throw OutOfBoundsException();
 	}
-
 	for(unsigned int i = index; i < size - 1; i++){
 		data[i] = data[i + 1];
 	}
 	size--;
 	unsigned int newCapacity = capacity / 2;
 	if(size <= newCapacity){
-		resize(newCapacity);
+		resizeCapacity(newCapacity);
 	}
 }
 
@@ -376,7 +619,7 @@ void EToolkit::DynamicArray<DataType>::removeBack(){
 		size--;
 		unsigned int newCapacity = capacity / 2;
 		if(size <= newCapacity){
-			resize(newCapacity);
+			resizeCapacity(newCapacity);
 		}
 	}
 }
@@ -390,7 +633,7 @@ void EToolkit::DynamicArray<DataType>::removeFront(){
 		size--;
 		unsigned int newCapacity = capacity / 2;
 		if(size <= newCapacity){
-			resize(newCapacity);
+			resizeCapacity(newCapacity);
 		}
 	}
 }
@@ -399,82 +642,54 @@ template<class DataType>
 DataType& EToolkit::DynamicArray<DataType>::get(unsigned int index){
 	if(index >= size){
 		throw OutOfBoundsException();
-	}else{
-		return data[index];
 	}
+	return data[index];
 }
 
 template<class DataType>
 DataType& EToolkit::DynamicArray<DataType>::getBack(){
 	if(size == 0){
 		throw OutOfBoundsException();
-	}else{
-		return data[size - 1];
 	}
+	return data[size - 1];
 }
 
 template<class DataType>
 DataType& EToolkit::DynamicArray<DataType>::getFront(){
 	if(size == 0){
 		throw OutOfBoundsException();
-	}else{
-		return data[0];
 	}
-}
-
-template<class DataType>
-void EToolkit::DynamicArray<DataType>::clear(){
-	if(data != 0){
-		delete[] data;
-	}
-
-	data = new (std::nothrow) DataType[2];
-	if(data == 0){
-		throw MemoryAllocationException();
-	}else{
-		data[0] = 0;
-		data[1] = 0;
-		size = 0;
-		capacity = 2;
-	}
+	return data[0];
 }
 
 template<class DataType>
 void EToolkit::DynamicArray<DataType>::swap(unsigned int index1, unsigned int index2){
 	if(index1 >= size || index2 >= size){
 		throw OutOfBoundsException();
-	}else{
-		DataType temporaryData = data[index1];
-		data[index1] = data[index2];
-		data[index2] = temporaryData;
 	}
+	DataType temporaryData = data[index1];
+	data[index1] = data[index2];
+	data[index2] = temporaryData;
 }
 
 template<class DataType>
-bool EToolkit::DynamicArray<DataType>::isEqual(const DynamicArray<DataType>& other){
-	if(size == other.size){
-		for(unsigned int i = 0; i < size; i++){
-			if(data[i] != other.data[i]){
-				return false;
-			}
+bool EToolkit::DynamicArray<DataType>::isEqual(const DynamicArray<DataType>& other) const{
+	if(size != other.size){
+		return false;
+	}
+	for(unsigned int i = 0; i < size; i++){
+		if(data[i] != other.data[i]){
+			return false;
 		}
-		return true;
 	}
-	return false;
+	return true;
 }
 
 template<class DataType>
-unsigned int EToolkit::DynamicArray<DataType>::getSize() const{
-	return size;
-}
-
-template<class DataType>
-unsigned int EToolkit::DynamicArray<DataType>::getCapacity() const{
-	return capacity;
-}
-
-template<class DataType>
-void EToolkit::DynamicArray<DataType>::resize(unsigned int newCapacity){
+void EToolkit::DynamicArray<DataType>::resizeCapacity(unsigned int newCapacity){
+	if(newCapacity < 2){
+		newCapacity = 2;
+	}
 	DataType* newData = new DataType[newCapacity];
 	//fill newData[i] = 0? when 'i' is between size and newCapacity?
 	for(unsigned int i = 0; i < size; i++){
