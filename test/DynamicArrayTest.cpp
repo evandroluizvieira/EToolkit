@@ -69,6 +69,11 @@ void DynamicArrayTest::testCopyComparisonAndIteration(){
     EToolkit::DynamicArray<int> copy(values);
     ETOOLKIT_TEST_ASSERT(copy == values);
 
+    const EToolkit::DynamicArray<int>& constCopy = copy;
+    const EToolkit::DynamicArray<int>& constValuesForComparison = values;
+    ETOOLKIT_TEST_ASSERT(constCopy == constValuesForComparison);
+    ETOOLKIT_TEST_ASSERT(!(constCopy != constValuesForComparison));
+
     copy += 9;
     ETOOLKIT_TEST_ASSERT(copy != values);
     copy = values;

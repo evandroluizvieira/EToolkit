@@ -49,6 +49,14 @@ namespace EToolkit{
 			StaticArray(const std::initializer_list<DataType>& list);
 
 			/**
+			 * @brief Constructs a copy of another static array.
+			 * @param other Array whose contents are copied.
+			 * @note Explicitly declared to preserve copy construction when move operations
+			 *       are also available.
+			 */
+			StaticArray(const StaticArray& other) = default;
+
+			/**
 			 * @brief Constructs an array by moving another static array.
 			 * @param other Array whose elements are moved.
 			 */

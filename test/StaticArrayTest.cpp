@@ -31,6 +31,9 @@ void StaticArrayTest::testConstructionAndAccess(){
 
 void StaticArrayTest::testMutationAndClear(){
     EToolkit::StaticArray<int, unsigned int, 3> values{1, 2, 3};
+    EToolkit::StaticArray<int, unsigned int, 3> copy(values);
+    ETOOLKIT_TEST_ASSERT(copy == values);
+
     EToolkit::StaticArray<int, unsigned int, 3> moved(std::move(values));
     EToolkit::StaticArray<int, unsigned int, 3> assigned;
     assigned = std::move(moved);

@@ -104,18 +104,23 @@ namespace EToolkit{
 			 * @brief Compares this array with another array.
 			 * @param other Array to compare with.
 			 * @return `true` when corresponding stored values are equal.
+			 * @note Can be called on const arrays.
 			 */
-			bool operator==(const DynamicArray<DataType>& other);
+			bool operator==(const DynamicArray<DataType>& other) const;
 
 			/**
 			 * @brief Compares this array with another array for inequality.
 			 * @param other Array to compare with.
 			 * @return `true` when at least one stored value differs.
+			 * @note Can be called on const arrays.
 			 */
-			bool operator!=(const DynamicArray<DataType>& other);
+			bool operator!=(const DynamicArray<DataType>& other) const;
 
 			/**
 			 * @brief Clears the array and restores its initial capacity.
+			 * @throws MemoryAllocationException If replacement storage cannot be allocated.
+			 * @note Existing storage remains owned by the array until replacement storage
+			 *       has been allocated successfully.
 			 */
 			virtual void operator!();
 
@@ -155,6 +160,9 @@ namespace EToolkit{
 
 			/**
 			 * @brief Removes all elements and resets the array.
+			 * @throws MemoryAllocationException If replacement storage cannot be allocated.
+			 * @note Existing storage remains valid until replacement storage has been
+			 *       allocated successfully.
 			 */
 			void clear() override;
 
@@ -289,8 +297,9 @@ namespace EToolkit{
 			 * @brief Checks whether two dynamic arrays contain equal values.
 			 * @param other Array to compare with.
 			 * @return `true` when all corresponding stored values are equal.
+			 * @note Can be called on const arrays.
 			 */
-			bool isEqual(const DynamicArray<DataType>& other);
+			bool isEqual(const DynamicArray<DataType>& other) const;
 
 		protected:
 			/**
@@ -429,12 +438,12 @@ EToolkit::DynamicArray<DataType>& EToolkit::DynamicArray<DataType>::operator+=(c
 }
 
 template<class DataType>
-bool EToolkit::DynamicArray<DataType>::operator==(const DynamicArray<DataType>& other){
+bool EToolkit::DynamicArray<DataType>::operator==(const DynamicArray<DataType>& other) const{
 	return isEqual(other);
 }
 
 template<class DataType>
-bool EToolkit::DynamicArray<DataType>::operator!=(const DynamicArray<DataType>& other){
+bool EToolkit::DynamicArray<DataType>::operator!=(const DynamicArray<DataType>& other) const{
 	return !isEqual(other);
 }
 
@@ -474,15 +483,12 @@ DataType* EToolkit::DynamicArray<DataType>::getData(){
 
 template<class DataType>
 void EToolkit::DynamicArray<DataType>::clear(){
-	if(data != 0){
-		delete[] data;
-	}
-	data = new (std::nothrow) DataType[2];
-	if(data == 0){
+	DataType* newData = new (std::nothrow) DataType[2]();
+	if(newData == 0){
 		throw MemoryAllocationException();
 	}
-	data[0] = 0;
-	data[1] = 0;
+	delete[] data;
+	data = newData;
 	size = 0;
 	capacity = 2;
 }
@@ -667,7 +673,7 @@ void EToolkit::DynamicArray<DataType>::swap(unsigned int index1, unsigned int in
 }
 
 template<class DataType>
-bool EToolkit::DynamicArray<DataType>::isEqual(const DynamicArray<DataType>& other){
+bool EToolkit::DynamicArray<DataType>::isEqual(const DynamicArray<DataType>& other) const{
 	if(size != other.size){
 		return false;
 	}

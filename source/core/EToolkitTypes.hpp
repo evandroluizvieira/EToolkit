@@ -9,7 +9,7 @@
  * The types follow a consistent naming convention:
  * - intX:  X-bit signed integers (two's complement, explicitly signed)
  * - uintX: X-bit unsigned integers
- * - float32, float64, float128: Floating-point types
+ * - float32, float64: Floating-point types
  *
  * @note: These types are designed to be used throughout EToolkit for memory-safe and
  *        platform-independent numeric operations. All integer types have guaranteed
@@ -19,33 +19,20 @@
 #ifndef ETOOLKITTYPES_HPP
 #define ETOOLKITTYPES_HPP
 
-#include "EMacrosArchitecture.hpp"
+#include <stdint.h>
 
-#if EBITARCHITECTURE == 64
-    typedef signed char        int8;      ///<  8-bit signed integer (-128 to 127)
-    typedef signed short       int16;     ///< 16-bit signed integer (-32,768 to 32,767)
-    typedef signed int         int32;     ///< 32-bit signed integer (-2,147,483,648 to 2,147,483,647)
-    typedef signed long long   int64;     ///< 64-bit signed integer (-9,223,372,036,854,775,808 to 9,223,372,036,854,775,807)
+typedef int8_t   int8;   ///<  8-bit signed integer (-128 to 127)
+typedef int16_t  int16;  ///< 16-bit signed integer (-32,768 to 32,767)
+typedef int32_t  int32;  ///< 32-bit signed integer (-2,147,483,648 to 2,147,483,647)
+typedef int64_t  int64;  ///< 64-bit signed integer (-9,223,372,036,854,775,808 to 9,223,372,036,854,775,807)
 
-    typedef unsigned char      uint8;     ///<  8-bit unsigned integer (0 to 255)
-    typedef unsigned short     uint16;    ///< 16-bit unsigned integer (0 to 65,535)
-    typedef unsigned int       uint32;    ///< 32-bit unsigned integer (0 to 4,294,967,295)
-    typedef unsigned long long uint64;    ///< 64-bit unsigned integer (0 to 18,446,744,073,709,551,615)
-#else
-    typedef signed char        int8;      ///<  8-bit signed integer (-128 to 127)
-    typedef signed short       int16;     ///< 16-bit signed integer (-32,768 to 32,767)
-    typedef signed long        int32;     ///< 32-bit signed integer (-2,147,483,648 to 2,147,483,647)
-    typedef signed long long   int64;     ///< 64-bit signed integer (-9,223,372,036,854,775,808 to 9,223,372,036,854,775,807)
+typedef uint8_t  uint8;  ///<  8-bit unsigned integer (0 to 255)
+typedef uint16_t uint16; ///< 16-bit unsigned integer (0 to 65,535)
+typedef uint32_t uint32; ///< 32-bit unsigned integer (0 to 4,294,967,295)
+typedef uint64_t uint64; ///< 64-bit unsigned integer (0 to 18,446,744,073,709,551,615)
 
-    typedef unsigned char      uint8;     ///<  8-bit unsigned integer (0 to 255)
-    typedef unsigned short     uint16;    ///< 16-bit unsigned integer (0 to 65,535)
-    typedef unsigned long      uint32;    ///< 32-bit unsigned integer (0 to 4,294,967,295)
-    typedef unsigned long long uint64;    ///< 64-bit unsigned integer (0 to 18,446,744,073,709,551,615)
-#endif
-
-typedef float       float32;    ///< 32-bit single-precision floating-point (IEEE-754)
-typedef double      float64;    ///< 64-bit double-precision floating-point (IEEE-754)
-typedef long double float128;   ///< Extended precision floating-point (size implementation-defined)
+typedef float  float32;  ///< 32-bit single-precision floating-point (IEEE-754)
+typedef double float64;  ///< 64-bit double-precision floating-point (IEEE-754)
 
 /**
  * @brief Integer size validation
@@ -60,5 +47,8 @@ static_assert(sizeof(uint8)  == 1, "uint8 must be exactly 1 byte (8 bits)");
 static_assert(sizeof(uint16) == 2, "uint16 must be exactly 2 bytes (16 bits)");
 static_assert(sizeof(uint32) == 4, "uint32 must be exactly 4 bytes (32 bits)");
 static_assert(sizeof(uint64) == 8, "uint64 must be exactly 8 bytes (64 bits)");
+
+static_assert(sizeof(float32) == 4, "float32 must be exactly 4 bytes");
+static_assert(sizeof(float64) == 8, "float64 must be exactly 8 bytes");
 
 #endif /* ETOOLKITTYPES_HPP */
