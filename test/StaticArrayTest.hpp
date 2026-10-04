@@ -14,28 +14,28 @@ class StaticArrayTest{
         /**
          * @brief Executes all static array tests.
          */
-        static void run();
+        static bool run();
 
     private:
         /**
          * @brief Tests construction, element access, size, and containment.
          */
-        static void testConstructionAndAccess();
+        static bool testConstructionAndAccess();
 
         /**
          * @brief Tests mutation, filling, clearing, and indexed swapping.
          */
-        static void testMutationAndClear();
+        static bool testMutationAndClear();
 
         /**
          * @brief Tests iteration and access through a constant reference.
          */
-        static void testIterationAndConstCorrectness();
+        static bool testIterationAndConstCorrectness();
 
         /**
          * @brief Tests exception reporting for an invalid index.
          */
-        static void testBoundsChecking();
+        static bool testBoundsChecking();
 };
 
 #endif /* ETOOLKIT_STATIC_ARRAY_TEST_HPP */

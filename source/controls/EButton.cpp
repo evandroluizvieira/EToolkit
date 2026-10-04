@@ -28,7 +28,7 @@ EToolkit::Button::Button(Window& parent) :
 		throw(WindowsAPIException("cannot get module handle"));
 	}
 
-	data->hwnd = ::CreateWindowEx(0, WC_BUTTON, "Button",  WS_CHILD | BS_PUSHBUTTON | BS_NOTIFY | BS_TEXT | BS_CENTER | BS_VCENTER, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, parent.data->hwnd, (HMENU)data->id, instance, 0);
+	data->hwnd = ::CreateWindowEx(0, WC_BUTTON, "Button",  WS_CHILD | BS_PUSHBUTTON | BS_NOTIFY | BS_TEXT | BS_CENTER | BS_VCENTER, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, parent.data->hwnd, reinterpret_cast<HMENU>(static_cast<INT_PTR>(data->id)), instance, 0);
 	if(data->hwnd == NULL){
 		delete data;
 		data = nullptr;

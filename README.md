@@ -11,6 +11,11 @@ EToolkit is a C++ library that serves as a WinAPI (old Win32) wrapper.
 
 It provides convenient abstractions for Windows-specific operations, making it easier to develop Windows applications in C++.
 
+The repository is centered on the `EToolkit` library. On Windows, the default build generates both
+a DLL with its import library and a static library. The `applications/` directory contains small
+executables that consume the public API and serve as manual integration checks. They complement,
+but do not replace, the automated tests in `test/`.
+
 The library is open source and licensed under the BSL 1.0 license.
 
 The code is organized into several key segments (folders), each serving a specific purpose:
@@ -26,6 +31,28 @@ The code is organized into several key segments (folders), each serving a specif
 - **string:** Manages string-related classes, including C-style and C++ style strings.
 - **synchronization:** Focuses on thread synchronization and management, featuring mutual exclusion mechanisms.
 - **windows:** Contains classes and headers for window creation and management, for graphical user interface (GUI) applications.
+
+## Geometry
+
+The geometry API provides `Position1/2/3`, `Size1/2/3`, and `Bounds1/2/3` templates. Each template
+uses a value type, an explicit index/length type, and a `Length` non-type parameter:
+
+```cpp
+template<class ValueType, class SizeType, SizeType Length>
+```
+
+Multidimensional positions and sizes use virtual inheritance so bounds preserve one shared
+`StaticArray` subobject. Bounds expose inherited position and size accessors with `using`
+declarations and use these contiguous mappings:
+
+| Type | Mapping |
+|---|---|
+| `Bounds1` | `[0]` x, `[1]` width |
+| `Bounds2` | `[0]` x, `[1]` y, `[2]` width, `[3]` height |
+| `Bounds3` | `[0]` x, `[1]` y, `[2]` z, `[3]` width, `[4]` height, `[5]` depth |
+
+The most-derived bounds constructor initializes the shared storage. The geometry tests verify the
+field mappings and that access through the inherited views addresses the same array elements.
 
 ## Installation
 To get started, clone the repository:
@@ -48,8 +75,11 @@ The public forwarding header is `include/EContainer`.
 
 ## Tests and build
 
-The project uses one out-of-source CMake build directory at the repository root. Test source files
-remain under `test/`, while generated binaries and CTest metadata are written below `build/test/`.
+The project uses one out-of-source CMake build directory at the repository root. The library,
+application binaries, test binaries, and CTest metadata are generated below `build/`; no root-level
+`Debug/` or `Release/` directories are required. With a multi-configuration generator, such as
+Visual Studio, configuration-specific outputs are generated below `build/Debug/` and
+`build/Release/`.
 The tests are organized by production class and use a local assertion runner implemented in
 `test/TestAssertions.hpp`. The test code does not use GoogleTest, GoogleMock, FetchContent, or
 another external test framework. CTest is only the test execution and reporting tool provided by
@@ -60,6 +90,12 @@ cmake -S . -B build -G Ninja
 cmake --build build
 ctest --test-dir build --output-on-failure
 ```
+
+The default configuration builds both library variants, the `etoolkit_containers_test` executable,
+and `EToolkitSimpleWindow` from `applications/simple_window/`. The library itself has no executable
+because it does not define `main()`. The test executable is generated because CTest and the F5 test
+configuration execute that binary. Configure with `-DETOOLKIT_BUILD_APPLICATIONS=OFF` to omit the
+examples.
 
 ## Build
 Preprocessor flags:
@@ -79,20 +115,22 @@ Libraries linker:
 ```
 
 ## Usage
+
+The following is the minimal application example used by
+`applications/simple_window/main.cpp`:
+
 ```c++
 #include <EApplication>
 #include <EWindow>
 
-using EToolkit::Application;
-using EToolkit::Window;
+int main(){
+	EToolkit::Application application;
+	EToolkit::Window window;
 
-int main(int argc, char** argv){
-	Application application;
-
-	Window window;
-	window.setVisility(true);
+	window.setText("EToolkit basic application");
+	window.setBounds(100, 100, 800, 600);
 	window.setEnability(true);
-	window.setBounds(200, 200, 800, 600);
+	window.setVisibility(true);
 
 	return application.execute();
 }

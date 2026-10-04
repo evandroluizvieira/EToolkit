@@ -17,15 +17,30 @@ namespace EToolkit{
 	/**
 	 * @class Position2
 	 * @brief Represents a 2-dimensional position.
-	 * @tparam Position2Type Numeric type used for the coordinates.
+	 * @tparam Position2Type Numeric type used to store the x and y coordinates.
+	 * @tparam PositionSizeType Type used to index the StaticArray and represent its length.
+	 * @tparam Length Number of elements in the shared StaticArray storage. The default value 2 is
+	 *       the standalone storage size for x and y. A larger value can be used when Position2 is a
+	 *       virtual base of Position3.
 	 *
-	 * Inherits from Position1 (x coordinate) and extends it with 'y'.
+	 * Inherits from Position1 with size 1 and extends it with the y coordinate.
+	 * Virtually inherits from Position1 and preserves one StaticArray in the multidimensional
+	 * Position hierarchy.
+	 *
+	 * @note The shared contiguous array maps [0] to x and [1] to y.
+	 *
+	 * Position2 repeats the type and Length parameters so its Position1 base is instantiated with
+	 * exactly the same array type. This preserves one virtual StaticArray in the Position hierarchy
+	 * instead of creating incompatible or duplicated storage.
 	 */
-	template<class Position2Type>
-	class Position2 : virtual public Position1<Position2Type>{
+	template<class Position2Type, class PositionSizeType, PositionSizeType Length = 2>
+	class Position2 : virtual public Position1<Position2Type, PositionSizeType, Length>{
 		public:
+			using Position1<Position2Type, PositionSizeType, Length>::getX; ///< Exposes the inherited x-coordinate accessor from Position1.
+			using Position1<Position2Type, PositionSizeType, Length>::setX; ///< Exposes the inherited x-coordinate mutator from Position1.
+
 			/**
-			 * @brief Constructor that initializes the object with the given `x` and `y` values.
+			 * @brief Constructs a position with the given x and y values.
 			 * @param x The initial value for the x coordinate (default = 0).
 			 * @param y The initial value for the y coordinate (default = 0).
 			 */
@@ -55,28 +70,28 @@ namespace EToolkit{
 			inline void setY(const Position2Type& y);
 	};
 
-	typedef Position2<int> Position2i; ///< Typedef for integer 2D positions.
+	typedef Position2<int, unsigned int> Position2i; ///< Typedef for integer 2D positions.
 }
 
-template<class Position2Type>
-EToolkit::Position2<Position2Type>::Position2(Position2Type x, Position2Type y) :
-	StaticArray<Position2Type>(2), Position1<Position2Type>(x){
+template<class Position2Type, class PositionSizeType, PositionSizeType Length>
+EToolkit::Position2<Position2Type, PositionSizeType, Length>::Position2(Position2Type x, Position2Type y) :
+	StaticArray<Position2Type, PositionSizeType, Length>({x, y}), Position1<Position2Type, PositionSizeType, Length>(x){
 	(*this)[0] = x;
 	(*this)[1] = y;
 }
 
-template<class Position2Type>
-inline Position2Type& EToolkit::Position2<Position2Type>::getY(){
+template<class Position2Type, class PositionSizeType, PositionSizeType Length>
+inline Position2Type& EToolkit::Position2<Position2Type, PositionSizeType, Length>::getY(){
 	return (*this)[1];
 }
 
-template<class Position2Type>
-inline const Position2Type& EToolkit::Position2<Position2Type>::getY() const{
-    return (*this)[1];
+template<class Position2Type, class PositionSizeType, PositionSizeType Length>
+inline const Position2Type& EToolkit::Position2<Position2Type, PositionSizeType, Length>::getY() const{
+	return (*this)[1];
 }
 
-template<class Position2Type>
-inline void EToolkit::Position2<Position2Type>::setY(const Position2Type& y){
+template<class Position2Type, class PositionSizeType, PositionSizeType Length>
+inline void EToolkit::Position2<Position2Type, PositionSizeType, Length>::setY(const Position2Type& y){
 	(*this)[1] = y;
 }
 

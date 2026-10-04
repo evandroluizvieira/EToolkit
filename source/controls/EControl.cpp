@@ -5,6 +5,8 @@
 
 #include <windows.h>
 
+#include <vector>
+
 EToolkit::Control::Control() :
 	data(nullptr){
 
@@ -88,9 +90,9 @@ EToolkit::String EToolkit::Control::getText() const{
 		int textLength = ::GetWindowTextLength(data->hwnd);
 		if(textLength > 0){
 			textLength++;
-			char buffer[textLength];
-			if(::GetWindowText(data->hwnd, buffer, textLength) > 0){
-				text = buffer;
+			std::vector<char> buffer(static_cast<std::size_t>(textLength));
+			if(::GetWindowText(data->hwnd, buffer.data(), textLength) > 0){
+				text = buffer.data();
 			}
 		}
 	}

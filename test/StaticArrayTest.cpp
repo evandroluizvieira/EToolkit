@@ -11,28 +11,32 @@
 
 #include <utility>
 
-void StaticArrayTest::run(){
-    testConstructionAndAccess();
-    testMutationAndClear();
-    testIterationAndConstCorrectness();
-    testBoundsChecking();
+bool StaticArrayTest::run(){
+    const EToolkitTest::TestCase tests[] = {
+        {"StaticArray construction and access", testConstructionAndAccess},
+        {"StaticArray mutation and clear", testMutationAndClear},
+        {"StaticArray iteration and const correctness", testIterationAndConstCorrectness},
+        {"StaticArray bounds checking", testBoundsChecking}
+    };
+    return EToolkitTest::runSuite("StaticArrayTest", tests);
 }
 
-void StaticArrayTest::testConstructionAndAccess(){
+bool StaticArrayTest::testConstructionAndAccess(){
     EToolkit::StaticArray<int, unsigned int, 3> values{1, 2, 3};
 
-    ETOOLKIT_TEST_ASSERT(values.getSize() == 3);
-    ETOOLKIT_TEST_ASSERT(values.getFront() == 1);
-    ETOOLKIT_TEST_ASSERT(values.getBack() == 3);
-    ETOOLKIT_TEST_ASSERT(values.at(1) == 2);
-    ETOOLKIT_TEST_ASSERT(values.contains(2));
-    ETOOLKIT_TEST_ASSERT(!values.contains(4));
+    ETOOLKIT_TEST_ASSERT("static array size", values.getSize() == 3);
+    ETOOLKIT_TEST_ASSERT("static array front", values.getFront() == 1);
+    ETOOLKIT_TEST_ASSERT("static array back", values.getBack() == 3);
+    ETOOLKIT_TEST_ASSERT("static array at", values.at(1) == 2);
+    ETOOLKIT_TEST_ASSERT("static array contains existing value", values.contains(2));
+    ETOOLKIT_TEST_ASSERT("static array rejects missing value", !values.contains(4));
+    return true;
 }
 
-void StaticArrayTest::testMutationAndClear(){
+bool StaticArrayTest::testMutationAndClear(){
     EToolkit::StaticArray<int, unsigned int, 3> values{1, 2, 3};
     EToolkit::StaticArray<int, unsigned int, 3> copy(values);
-    ETOOLKIT_TEST_ASSERT(copy == values);
+    ETOOLKIT_TEST_ASSERT("static array copy", copy == values);
 
     EToolkit::StaticArray<int, unsigned int, 3> moved(std::move(values));
     EToolkit::StaticArray<int, unsigned int, 3> assigned;
@@ -40,31 +44,33 @@ void StaticArrayTest::testMutationAndClear(){
     EToolkit::StaticArray<int, unsigned int, 3>& valuesReference = assigned;
 
     valuesReference.swap(0, 2);
-    ETOOLKIT_TEST_ASSERT(valuesReference[0] == 3);
-    ETOOLKIT_TEST_ASSERT(valuesReference[2] == 1);
+    ETOOLKIT_TEST_ASSERT("static array swap first", valuesReference[0] == 3);
+    ETOOLKIT_TEST_ASSERT("static array swap last", valuesReference[2] == 1);
 
     valuesReference.fill(7);
-    ETOOLKIT_TEST_ASSERT(valuesReference.isEqual(EToolkit::StaticArray<int, unsigned int, 3>{7, 7, 7}));
+    ETOOLKIT_TEST_ASSERT("static array fill", valuesReference.isEqual(EToolkit::StaticArray<int, unsigned int, 3>{7, 7, 7}));
 
     valuesReference.clear();
-    ETOOLKIT_TEST_ASSERT(valuesReference.getSize() == 3);
-    ETOOLKIT_TEST_ASSERT(valuesReference[0] == 0);
-    ETOOLKIT_TEST_ASSERT(valuesReference[1] == 0);
-    ETOOLKIT_TEST_ASSERT(valuesReference[2] == 0);
+    ETOOLKIT_TEST_ASSERT("static array clear size", valuesReference.getSize() == 3);
+    ETOOLKIT_TEST_ASSERT("static array clear first", valuesReference[0] == 0);
+    ETOOLKIT_TEST_ASSERT("static array clear middle", valuesReference[1] == 0);
+    ETOOLKIT_TEST_ASSERT("static array clear last", valuesReference[2] == 0);
+    return true;
 }
 
-void StaticArrayTest::testIterationAndConstCorrectness(){
+bool StaticArrayTest::testIterationAndConstCorrectness(){
     EToolkit::StaticArray<int, unsigned int, 3> values{1, 2, 3};
     const EToolkit::StaticArray<int, unsigned int, 3>& constValues = values;
 
-    ETOOLKIT_TEST_ASSERT(values.begin() == values.getData());
-    ETOOLKIT_TEST_ASSERT(values.end() == values.getData() + values.getSize());
-    ETOOLKIT_TEST_ASSERT(constValues.getData()[0] == 1);
-    ETOOLKIT_TEST_ASSERT(constValues.cbegin() == constValues.getData());
-    ETOOLKIT_TEST_ASSERT(constValues.cend() == constValues.getData() + constValues.getSize());
+    ETOOLKIT_TEST_ASSERT("static array begin", values.begin() == values.getData());
+    ETOOLKIT_TEST_ASSERT("static array end", values.end() == values.getData() + values.getSize());
+    ETOOLKIT_TEST_ASSERT("static array const data", constValues.getData()[0] == 1);
+    ETOOLKIT_TEST_ASSERT("static array const begin", constValues.cbegin() == constValues.getData());
+    ETOOLKIT_TEST_ASSERT("static array const end", constValues.cend() == constValues.getData() + constValues.getSize());
+    return true;
 }
 
-void StaticArrayTest::testBoundsChecking(){
+bool StaticArrayTest::testBoundsChecking(){
     EToolkit::StaticArray<int, unsigned int, 3> values;
     bool threw = false;
 
@@ -74,5 +80,6 @@ void StaticArrayTest::testBoundsChecking(){
         threw = true;
     }
 
-    ETOOLKIT_TEST_ASSERT(threw);
+    ETOOLKIT_TEST_ASSERT("static array throws on invalid index", threw);
+    return true;
 }
