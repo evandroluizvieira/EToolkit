@@ -1,5 +1,5 @@
 blank_issues_enabled: false
 contact_links:
   - name: Security vulnerability
-    url: https://example.com/<security-reporting-url>
-    about: Report security issues privately using the project's security channel.
+    url: https://github.com/evandroluizvieira/EToolkit/security/advisories/new
+    about: Report security issues privately through GitHub Security Advisories.

@@ -8,7 +8,9 @@
 
 ## Reporting a vulnerability
 
-Do not publish vulnerabilities in public Issues. Send a private report to `<security channel or email>` containing:
+Do not publish vulnerabilities in public Issues. Submit a private report through
+[GitHub Security Advisories](https://github.com/evandroluizvieira/EToolkit/security/advisories/new)
+containing:
 
 - description and impact;
 - reproduction steps;
@@ -16,7 +18,8 @@ Do not publish vulnerabilities in public Issues. Send a private report to `<secu
 - evidence without sensitive data;
 - suggested fix, if available.
 
-Receipt will be acknowledged within `<timeframe>`. Fixes, disclosure, and credit will be coordinated with the reporter.
+Receipt will be acknowledged through the advisory. Fixes, disclosure, and credit will be coordinated
+with the reporter.
 
 ## Secrets
 

@@ -57,13 +57,13 @@ namespace EToolkit{
          * @brief Constructs a Bounds1 object from a Position1 object and width value equals to 0.
          * @param position Position1 object to copy x coordinate from.
          */
-        Bounds1(const Position1<Bounds1Type, BoundsSizeType, Length>& position);
+        Bounds1(const Position1<Bounds1Type, BoundsSizeType, 1>& position);
 
         /**
          * @brief Constructs a Bounds1 object from a Size1 object and x value equals to 0.
          * @param size Size1 object to copy width from.
          */
-        Bounds1(const Size1<Bounds1Type, BoundsSizeType, Length>& size);
+        Bounds1(const Size1<Bounds1Type, BoundsSizeType, 1>& size);
 
         /**
          * @brief Virtual destructor.
@@ -116,7 +116,7 @@ EToolkit::Bounds1<Bounds1Type, BoundsSizeType, Length>::Bounds1(Bounds1Type x, B
 }
 
 template<class Bounds1Type, class BoundsSizeType, BoundsSizeType Length>
-EToolkit::Bounds1<Bounds1Type, BoundsSizeType, Length>::Bounds1(const Position1<Bounds1Type, BoundsSizeType, Length>& position) :
+EToolkit::Bounds1<Bounds1Type, BoundsSizeType, Length>::Bounds1(const Position1<Bounds1Type, BoundsSizeType, 1>& position) :
     StaticArray<Bounds1Type, BoundsSizeType, Length>(),
     Position1<Bounds1Type, BoundsSizeType, Length>(),
     Size1<Bounds1Type, BoundsSizeType, Length>()
@@ -126,7 +126,7 @@ EToolkit::Bounds1<Bounds1Type, BoundsSizeType, Length>::Bounds1(const Position1<
 }
 
 template<class Bounds1Type, class BoundsSizeType, BoundsSizeType Length>
-EToolkit::Bounds1<Bounds1Type, BoundsSizeType, Length>::Bounds1(const Size1<Bounds1Type, BoundsSizeType, Length>& size) :
+EToolkit::Bounds1<Bounds1Type, BoundsSizeType, Length>::Bounds1(const Size1<Bounds1Type, BoundsSizeType, 1>& size) :
     StaticArray<Bounds1Type, BoundsSizeType, Length>(),
     Position1<Bounds1Type, BoundsSizeType, Length>(),
     Size1<Bounds1Type, BoundsSizeType, Length>()

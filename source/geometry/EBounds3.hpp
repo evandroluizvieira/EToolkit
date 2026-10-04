@@ -63,13 +63,13 @@ namespace EToolkit{
 		 * @brief Constructs a Bounds3 object from a Position3 object and width, height and depth values equal to 0.
 		 * @param position Position3 object to copy x, y, z coordinates from.
 		 */
-		Bounds3(const Position3<Bounds3Type, BoundsSizeType, Length>& position);
+		Bounds3(const Position3<Bounds3Type, BoundsSizeType, 3>& position);
 
 		/**
 		 * @brief Constructs a Bounds3 object from a Size3 object and x, y and z values equal to 0.
 		 * @param size Size3 object to copy width, height and depth from.
 		 */
-		Bounds3(const Size3<Bounds3Type, BoundsSizeType, Length>& size);
+		Bounds3(const Size3<Bounds3Type, BoundsSizeType, 3>& size);
 
 		/**
 		 * @brief Virtual destructor.
@@ -178,7 +178,7 @@ EToolkit::Bounds3<Bounds3Type, BoundsSizeType, Length>::Bounds3(Bounds3Type x, B
 }
 
 template<class Bounds3Type, class BoundsSizeType, BoundsSizeType Length>
-EToolkit::Bounds3<Bounds3Type, BoundsSizeType, Length>::Bounds3(const Position3<Bounds3Type, BoundsSizeType, Length>& position) :
+EToolkit::Bounds3<Bounds3Type, BoundsSizeType, Length>::Bounds3(const Position3<Bounds3Type, BoundsSizeType, 3>& position) :
 	Bounds2<Bounds3Type, BoundsSizeType, Length>()
 {
 	(*this)[0] = position.getX();
@@ -190,7 +190,7 @@ EToolkit::Bounds3<Bounds3Type, BoundsSizeType, Length>::Bounds3(const Position3<
 }
 
 template<class Bounds3Type, class BoundsSizeType, BoundsSizeType Length>
-EToolkit::Bounds3<Bounds3Type, BoundsSizeType, Length>::Bounds3(const Size3<Bounds3Type, BoundsSizeType, Length>& size) :
+EToolkit::Bounds3<Bounds3Type, BoundsSizeType, Length>::Bounds3(const Size3<Bounds3Type, BoundsSizeType, 3>& size) :
 	Bounds2<Bounds3Type, BoundsSizeType, Length>()
 {
 	(*this)[0] = 0;

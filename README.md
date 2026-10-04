@@ -129,6 +129,7 @@ int main(){
 
 	window.setText("EToolkit basic application");
 	window.setBounds(100, 100, 800, 600);
+	window.setEnability(true);
 	window.setVisibility(true);
 
 	return application.execute();
