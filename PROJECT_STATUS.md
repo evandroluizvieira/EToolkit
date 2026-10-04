@@ -1,24 +1,19 @@
 # EToolkit Project Status
 
-**Assessment date:** 2026-09-30  
-**Current phase:** Feature implementation / API expansion  
+**Assessment date:** 2026-10-01  
+**Current phase:** Project standards adoption  
 **Assessment scope:** Repository structure, documentation, build configuration, tests, automation, and Git branches.
 
 ## Executive summary
 
-EToolkit has a substantial C++/WinAPI codebase and is actively evolving its container interfaces. It is not yet ready for a formal release or for the complete project-standard migration. The immediate priority is to finish and validate `feature/add-container-interfaces` before introducing broad process and repository changes.
+EToolkit has completed the container interface feature, which was merged into `master` through Pull Request #7. The current task is to adopt the reusable `ProjectStandards` documentation and collaboration conventions without modifying the completed container branch.
 
 ## Git status at assessment time
 
-- Current branch: `feature/add-container-interfaces`.
-- `master` and the current feature branch share the same base commit.
-- The feature branch contains two commits not integrated into `master`:
-  - `7389bb4` — add `IContainer`.
-  - `3d22234` — add `IIterable`.
-- Local uncommitted changes are present in the container interfaces, container headers,
-  public `include/EContainer` umbrella header, `source/core/EToolkitTypes.hpp`, and this
-  status document. `IDynamicContainer.hpp` and `IStaticContainer.hpp` are untracked.
-- Do not merge the branch until the local changes are intentionally committed, discarded, or moved to a separate branch.
+- Current branch: `chore/etoolkit-adopt-project-standards`.
+- Base branch: `master`, synchronized with `origin/master` after Pull Request #7.
+- Completed container branch: `feature/add-container-interfaces`; no further changes are planned there.
+- This standards-adoption branch contains local documentation, GitHub templates, and editor configuration changes.
 
 This section is a snapshot and must be updated if the repository changes.
 
@@ -27,16 +22,16 @@ This section is a snapshot and must be updated if the repository changes.
 | Area | Status | Notes |
 |---|---|---|
 | Source organization | Partial | Modules are separated under `source/` and public forwarding headers exist under `include/`. |
-| Feature implementation | In progress | Container interfaces are being introduced. |
+| Feature implementation | Complete | Container interfaces and array tests were merged into `master` through Pull Request #7. |
 | Requirements and scope | Missing | No formal requirements or acceptance criteria were found. |
 | Tests | In progress | Tests are separated into `StaticArrayTest` and `DynamicArrayTest` and use a local assertion runner without GoogleTest or another external test framework; CTest only executes and reports the binary. Broader public-interface coverage remains pending. Copy and move behavior are covered. |
-| Reproducible build | In progress | Root CMake delegates test configuration to `test/CMakeLists.txt`; the single repository-level `build/` tree builds the C++11 test target with CTest. |
-| CI | Missing | No repository CI workflow was found. |
+| Reproducible build | In progress | Root CMake builds shared and static `EToolkit` library variants, the C++11 test target, and API applications below one repository-level `build/` tree. Configuration succeeds; local compilation is currently blocked by Windows error 4551 when launching MinGW `c++.exe`. |
+| CI | Pending | A real project workflow will be added in a later stage of the standards-adoption task. |
 | API documentation | In progress | Doxygen now targets all container interfaces and implementations; generation still requires a local Doxygen executable. |
 | User documentation | Partial | README contains overview and basic build information, but not a complete development or installation guide. |
 | Versioning | Missing | No clear project version or release policy was found. |
 | License | Incomplete | README states BSL 1.0, but a versioned `LICENSE` file should be verified and added if absent. |
-| Contribution process | Missing | No contribution guide or issue/PR templates were found. |
+| Contribution process | In progress | ProjectStandards documentation and Issue/PR templates are being adopted; local VS Code F7/F5 workflows are configured but ignored by Git. |
 
 ## Recommended order of work
 
@@ -93,11 +88,11 @@ After the acceptance criteria pass:
 
 ### Phase 3 — Adopt the project standard
 
-After the feature has been integrated, copy and adapt the reusable files from `DevelopmentStandardTemplates` in a separate task or branch. Do not mix feature implementation with repository-process migration.
+After the feature was integrated, copy and adapt the reusable files from `ProjectStandards` in the dedicated branch `chore/etoolkit-adopt-project-standards`. Do not modify the completed container branch.
 
 Recommended migration order:
 
-1. `LICENSE` and version policy.
+1. ProjectStandards review and version policy.
 2. `DEVELOPMENT.md` and reproducible build instructions.
 3. `CONTRIBUTING.md`, issue templates, and Pull Request template.
 4. `.editorconfig`, `.clang-format`, and `.clang-tidy`.
@@ -120,13 +115,13 @@ Recommended migration order:
 
 ## Decision
 
-Finishing `feature/add-container-interfaces` first is the preferred sequence. It creates a stable technical checkpoint and prevents process migration files from obscuring unfinished API work. The standard templates should then be introduced in a dedicated branch, such as:
+Finishing `feature/add-container-interfaces` first created a stable technical checkpoint. The project standards are now being introduced in a dedicated branch:
 
 ```text
-chore/ETK-<id>-adopt-development-standard
+chore/etoolkit-adopt-project-standards
 ```
 
-The feature branch and the standards-migration branch should remain separate and independently reviewable.
+The completed feature branch and the standards-adoption branch remain separate and independently reviewable.
 
 ## Current decision
 
@@ -140,9 +135,8 @@ and iterable contracts. `StaticArray` uses compile-time parameters in the form
 `StaticArray<DataType, SizeType, SizeValue>`, while `DynamicArray` exposes runtime resize,
 reserve, data access, and iterator operations. Representative consumers compile successfully.
 
-The implementation and validation criteria for the feature are complete. The feature is ready for
-commit on `feature/add-container-interfaces`; push, Pull Request, and merge remain subject to
-approval. Permanent tests are now organized by
+The implementation and validation criteria for the container feature are complete and the feature
+was merged into `master` through Pull Request #7. Permanent tests are now organized by
 production class in `test/StaticArrayTest.cpp` and `test/DynamicArrayTest.cpp`, using a small
 local assertion runner without GoogleTest or other external test-framework dependencies. CTest is
 used only as the runner and reporting tool supplied by CMake. The test declarations,
@@ -160,12 +154,13 @@ spaces, and the check passes when `cr-at-eol` is enabled. `.gitattributes` now d
 source, build, Markdown, and CMake files to prevent future ambiguity. Doxygen generation is
 configured in `Doxyfile` and can be executed when the local Doxygen executable is available.
 
-## Final task comment
+## Standards adoption comment
 
-The container interface feature is finalized for commit. The implementation includes the
-`IContainer`, `IIterable`, `IStaticContainer`, and `IDynamicContainer` contracts, updated
-`StaticArray` and `DynamicArray` implementations, explicit copy and move behavior, complete
-container-focused tests without GoogleTest, a dependency-free local assertion runner, a
-reproducible CMake and CTest build, public API documentation, and the project-standard build and
-test guidance. The build and CTest validation passed successfully using the single repository
-`build/` directory. No push, Pull Request, or merge has been performed.
+The container interface feature is complete and merged. The standards-adoption branch now includes
+the reusable development, contribution, code-style, definition-of-done, test-plan, release,
+security, code-of-conduct, Pull Request, and Issue templates from `ProjectStandards`. The root CMake
+project now builds the library, tests, and API applications from one `build/` tree. The VS Code
+workflow uses `F7` for the complete build and `F5` only for the selected existing binary.
+Remaining adoption work includes real CI workflow creation, Doxygen automation, artifact policy,
+license verification, and final build/test validation after the local Windows compiler execution
+policy is resolved.

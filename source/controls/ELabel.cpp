@@ -40,7 +40,7 @@ EToolkit::Label::Label(Window& parent, const String& text, bool addSunkenBorder)
 		style |= SS_SUNKEN;
 	}
 
-	data->hwnd = ::CreateWindowEx(0, WC_STATIC, labelText, style, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, parent.data->hwnd, (HMENU)data->id, instance, 0);
+	data->hwnd = ::CreateWindowEx(0, WC_STATIC, labelText, style, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, parent.data->hwnd, reinterpret_cast<HMENU>(static_cast<INT_PTR>(data->id)), instance, 0);
 	if(data->hwnd == NULL){
 		delete data;
 		data = nullptr;

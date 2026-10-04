@@ -14,28 +14,28 @@ class DynamicArrayTest{
         /**
          * @brief Executes all dynamic array tests.
          */
-        static void run();
+        static bool run();
 
     private:
         /**
          * @brief Tests construction and insertion operations.
          */
-        static void testConstructionAndInsertion();
+        static bool testConstructionAndInsertion();
 
         /**
          * @brief Tests capacity management, resizing, removal, and clearing.
          */
-        static void testResizeAndRemoval();
+        static bool testResizeAndRemoval();
 
         /**
          * @brief Tests copying, comparison, iteration, and constant access.
          */
-        static void testCopyComparisonAndIteration();
+        static bool testCopyComparisonAndIteration();
 
         /**
          * @brief Tests exception reporting for an invalid index.
          */
-        static void testBoundsChecking();
+        static bool testBoundsChecking();
 };
 
 #endif /* ETOOLKIT_DYNAMIC_ARRAY_TEST_HPP */
