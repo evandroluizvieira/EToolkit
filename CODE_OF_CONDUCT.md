@@ -17,4 +17,7 @@ Harassment, discrimination, threats, exposure of personal data, personal attacks
 
 ## Enforcement
 
-Reports should be sent to `<contact channel>`. Maintainers may remove content or restrict participation when necessary.
+Reports should be directed to the project maintainers through the repository's
+[GitHub contact page](https://github.com/evandroluizvieira/EToolkit/issues). Do not include sensitive
+personal details in a public issue; maintainers will provide a private channel when necessary.
+Maintainers may remove content or restrict participation when necessary.

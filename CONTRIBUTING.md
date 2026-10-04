@@ -64,7 +64,7 @@ Follow [CODE_STYLE.md](CODE_STYLE.md) when adding or modifying classes and inter
 
 ## Merge criteria
 
-- CI verde;
+- CI checks pass;
 - required GitHub Actions checks are configured and successful;
 - appropriate tests added or updated;
 - documentation updated;
