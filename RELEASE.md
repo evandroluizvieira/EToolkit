@@ -21,6 +21,11 @@ The repository's single version source is [VERSION](VERSION). CMake reads it dir
 receives the same value through [Doxyfile.in](Doxyfile.in). Do not edit a version literal in a
 workflow, badge, build file, or documentation file.
 
+The version workflow uses the protected `RELEASE_TOKEN` secret rather than the default
+`GITHUB_TOKEN`, because GitHub does not trigger another workflow from events created by the default
+token. This allows a newly created SemVer tag to start the release workflow. The token must have
+only the minimum contents permission required to push the version commit and tag.
+
 ## Automation triggers
 
 Release generation must not run for every Pull Request or arbitrary branch push. Prefer a reviewed
