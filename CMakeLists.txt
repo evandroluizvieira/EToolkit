@@ -1,6 +1,18 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(EToolkit LANGUAGES CXX)
+file(READ "${CMAKE_CURRENT_SOURCE_DIR}/VERSION" ETOOLKIT_VERSION)
+string(STRIP "${ETOOLKIT_VERSION}" ETOOLKIT_VERSION)
+if(NOT ETOOLKIT_VERSION MATCHES "^[0-9]+\\.[0-9]+\\.[0-9]+$")
+    message(FATAL_ERROR "VERSION must contain MAJOR.MINOR.PATCH")
+endif()
+
+project(EToolkit VERSION ${ETOOLKIT_VERSION} LANGUAGES CXX)
+
+configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile"
+    @ONLY
+)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

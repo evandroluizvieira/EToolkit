@@ -19,8 +19,13 @@ Create each branch from the updated default branch:
 - `build/<project>-<id>-<description>`
 - `ci/<project>-<id>-<description>`
 - `hotfix/<project>-<id>-<description>`
+- `chore/<project>-<id>-<description>`
+- `release/<project>-<id>-<description>`
 
-Use lowercase letters and hyphens, without spaces or accents. Avoid working directly on `<main-or-master>`.
+Use the repository's community-aligned branch convention. GitHub does not define one official branch
+naming scheme; these type prefixes correspond to common Conventional Commit categories. Use lowercase
+ASCII letters and hyphens, without spaces, accents, underscores, or camelCase. Include the Issue
+identifier when one exists, avoid vague names, and do not work directly on `master`.
 
 Use the complete project name in branch names and internal identifiers; do not shorten it into an
 abbreviation or acronym. For example, use `etoolkit` rather than `etk`. Preserve an abbreviation
@@ -45,10 +50,14 @@ The PR should explain the problem, solution, validation steps, executed tests, A
 ### GitHub Actions and triggers
 
 Before opening a PR, identify which workflows must run for the change. The default CI workflow
-should normally validate Pull Requests and pushes to the default branch. Release or packaging
-workflows should be restricted to reviewed version tags or explicit `workflow_dispatch` runs.
-Review path filters whenever files are added or moved; a workflow must not silently skip changes
-that affect the build, tests, deployment, documentation generation, or workflow configuration.
+must validate Pull Requests from every approved branch type and pushes to `master`. Release or
+packaging workflows are restricted to reviewed SemVer tags or explicit approved `workflow_dispatch`
+runs. A `feature/` branch or `feat:` commit does not create a version before review and merge;
+version automation runs after a push to `master`, and release automation runs after a `vX.Y.Z` tag.
+Documentation Pull Requests produce review artifacts, while documentation publication is limited to
+`master` or an approved manual run. Review path filters whenever files are added or moved; a
+workflow must not silently skip changes that affect the build, tests, deployment, documentation
+generation, or workflow configuration.
 
 Do not commit generated build directories, test binaries, generated documentation, caches, or
 temporary outputs. If a generated result is needed as review evidence, upload it as a deliberate

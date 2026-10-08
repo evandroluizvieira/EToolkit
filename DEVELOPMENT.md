@@ -91,10 +91,56 @@ clang-tidy -p build <changed C++ files>
 
 ## Automation and generated output
 
-Document every workflow trigger in the project repository. At minimum, record whether validation
-runs on Pull Requests, pushes to the default branch, version tags, scheduled runs, and manual
-`workflow_dispatch` requests. Review `paths` and `paths-ignore` filters whenever build, test,
-documentation, deployment, or workflow files change.
+The CI workflow is defined in `.github/workflows/ci.yml` and validates the Windows-supported
+toolchain. It runs for Pull Requests from every approved branch type targeting `master`, pushes to
+`master`, and manual `workflow_dispatch` requests. Release, deployment, and documentation
+publishing workflows remain separate from this validation workflow.
+
+The CI job installs the MSYS2 MinGW-w64 toolchain, configures the project with CMake and Ninja,
+builds shared and static libraries, applications, and `etoolkit_tests`, and runs CTest with
+failure output enabled. The workflow grants only `contents: read`, uses concurrency cancellation
+for superseded runs, and does not upload build output by default.
+
+Release automation is defined in `.github/workflows/release.yml` and is intentionally separate from
+CI. It accepts only approved tags matching `v<MAJOR>.<MINOR>.<PATCH>` (with `v*.*.*` as the Actions
+glob filter), rebuilds and tests the tagged revision, verifies that `VERSION` matches the tag,
+packages the DLL, libraries, headers, tests, and applications, calculates SHA-256 checksums, and
+attaches the archive to a GitHub Release. It
+does not publish artifacts for ordinary commits or Pull Requests.
+
+Version automation is defined in `.github/workflows/auto-version.yml`. The current development
+version is `0.0.0`; it is a baseline, not a published release. On the first eligible push to
+`master` after this automation branch is merged, the workflow automatically creates the immutable
+`v0.0.0` baseline tag without running the release workflow. Only subsequent pushes to `master` are
+eligible for version calculation. The workflow then
+examines Conventional Commits since the last release tag. `feat:` suggests a minor increment,
+`fix:` suggests a patch increment, and `BREAKING CHANGE` or `!` suggests a major increment. The
+workflow updates the central `VERSION` file, commits the result, and creates the tag. CMake reads
+that file and configures Doxygen from `Doxyfile.in`; the README version badge reads published tags.
+A `feature/` branch, Pull Request, or individual `feat:` commit does not create a version before
+review and merge. If no SemVer baseline tag exists, the workflow creates `v0.0.0` once and does not
+publish a release.
+
+The repository must define a `RELEASE_TOKEN` secret with permission to push commits and tags. A
+dedicated token is required because GitHub does not start downstream workflows for events generated
+with the default `GITHUB_TOKEN`. The token must be protected and used only by the trusted default-
+branch version workflow.
+
+API documentation is validated by `.github/workflows/doxygen.yml` and published by
+`.github/workflows/pages.yml`. The `VERSION` file is the authoritative version source; CMake
+configures `Doxyfile.in` into `build/Doxyfile`, so Doxygen and the build use the same version. Pull
+Requests from all approved branch types generate one Doxygen site as a downloadable Actions
+artifact for review. Pushes to `master` and manual runs use the separate Pages workflow to publish
+the generated HTML through GitHub Pages. The generated `docs/` directory remains ignored and is
+never committed to the source repository.
+
+GitHub Releases are downloadable versioned assets; GitHub Packages are registry entries consumed
+through a package format such as NuGet or OCI. The project should automate Releases first and add
+GitHub Packages only after defining a supported format, package coordinates, retention, and
+installation instructions.
+
+Document every additional workflow trigger in the project repository. Review `paths` and
+`paths-ignore` filters whenever build, test, documentation, deployment, or workflow files change.
 
 Keep generated output out of source control. Build directories, test binaries, generated Doxygen
 files, coverage reports, caches, and temporary files belong in ignored paths or workflow artifacts.

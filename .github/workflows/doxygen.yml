@@ -1,0 +1,45 @@
+name: Validate Doxygen Documentation
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: doxygen-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Generate API documentation
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Doxygen and Graphviz
+        run: sudo apt-get update && sudo apt-get install -y doxygen graphviz
+
+      - name: Configure versioned Doxygen file
+        run: cmake -S . -B build -DETOOLKIT_BUILD_TESTS=OFF -DETOOLKIT_BUILD_APPLICATIONS=OFF
+
+      - name: Generate documentation
+        run: doxygen build/Doxyfile
+
+      - name: Upload documentation artifact
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: etoolkit-doxygen-${{ github.event.pull_request.number }}
+          path: docs/html
+          if-no-files-found: error
