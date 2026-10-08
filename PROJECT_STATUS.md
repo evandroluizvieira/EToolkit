@@ -1,7 +1,7 @@
 # EToolkit Project Status
 
 **Assessment date:** 2026-10-01  
-**Current phase:** Project standards adoption  
+**Current phase:** Continuous integration
 **Assessment scope:** Repository structure, documentation, build configuration, tests, automation, and Git branches.
 
 ## Executive summary
@@ -10,10 +10,10 @@ EToolkit has completed the container interface feature, which was merged into `m
 
 ## Git status at assessment time
 
-- Current branch: `chore/etoolkit-adopt-project-standards`.
+- Current branch: `ci/etoolkit-automation-standards`.
 - Base branch: `master`, synchronized with `origin/master` after Pull Request #7.
 - Completed container branch: `feature/add-container-interfaces`; no further changes are planned there.
-- This standards-adoption branch contains local documentation, GitHub templates, and editor configuration changes.
+- The CI branch adds the reusable Windows validation workflow and updates the project automation documentation.
 
 This section is a snapshot and must be updated if the repository changes.
 
@@ -26,10 +26,11 @@ This section is a snapshot and must be updated if the repository changes.
 | Requirements and scope | Missing | No formal requirements or acceptance criteria were found. |
 | Tests | In progress | Tests are separated into `StaticArrayTest` and `DynamicArrayTest` and use a local assertion runner without GoogleTest or another external test framework; CTest only executes and reports the binary. Broader public-interface coverage remains pending. Copy and move behavior are covered. |
 | Reproducible build | In progress | Root CMake builds shared and static `EToolkit` library variants, the C++11 test target, and API applications below one repository-level `build/` tree. Configuration succeeds; local compilation is currently blocked by Windows error 4551 when launching MinGW `c++.exe`. |
-| CI | Pending | A real project workflow will be added in a later stage of the standards-adoption task. |
-| API documentation | In progress | Doxygen now targets all container interfaces and implementations; generation still requires a local Doxygen executable. |
+| CI | Implemented | `.github/workflows/ci.yml` validates Pull Requests targeting `master`, pushes to `master`, and manual runs on Windows with MSYS2, CMake, Ninja, build, and CTest. |
+| API documentation | Implemented | Doxygen targets the public headers and source API; GitHub Actions publishes HTML to GitHub Pages and exposes PR builds as review artifacts. |
 | User documentation | Partial | README contains overview and basic build information, but not a complete development or installation guide. |
-| Versioning | Missing | No clear project version or release policy was found. |
+| Versioning | Implemented | Version source is currently `0.0.0`; the first eligible push to `master` automatically creates the non-release baseline tag `v0.0.0`, and subsequent reviewed Conventional Commits merged into `master` can create approved tags. |
+| Release packaging | Implemented | `release.yml` validates SemVer tags, rebuilds/tests the tagged revision, packages Windows artifacts, calculates SHA-256 checksums, and publishes a GitHub Release. |
 | License | Incomplete | README states BSL 1.0, but a versioned `LICENSE` file should be verified and added if absent. |
 | Contribution process | In progress | ProjectStandards documentation and Issue/PR templates are being adopted; local VS Code F7/F5 workflows are configured but ignored by Git. |
 
@@ -111,7 +112,7 @@ Recommended migration order:
 - Add installation and consumer-project validation.
 - Expand Doxygen to all public headers.
 - Add a real license file.
-- Define the first SemVer version and release criteria.
+- Verify the first automated SemVer baseline and release criteria after merging the automation branch.
 
 ## Decision
 
@@ -152,7 +153,8 @@ of the local standard-library include paths. The apparent `git diff --check` whi
 in the interface headers are caused by CRLF line endings; direct inspection found no trailing
 spaces, and the check passes when `cr-at-eol` is enabled. `.gitattributes` now declares LF for
 source, build, Markdown, and CMake files to prevent future ambiguity. Doxygen generation is
-configured in `Doxyfile` and can be executed when the local Doxygen executable is available.
+configured through `Doxyfile.in` and can be executed after CMake generates `build/Doxyfile` when the
+local Doxygen executable is available.
 
 ## Standards adoption comment
 
@@ -161,6 +163,12 @@ the reusable development, contribution, code-style, definition-of-done, test-pla
 security, code-of-conduct, Pull Request, and Issue templates from `ProjectStandards`. The root CMake
 project now builds the library, tests, and API applications from one `build/` tree. The VS Code
 workflow uses `F7` for the complete build and `F5` only for the selected existing binary.
-Remaining adoption work includes real CI workflow creation, Doxygen automation, artifact policy,
-license verification, and final build/test validation after the local Windows compiler execution
-policy is resolved.
+Remaining adoption work includes license verification, release-package installation validation,
+GitHub Pages configuration verification, and additional platform validation.
+
+## CI status
+
+The automation workflows are implemented on the `ci/etoolkit-automation-standards` branch. It
+uses `windows-latest` with MSYS2 MinGW-w64, configures CMake with Ninja, builds shared and static
+libraries, applications, and the `etoolkit_tests` executable, then runs CTest. Pull Requests to
+`master`, pushes to `master`, and manual `workflow_dispatch` runs use the same validation path.

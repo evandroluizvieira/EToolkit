@@ -1,0 +1,104 @@
+name: Auto Version
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '**.md'
+      - 'Doxyfile.in'
+      - 'docs/**'
+      - '.github/**'
+      - 'VERSION'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: auto-version-master
+  cancel-in-progress: false
+
+jobs:
+  version:
+    name: Calculate and tag version
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Determine version bump
+        id: bump
+        shell: bash
+        run: |
+          set -euo pipefail
+          current=$(tr -d '[:space:]' < VERSION)
+          test -n "$current"
+          last_tag=$(git describe --tags --match 'v[0-9]*.[0-9]*.[0-9]*' --abbrev=0 2>/dev/null || true)
+          if [ -z "$last_tag" ]; then
+            echo "bump=none" >> "$GITHUB_OUTPUT"
+            echo "create_baseline=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "create_baseline=false" >> "$GITHUB_OUTPUT"
+          commits=$(git log --format='%s%n%b' "$last_tag..HEAD")
+
+          bump=none
+          if printf '%s\n' "$commits" | grep -qE '(^|\n)(feat|fix|refactor|docs|test|build|ci|chore)(\([^)]*\))?!:' || \
+             printf '%s\n' "$commits" | grep -q 'BREAKING CHANGE:'; then
+            bump=major
+          elif printf '%s\n' "$commits" | grep -qE '(^|\n)(feat)(\([^)]*\))?:'; then
+            bump=minor
+          elif printf '%s\n' "$commits" | grep -qE '(^|\n)(fix)(\([^)]*\))?:'; then
+            bump=patch
+          fi
+
+          IFS=. read -r major minor patch <<< "$current"
+          case "$bump" in
+            major) major=$((major + 1)); minor=0; patch=0 ;;
+            minor) minor=$((minor + 1)); patch=0 ;;
+            patch) patch=$((patch + 1)) ;;
+            *) echo "bump=none" >> "$GITHUB_OUTPUT"; exit 0 ;;
+          esac
+
+          next="$major.$minor.$patch"
+          echo "bump=$bump" >> "$GITHUB_OUTPUT"
+          echo "version=$next" >> "$GITHUB_OUTPUT"
+          echo "Calculated $bump release: v$next"
+
+      - name: Update version sources
+        if: steps.bump.outputs.bump != 'none'
+        env:
+          VERSION: ${{ steps.bump.outputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf '%s\n' "$VERSION" > VERSION
+          git diff --check
+
+      - name: Commit and create tag
+        if: steps.bump.outputs.bump != 'none'
+        env:
+          VERSION: ${{ steps.bump.outputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add VERSION
+          git commit -m "chore: release v$VERSION [skip ci]"
+          git tag "v$VERSION"
+          git push origin HEAD:master
+          git push origin "v$VERSION"
+
+      - name: Create initial baseline tag
+        if: steps.bump.outputs.create_baseline == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git tag v0.0.0
+          git push origin v0.0.0

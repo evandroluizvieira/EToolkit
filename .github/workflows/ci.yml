@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Build and test (Windows)
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up MSYS2 toolchain
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-ninja
+
+      - name: Configure
+        shell: msys2 {0}
+        run: |
+          cmake -S . -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DCMAKE_CXX_COMPILER=C:/msys64/mingw64/bin/g++.exe \
+            -DCMAKE_MAKE_PROGRAM=C:/msys64/mingw64/bin/ninja.exe \
+            -DETOOLKIT_BUILD_TESTS=ON \
+            -DETOOLKIT_BUILD_APPLICATIONS=ON \
+            -DETOOLKIT_BUILD_SHARED_LIBRARY=ON \
+            -DETOOLKIT_BUILD_STATIC_LIBRARY=ON
+
+      - name: Build
+        shell: msys2 {0}
+        run: cmake --build build --target all
+
+      - name: Test
+        shell: msys2 {0}
+        run: ctest --test-dir build --output-on-failure

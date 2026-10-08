@@ -5,6 +5,8 @@
 [![C++](https://img.shields.io/badge/C++-004488)](https://cplusplus.com/)
 [![BSL1.0 License](https://img.shields.io/badge/License-BSL-green.svg)](https://choosealicense.com/licenses/bsl-1.0/)
 [![WinAPI](https://img.shields.io/badge/WinAPI-0078d4)](https://learn.microsoft.com/en-us/windows/win32/apiindex/api-index-portal/)
+[![CI](https://github.com/evandroluizvieira/EToolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/evandroluizvieira/EToolkit/actions/workflows/ci.yml)
+[![Version](https://img.shields.io/github/v/tag/evandroluizvieira/EToolkit?sort=semver&label=version)](https://github.com/evandroluizvieira/EToolkit/releases)
 
 ## Overview
 EToolkit is a C++ library that serves as a WinAPI (old Win32) wrapper.
@@ -91,11 +93,29 @@ cmake --build build
 ctest --test-dir build --output-on-failure
 ```
 
-The default configuration builds both library variants, the `etoolkit_containers_test` executable,
+The default configuration builds both library variants, the `etoolkit_tests` executable,
 and `EToolkitSimpleWindow` from `applications/simple_window/`. The library itself has no executable
 because it does not define `main()`. The test executable is generated because CTest and the F5 test
 configuration execute that binary. Configure with `-DETOOLKIT_BUILD_APPLICATIONS=OFF` to omit the
 examples.
+
+## Continuous integration and releases
+
+GitHub Actions validates Pull Requests targeting `master` and pushes to `master` by configuring,
+building, and testing the project on Windows with MSYS2 MinGW-w64, CMake, Ninja, and CTest.
+The authoritative development version is stored in `VERSION`; build metadata and generated
+documentation consume that value.
+The generated API reference is published at
+https://evandroluizvieira.github.io/EToolkit/ after successful runs on `master`.
+Versioned distribution is separate: an approved SemVer tag will trigger a clean build and publish
+versioned ZIP archives containing the DLL, development libraries and headers, `etoolkit_tests.exe`,
+and example applications to a GitHub Release. GitHub Packages will only be enabled after a package
+format and consumer installation contract are defined.
+
+Project governance and automation policies are documented in [DEVELOPMENT.md](DEVELOPMENT.md),
+[CONTRIBUTING.md](CONTRIBUTING.md), [RELEASE.md](RELEASE.md), and [DEPLOYMENT.md](DEPLOYMENT.md).
+Architecture, requirements, roadmap, implementation, operational, risk, and migration documents
+are maintained in the repository root alongside [PROJECT_STATUS.md](PROJECT_STATUS.md).
 
 ## Build
 Preprocessor flags:
