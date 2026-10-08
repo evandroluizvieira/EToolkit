@@ -14,7 +14,7 @@
 | FR-001 | Build shared and static EToolkit libraries with C++11. | Must | CI builds both targets. |
 | FR-002 | Provide public headers under `include/`. | Must | Consumer examples compile. |
 | FR-003 | Execute automated tests through CTest. | Must | CI reports passing tests. |
-| FR-004 | Generate API documentation from public headers and source API. | Should | Doxygen workflow publishes HTML. |
+| FR-004 | Generate API documentation from public headers and source API. | Should | Separate Doxygen validation and Pages publication workflows generate and publish HTML. |
 | FR-005 | Publish reproducible artifacts from approved SemVer tags. | Should | Release workflow builds, tests, packages, and checksums artifacts. |
 
 ## Non-functional requirements

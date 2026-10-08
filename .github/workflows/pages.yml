@@ -1,9 +1,6 @@
-name: Validate Doxygen Documentation
+name: Publish Doxygen Documentation
 
 on:
-  pull_request:
-    branches:
-      - master
   push:
     branches:
       - master
@@ -13,12 +10,12 @@ permissions:
   contents: read
 
 concurrency:
-  group: doxygen-${{ github.workflow }}-${{ github.ref }}
+  group: pages-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   build:
-    name: Generate API documentation
+    name: Build Pages artifact
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -36,10 +33,19 @@ jobs:
       - name: Generate documentation
         run: doxygen build/Doxyfile
 
-      - name: Upload documentation artifact
-        if: github.event_name == 'pull_request'
-        uses: actions/upload-artifact@v4
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: etoolkit-doxygen-${{ github.event.pull_request.number }}
           path: docs/html
-          if-no-files-found: error
+
+  deploy:
+    name: Deploy API documentation
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
