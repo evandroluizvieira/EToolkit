@@ -73,6 +73,11 @@ with CMake; it does not provide assertions or a test framework. GoogleTest is an
 test framework library. A project using a local runner can register its executable with CTest
 without depending on GoogleTest. State this distinction in the project documentation.
 
+The `etoolkit_public_api_compatibility` target uses `EColorTest.cpp` to provide a consumer-level compatibility check. It must
+include public forwarding headers, link through the supported `EToolkit` target, exercise a small
+representative API surface, and be registered with CTest. This check is intentionally separate
+from component-level tests so that public include and link regressions are detected explicitly.
+
 For C++ tests, document test classes, test methods, assertion utilities, and entry points with
 multiline Doxygen blocks immediately above declarations or signatures. Do not place test
 documentation comments inside test method bodies. Avoid unexplained abbreviations in public test
