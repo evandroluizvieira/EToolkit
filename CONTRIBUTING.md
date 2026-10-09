@@ -47,6 +47,12 @@ Each commit should represent one logical unit. Mark breaking changes with `!` or
 
 The PR should explain the problem, solution, validation steps, executed tests, API/ABI impact, documentation, and risks. Use [the template](.github/PULL_REQUEST_TEMPLATE.md).
 
+When a PR is requested, provide the title, description, and labels using only labels available by
+default in the GitHub web interface. After opening it, request a Copilot review. Assess each Copilot
+suggestion independently; implement every coherent and applicable correction and add exactly one
+sentence explaining what was done for that suggestion. If a suggestion is not applicable, leave the
+code unchanged and add exactly one sentence explaining why it was not implemented.
+
 ### GitHub Actions and triggers
 
 Before opening a PR, identify which workflows must run for the change. The default CI workflow
