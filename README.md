@@ -117,6 +117,24 @@ Project governance and automation policies are documented in [DEVELOPMENT.md](DE
 Architecture, requirements, roadmap, implementation, operational, risk, and migration documents
 are maintained in the repository root alongside [PROJECT_STATUS.md](PROJECT_STATUS.md).
 
+## Project documentation and change policy
+
+The root documentation is kept synchronized with the implementation. Every code, structure,
+configuration, build, test, dependency, workflow, or release change requires a review of the
+affected files before commit, including when applicable:
+
+- `README.md`, directory structure and public API descriptions;
+- `CMakeLists.txt`, CMake modules, toolchain settings, and build presets;
+- CI/CD, Doxygen, Pages, versioning, and release workflows;
+- test registration, launch/build tasks, editor configuration, and ignore rules;
+- `DEVELOPMENT.md`, `TEST_PLAN.md`, `RELEASE.md`, `DEPLOYMENT.md`, `ROADMAP.md`, and
+	`PROJECT_STATUS.md`.
+
+The README must describe the current project scope, supported components, setup, build and test
+commands, generated artifacts, automation, documentation publication, and release distribution.
+Changes are complete only after the relevant documentation and configuration have been updated and
+the affected validation has passed.
+
 ## Build
 Preprocessor flags:
 ```
