@@ -1,5 +1,13 @@
 # Test plan
 
+## Public API consumer validation
+
+The project validates the public EColor API from a consumer perspective with the
+`etoolkit_public_api_compatibility` executable and `EColorTest.cpp`. It includes public forwarding headers, links against
+the supported `EToolkit` target, exercises representative container and geometry types, and runs
+through CTest. It currently covers representative graphics color types.
+This check complements component-level tests; it does not replace them.
+
 ## Scope
 
 - Feature/release: `<name>`
