@@ -7,6 +7,10 @@
 
 #include <iostream>
 
+/**
+ * @brief Validates the public EColor API from a consumer perspective.
+ * @return Zero when validation succeeds; otherwise, one.
+ */
 int main(){
     EToolkit::Color1<int> grayscale(128);
     EToolkit::Color2<int> grayscaleWithAlpha(128, 255);
