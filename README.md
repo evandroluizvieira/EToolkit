@@ -112,11 +112,11 @@ versioned ZIP archives containing the DLL, development libraries and headers, `e
 and example applications to a GitHub Release. GitHub Packages will only be enabled after a package
 format and consumer installation contract are defined.
 
-On the first push to `master`, the Auto Version workflow automatically creates the non-publishing
-baseline tag `v0.0.0`, even if no release-worthy commit exists. Later `fix:` and `feat:` commits
-merged into `master` may create patch and minor tags; breaking changes create major tags. A
-publishable tag triggers the Windows build, tests, ZIP package, SHA-256 checksum, and GitHub
-Release publication. `v0.0.0` is never published as a binary release.
+On the first push to `master`, the Auto Version workflow automatically creates the initial tag
+`v0.0.0`, even if no release-worthy commit exists. That tag is a complete first release: it triggers
+the Windows build, tests, ZIP package, SHA-256 checksum, and GitHub Release publication. Later
+`fix:` and `feat:` commits merged into `master` may create patch and minor tags; breaking changes
+create major tags and trigger the same release process.
 
 Project governance and automation policies are documented in [DEVELOPMENT.md](DEVELOPMENT.md),
 [CONTRIBUTING.md](CONTRIBUTING.md), [RELEASE.md](RELEASE.md), and [DEPLOYMENT.md](DEPLOYMENT.md).

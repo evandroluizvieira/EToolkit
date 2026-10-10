@@ -113,20 +113,19 @@ packages the DLL, libraries, headers, tests, and applications, calculates SHA-25
 attaches the archive to a GitHub Release. It
 does not publish artifacts for ordinary commits or Pull Requests.
 
-Version automation is defined in `.github/workflows/auto-version.yml`. The current development
-version is `0.0.0`; it is a baseline, not a published release. Every push to `master` runs the
-workflow so that the first push creates the immutable `v0.0.0` baseline automatically, even when
-the repository has no release-worthy commit or only documentation/configuration changes. The
-baseline never runs the release workflow. After the baseline exists, the workflow examines
+Version automation is defined in `.github/workflows/auto-version.yml`. The initial version is
+`0.0.0` and is a complete first release. Every push to `master` runs the workflow so that the first
+push creates the immutable `v0.0.0` tag automatically, even when the repository has no
+release-worthy commit or only documentation/configuration changes. The tag runs the release
+workflow. After the initial release exists, the workflow examines
 Conventional Commits since the last tag. `feat:` suggests a minor increment, `fix:` suggests a
 patch increment, and `BREAKING CHANGE` or `!` suggests a major increment. Commits without a
 release signal leave the version unchanged. A `feature/` branch, Pull Request, or individual
 `feat:` commit does not create a version before review and merge.
 
-The repository must define a `RELEASE_TOKEN` secret with permission to push publishable version
-commits and tags. The workflow may use the default `GITHUB_TOKEN` for the non-publishing `v0.0.0`
-baseline, but requires `RELEASE_TOKEN` before creating a later version commit or tag because GitHub
-does not start downstream workflows for events generated with the default token. The fine-grained
+The repository must define a `RELEASE_TOKEN` secret with permission to push version commits and
+tags, including the initial `v0.0.0` tag. A dedicated token is required because GitHub does not
+start downstream workflows for events generated with the default `GITHUB_TOKEN`. The fine-grained
 token must be protected and used only by the trusted default-branch version workflow.
 
 API documentation is validated by `.github/workflows/doxygen.yml` and published by
