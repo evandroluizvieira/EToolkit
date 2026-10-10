@@ -64,9 +64,10 @@ or `!` produces a major release; documentation, test, refactor, and chore commit
 release by themselves. A `feature/` branch or Pull Request never creates a version before merge.
 
 The release workflow runs only for an approved SemVer tag or an explicitly approved manual
-dispatch. It rebuilds from the tagged revision, runs CTest, calculates SHA-256 checksums, and
-publishes a versioned Windows archive for the runtime DLL, development headers and libraries,
-`etoolkit_tests.exe`, and example applications.
+dispatch. It rebuilds from the tagged revision, runs CTest, collects the required MinGW runtime
+DLLs, calculates SHA-256 checksums, and publishes a versioned Windows archive containing the shared
+library DLL, static and import libraries, public headers, runtime requirements, `etoolkit_tests.exe`,
+and example applications. Internal source files are not included in the consumer package.
 
 GitHub Releases and GitHub Packages are different delivery mechanisms. Releases are the initial
 distribution channel for versioned ZIP archives and checksums. A GitHub Package should be added

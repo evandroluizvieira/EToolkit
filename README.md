@@ -6,6 +6,7 @@
 [![BSL1.0 License](https://img.shields.io/badge/License-BSL-green.svg)](https://choosealicense.com/licenses/bsl-1.0/)
 [![WinAPI](https://img.shields.io/badge/WinAPI-0078d4)](https://learn.microsoft.com/en-us/windows/win32/apiindex/api-index-portal/)
 [![CI](https://github.com/evandroluizvieira/EToolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/evandroluizvieira/EToolkit/actions/workflows/ci.yml)
+[![Documentation](https://img.shields.io/badge/docs-Doxygen-blue.svg)](https://evandroluizvieira.github.io/EToolkit/)
 [![Version](https://img.shields.io/github/v/tag/evandroluizvieira/EToolkit?sort=semver&label=version)](https://github.com/evandroluizvieira/EToolkit/releases)
 
 ## Overview
@@ -108,9 +109,10 @@ documentation consume that value.
 The generated API reference is published at
 https://evandroluizvieira.github.io/EToolkit/ after successful runs on `master`.
 Versioned distribution is separate: an approved SemVer tag will trigger a clean build and publish
-versioned ZIP archives containing the DLL, development libraries and headers, `etoolkit_tests.exe`,
-and example applications to a GitHub Release. GitHub Packages will only be enabled after a package
-format and consumer installation contract are defined.
+versioned ZIP archives containing the shared and static libraries, import library, public headers,
+runtime DLL requirements, `etoolkit_tests.exe`, and example applications to a GitHub Release.
+GitHub Packages will only be enabled after a package format and consumer installation contract are
+defined.
 
 Project governance and automation policies are documented in [DEVELOPMENT.md](DEVELOPMENT.md),
 [CONTRIBUTING.md](CONTRIBUTING.md), [RELEASE.md](RELEASE.md), and [DEPLOYMENT.md](DEPLOYMENT.md).

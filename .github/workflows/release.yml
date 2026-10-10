@@ -100,17 +100,20 @@ jobs:
         shell: msys2 {0}
         run: |
           set -euo pipefail
+          mkdir -p build/runtime
           binaries=(
             build/libEToolkit_shared.dll
             build/test/etoolkit_tests.exe
             build/applications/simple_window/EToolkitSimpleWindow.exe
           )
           for binary in "${binaries[@]}"; do
-            if ldd "$binary" | grep -Eq 'lib(stdc\+\+|gcc|winpthread)'; then
-              echo "Dynamic MinGW runtime dependency found in $binary"
-              exit 1
-            fi
+            while read -r dependency; do
+              [ -n "$dependency" ] || continue
+              cp -f "$dependency" build/runtime/
+            done < <(ldd "$binary" | awk '$1 ~ /^lib(stdc\+\+|gcc|winpthread)/ && $3 ~ /^\/.*\.dll$/ { print $3 }')
           done
+
+          test -n "$(find build/runtime -maxdepth 1 -type f -iname '*.dll' -print -quit)"
 
       - name: Verify version source
         shell: pwsh
@@ -130,16 +133,18 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           $root = "package/etoolkit-$env:VERSION-windows-x64"
-          New-Item -ItemType Directory -Force -Path "$root/bin", "$root/lib", "$root/include", "$root/source", "$root/test", "$root/applications" | Out-Null
+          New-Item -ItemType Directory -Force -Path "$root/bin", "$root/lib", "$root/include", "$root/runtime", "$root/test", "$root/applications" | Out-Null
           Copy-Item "build/libEToolkit_shared.dll" "$root/bin/"
           Copy-Item "build/libEToolkit_static.a" "$root/lib/"
           Copy-Item "build/libEToolkit_shared.dll.a" "$root/lib/"
+          Copy-Item "build/runtime/*.dll" "$root/runtime/"
           Copy-Item "build/test/etoolkit_tests.exe" "$root/test/"
           Copy-Item "build/test/libEToolkit_shared.dll" "$root/test/"
           Copy-Item "build/applications/simple_window/EToolkitSimpleWindow.exe" "$root/applications/"
           Copy-Item "build/applications/simple_window/libEToolkit_shared.dll" "$root/applications/" -ErrorAction SilentlyContinue
+          Copy-Item "build/runtime/*.dll" "$root/test/"
+          Copy-Item "build/runtime/*.dll" "$root/applications/"
           Copy-Item "include/*" "$root/include/" -Recurse
-          Copy-Item "source/*" "$root/source/" -Recurse
           Copy-Item README.md, LICENSE, CHANGELOG.md "$root/" -ErrorAction SilentlyContinue
           Compress-Archive -Path "$root/*" -DestinationPath "etoolkit-$env:VERSION-windows-x64.zip"
 
