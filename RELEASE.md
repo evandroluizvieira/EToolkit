@@ -67,7 +67,8 @@ The release workflow runs only for an approved SemVer tag or an explicitly appro
 dispatch. It rebuilds from the tagged revision, runs CTest, collects the required MinGW runtime
 DLLs, calculates SHA-256 checksums, and publishes a versioned Windows archive containing the shared
 library DLL, static and import libraries, public headers, runtime requirements, `etoolkit_tests.exe`,
-and example applications. Internal source files are not included in the consumer package.
+and example applications. The source tree is included because the public forwarding headers
+reference the implementation headers through relative paths.
 
 GitHub Releases and GitHub Packages are different delivery mechanisms. Releases are the initial
 distribution channel for versioned ZIP archives and checksums. A GitHub Package should be added
