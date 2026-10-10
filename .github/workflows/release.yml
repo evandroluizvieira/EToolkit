@@ -95,16 +95,22 @@ jobs:
         shell: msys2 {0}
         run: |
           set -euo pipefail
+          mkdir -p build/runtime
           binaries=(
             build/libEToolkit_shared.dll
             build/test/etoolkit_tests.exe
             build/applications/simple_window/EToolkitSimpleWindow.exe
           )
           for binary in "${binaries[@]}"; do
-            if ldd "$binary" | grep -Eq 'lib(stdc\+\+|gcc|winpthread)'; then
-              echo "Dynamic MinGW runtime dependency found in $binary"
+            unresolved=$(ldd "$binary" | awk '$1 ~ /^lib(stdc\+\+|gcc|winpthread)/ && $0 ~ /not found/ { print $1 }')
+            if [[ -n "$unresolved" ]]; then
+              echo "Missing MinGW runtime dependencies for $binary: $unresolved"
               exit 1
             fi
+            while read -r dependency; do
+              [ -n "$dependency" ] || continue
+              cp -f "$dependency" build/runtime/
+            done < <(ldd "$binary" | awk '$1 ~ /^lib(stdc\+\+|gcc|winpthread)/ && $3 ~ /^\/.*\.dll$/ { print $3 }')
           done
 
       - name: Verify version source
@@ -125,7 +131,7 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           $root = "package/etoolkit-$env:VERSION-windows-x64"
-          New-Item -ItemType Directory -Force -Path "$root/bin", "$root/lib", "$root/include", "$root/source", "$root/test", "$root/applications" | Out-Null
+          New-Item -ItemType Directory -Force -Path "$root/bin", "$root/lib", "$root/include", "$root/runtime", "$root/source", "$root/test", "$root/applications" | Out-Null
           Copy-Item "build/libEToolkit_shared.dll" "$root/bin/"
           Copy-Item "build/libEToolkit_static.a" "$root/lib/"
           Copy-Item "build/libEToolkit_shared.dll.a" "$root/lib/"
@@ -133,6 +139,13 @@ jobs:
           Copy-Item "build/test/libEToolkit_shared.dll" "$root/test/"
           Copy-Item "build/applications/simple_window/EToolkitSimpleWindow.exe" "$root/applications/"
           Copy-Item "build/applications/simple_window/libEToolkit_shared.dll" "$root/applications/" -ErrorAction SilentlyContinue
+          $runtimeDlls = @(Get-ChildItem "build/runtime" -Filter "*.dll" -File -ErrorAction SilentlyContinue)
+          if ($runtimeDlls.Count -gt 0) {
+            Copy-Item $runtimeDlls.FullName "$root/runtime/"
+            Copy-Item $runtimeDlls.FullName "$root/bin/"
+            Copy-Item $runtimeDlls.FullName "$root/test/"
+            Copy-Item $runtimeDlls.FullName "$root/applications/"
+          }
           Copy-Item "include/*" "$root/include/" -Recurse
           Copy-Item "source/*" "$root/source/" -Recurse
           Copy-Item README.md, LICENSE, CHANGELOG.md "$root/" -ErrorAction SilentlyContinue

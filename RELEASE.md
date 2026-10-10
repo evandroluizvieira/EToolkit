@@ -12,11 +12,10 @@
 
 ## Identification
 
-Use an immutable tag in the format `v<MAJOR>.<MINOR>.<PATCH>`. The initial version is `0.0.0`;
-the version workflow creates `v0.0.0` automatically on the first push to `master` after the
-automation branch is merged. This initial tag is a complete GitHub Release containing the Windows
-package, binaries, ZIP archive, and checksum. It is created regardless of whether the push contains
-a release-worthy commit or only documentation/configuration changes.
+Use an immutable tag in the format `v<MAJOR>.<MINOR>.<PATCH>`. The initial development version is
+`0.0.0`; the version workflow creates `v0.0.0` automatically on the first eligible push to
+`master` after the automation branch is merged. This tag is also the first complete GitHub Release
+and contains the same build, test, package, and checksum artifacts as later releases.
 
 The repository's single version source is [VERSION](VERSION). CMake reads it directly, and Doxygen
 receives the same value through [Doxyfile.in](Doxyfile.in). Do not edit a version literal in a
@@ -27,11 +26,9 @@ The version workflow uses the protected `RELEASE_TOKEN` secret rather than the d
 token. This allows a newly created SemVer tag to start the release workflow. The token must have
 only the minimum contents permission required to push the version commit and tag.
 
-The first eligible push creates `v0.0.0` with `RELEASE_TOKEN`, so the tag can trigger `release.yml`.
-Later release-worthy pushes also require `RELEASE_TOKEN`; without it, the workflow stops before
-creating a version commit or tag. Every valid SemVer tag, including `v0.0.0`, builds and tests the
-Windows package, generates a SHA-256 checksum, and publishes the ZIP and checksum as a GitHub
-Release.
+The first eligible push may create the `v0.0.0` release tag. Release-worthy version commits and
+tags require `RELEASE_TOKEN`; without it, the workflow stops before creating
+a version commit or tag and reports the missing repository configuration.
 
 ## Automation triggers
 
@@ -67,9 +64,11 @@ or `!` produces a major release; documentation, test, refactor, and chore commit
 release by themselves. A `feature/` branch or Pull Request never creates a version before merge.
 
 The release workflow runs only for an approved SemVer tag or an explicitly approved manual
-dispatch. It rebuilds from the tagged revision, runs CTest, calculates SHA-256 checksums, and
-publishes a versioned Windows archive for the runtime DLL, development headers and libraries,
-`etoolkit_tests.exe`, and example applications.
+dispatch. It rebuilds from the tagged revision, runs CTest, collects the required MinGW runtime
+DLLs, calculates SHA-256 checksums, and publishes a versioned Windows archive containing the shared
+library DLL, static and import libraries, public headers, runtime requirements, `etoolkit_tests.exe`,
+and example applications. The source tree is included because the public forwarding headers
+reference the implementation headers through relative paths.
 
 GitHub Releases and GitHub Packages are different delivery mechanisms. Releases are the initial
 distribution channel for versioned ZIP archives and checksums. A GitHub Package should be added

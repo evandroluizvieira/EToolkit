@@ -6,6 +6,7 @@
 [![BSL1.0 License](https://img.shields.io/badge/License-BSL-green.svg)](https://choosealicense.com/licenses/bsl-1.0/)
 [![WinAPI](https://img.shields.io/badge/WinAPI-0078d4)](https://learn.microsoft.com/en-us/windows/win32/apiindex/api-index-portal/)
 [![CI](https://github.com/evandroluizvieira/EToolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/evandroluizvieira/EToolkit/actions/workflows/ci.yml)
+[![Documentation](https://img.shields.io/badge/docs-Doxygen-blue.svg)](https://evandroluizvieira.github.io/EToolkit/)
 [![Version](https://img.shields.io/github/v/tag/evandroluizvieira/EToolkit?sort=semver&label=version)](https://github.com/evandroluizvieira/EToolkit/releases)
 
 ## Overview
@@ -108,20 +109,33 @@ documentation consume that value.
 The generated API reference is published at
 https://evandroluizvieira.github.io/EToolkit/ after successful runs on `master`.
 Versioned distribution is separate: an approved SemVer tag will trigger a clean build and publish
-versioned ZIP archives containing the DLL, development libraries and headers, `etoolkit_tests.exe`,
-and example applications to a GitHub Release. GitHub Packages will only be enabled after a package
-format and consumer installation contract are defined.
-
-On the first push to `master`, the Auto Version workflow automatically creates the initial tag
-`v0.0.0`, even if no release-worthy commit exists. That tag is a complete first release: it triggers
-the Windows build, tests, ZIP package, SHA-256 checksum, and GitHub Release publication. Later
-`fix:` and `feat:` commits merged into `master` may create patch and minor tags; breaking changes
-create major tags and trigger the same release process.
+versioned ZIP archives containing the shared and static libraries, import library, public headers,
+runtime DLL requirements, `etoolkit_tests.exe`, and example applications to a GitHub Release.
+GitHub Packages will only be enabled after a package format and consumer installation contract are
+defined.
 
 Project governance and automation policies are documented in [DEVELOPMENT.md](DEVELOPMENT.md),
 [CONTRIBUTING.md](CONTRIBUTING.md), [RELEASE.md](RELEASE.md), and [DEPLOYMENT.md](DEPLOYMENT.md).
 Architecture, requirements, roadmap, implementation, operational, risk, and migration documents
 are maintained in the repository root alongside [PROJECT_STATUS.md](PROJECT_STATUS.md).
+
+## Project documentation and change policy
+
+The root documentation is kept synchronized with the implementation. Every code, structure,
+configuration, build, test, dependency, workflow, or release change requires a review of the
+affected files before commit, including when applicable:
+
+- `README.md`, directory structure and public API descriptions;
+- `CMakeLists.txt`, CMake modules, toolchain settings, and build presets;
+- CI/CD, Doxygen, Pages, versioning, and release workflows;
+- test registration, launch/build tasks, editor configuration, and ignore rules;
+- `DEVELOPMENT.md`, `TEST_PLAN.md`, `RELEASE.md`, `DEPLOYMENT.md`, `ROADMAP.md`, and
+	`PROJECT_STATUS.md`.
+
+The README must describe the current project scope, supported components, setup, build and test
+commands, generated artifacts, automation, documentation publication, and release distribution.
+Changes are complete only after the relevant documentation and configuration have been updated and
+the affected validation has passed.
 
 ## Build
 Preprocessor flags:

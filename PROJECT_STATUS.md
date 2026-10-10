@@ -29,7 +29,7 @@ This section is a snapshot and must be updated if the repository changes.
 | CI | Implemented | `.github/workflows/ci.yml` validates Pull Requests targeting `master`, pushes to `master`, and manual runs on Windows with MSYS2, CMake, Ninja, build, and CTest. |
 | API documentation | Implemented | Doxygen targets the public headers and source API; GitHub Actions publishes HTML to GitHub Pages and exposes PR builds as review artifacts. |
 | User documentation | Partial | README contains overview and basic build information, but not a complete development or installation guide. |
-| Versioning | Implemented | Version source is currently `0.0.0`; the first eligible push to `master` automatically creates the non-release baseline tag `v0.0.0`, and subsequent reviewed Conventional Commits merged into `master` can create approved tags. |
+| Versioning | Implemented | Version source is currently `0.0.0`; the first eligible push to `master` automatically creates the initial release tag `v0.0.0`, and subsequent reviewed Conventional Commits merged into `master` can create approved tags. |
 | Release packaging | Implemented | `release.yml` validates SemVer tags, rebuilds/tests the tagged revision, packages Windows artifacts, calculates SHA-256 checksums, and publishes a GitHub Release. |
 | License | Incomplete | README states BSL 1.0, but a versioned `LICENSE` file should be verified and added if absent. |
 | Contribution process | In progress | ProjectStandards documentation and Issue/PR templates are being adopted; local VS Code F7/F5 workflows are configured but ignored by Git. |

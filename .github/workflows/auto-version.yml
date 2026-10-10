@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+      - '**.md'
+      - 'Doxyfile.in'
+      - 'docs/**'
+      - '.github/**'
+      - 'VERSION'
   workflow_dispatch:
 
 permissions:
@@ -83,7 +89,7 @@ jobs:
         run: |
           set -euo pipefail
           if [ -z "$RELEASE_TOKEN" ]; then
-            echo "RELEASE_TOKEN is required for publishable version commits and tags."
+            echo "RELEASE_TOKEN is required for version commits and tags because they must trigger release.yml."
             exit 1
           fi
           git config user.name 'github-actions[bot]'
@@ -102,7 +108,7 @@ jobs:
         run: |
           set -euo pipefail
           if [ -z "$RELEASE_TOKEN" ]; then
-            echo "RELEASE_TOKEN is required to create v0.0.0 and trigger the initial release workflow."
+            echo "RELEASE_TOKEN is required to create v0.0.0 because the tag must trigger release.yml."
             exit 1
           fi
           git tag v0.0.0
