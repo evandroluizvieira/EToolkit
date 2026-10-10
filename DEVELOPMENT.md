@@ -114,23 +114,22 @@ attaches the archive to a GitHub Release. It
 does not publish artifacts for ordinary commits or Pull Requests.
 
 Version automation is defined in `.github/workflows/auto-version.yml`. The current development
-version is `0.0.0`; it is a baseline, not a published release. On the first eligible push to
-`master` after this automation branch is merged, the workflow automatically creates the immutable
-`v0.0.0` baseline tag without running the release workflow. Only subsequent pushes to `master` are
-eligible for version calculation. The workflow then
+version is `0.0.0`; on the first eligible push to `master` after this automation branch is merged,
+the workflow automatically creates the immutable `v0.0.0` tag, which runs the complete release
+workflow. Subsequent pushes to `master` are eligible for version calculation. The workflow then
 examines Conventional Commits since the last release tag. `feat:` suggests a minor increment,
 `fix:` suggests a patch increment, and `BREAKING CHANGE` or `!` suggests a major increment. The
 workflow updates the central `VERSION` file, commits the result, and creates the tag. CMake reads
 that file and configures Doxygen from `Doxyfile.in`; the README version badge reads published tags.
 A `feature/` branch, Pull Request, or individual `feat:` commit does not create a version before
-review and merge. If no SemVer baseline tag exists, the workflow creates `v0.0.0` once and does not
-publish a release.
+review and merge. If no SemVer tag exists, the workflow creates `v0.0.0` once and publishes the
+initial release.
 
 The repository must define a `RELEASE_TOKEN` secret with permission to push commits and tags. A
 dedicated token is required because GitHub does not start downstream workflows for events generated
 with the default `GITHUB_TOKEN`. The token must be protected and used only by the trusted default-
-branch version workflow. The first baseline creation can use the default token; subsequent
-version commits and tags require `RELEASE_TOKEN` so that the tag starts the release workflow.
+branch version workflow. The initial tag and subsequent version commits and tags require
+`RELEASE_TOKEN` so that the tag starts the release workflow.
 
 API documentation is validated by `.github/workflows/doxygen.yml` and published by
 `.github/workflows/pages.yml`. The `VERSION` file is the authoritative version source; CMake

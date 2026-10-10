@@ -13,5 +13,5 @@ GitHub Pages, and GitHub Releases for EToolkit.
 
 ## Selected direction
 
-Use `VERSION` as the single source, automate the non-release `v0.0.0` baseline, and create later
+Use `VERSION` as the single source, automate the initial `v0.0.0` release, and create later
 releases only from reviewed SemVer tags.
