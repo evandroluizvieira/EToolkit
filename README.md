@@ -112,28 +112,16 @@ versioned ZIP archives containing the DLL, development libraries and headers, `e
 and example applications to a GitHub Release. GitHub Packages will only be enabled after a package
 format and consumer installation contract are defined.
 
+On the first push to `master`, the Auto Version workflow automatically creates the initial tag
+`v0.0.0`, even if no release-worthy commit exists. That tag is a complete first release: it triggers
+the Windows build, tests, ZIP package, SHA-256 checksum, and GitHub Release publication. Later
+`fix:` and `feat:` commits merged into `master` may create patch and minor tags; breaking changes
+create major tags and trigger the same release process.
+
 Project governance and automation policies are documented in [DEVELOPMENT.md](DEVELOPMENT.md),
 [CONTRIBUTING.md](CONTRIBUTING.md), [RELEASE.md](RELEASE.md), and [DEPLOYMENT.md](DEPLOYMENT.md).
 Architecture, requirements, roadmap, implementation, operational, risk, and migration documents
 are maintained in the repository root alongside [PROJECT_STATUS.md](PROJECT_STATUS.md).
-
-## Project documentation and change policy
-
-The root documentation is kept synchronized with the implementation. Every code, structure,
-configuration, build, test, dependency, workflow, or release change requires a review of the
-affected files before commit, including when applicable:
-
-- `README.md`, directory structure and public API descriptions;
-- `CMakeLists.txt`, CMake modules, toolchain settings, and build presets;
-- CI/CD, Doxygen, Pages, versioning, and release workflows;
-- test registration, launch/build tasks, editor configuration, and ignore rules;
-- `DEVELOPMENT.md`, `TEST_PLAN.md`, `RELEASE.md`, `DEPLOYMENT.md`, `ROADMAP.md`, and
-	`PROJECT_STATUS.md`.
-
-The README must describe the current project scope, supported components, setup, build and test
-commands, generated artifacts, automation, documentation publication, and release distribution.
-Changes are complete only after the relevant documentation and configuration have been updated and
-the affected validation has passed.
 
 ## Build
 Preprocessor flags:

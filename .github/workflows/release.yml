@@ -4,7 +4,6 @@ on:
   push:
     tags:
       - 'v*.*.*'
-      - '!v0.0.0'
   workflow_dispatch:
     inputs:
       tag:
@@ -44,10 +43,6 @@ jobs:
           tag="${INPUT_TAG:-$REF_NAME}"
           if [[ ! "$tag" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
             echo "Invalid release tag: $tag"
-            exit 1
-          fi
-          if [[ "$tag" == "v0.0.0" ]]; then
-            echo "v0.0.0 is the initial version baseline and is not a publishable release."
             exit 1
           fi
           git fetch origin master --no-tags
