@@ -114,22 +114,20 @@ attaches the archive to a GitHub Release. It
 does not publish artifacts for ordinary commits or Pull Requests.
 
 Version automation is defined in `.github/workflows/auto-version.yml`. The current development
-version is `0.0.0`; it is a baseline, not a published release. On the first eligible push to
-`master` after this automation branch is merged, the workflow automatically creates the immutable
-`v0.0.0` baseline tag without running the release workflow. Only subsequent pushes to `master` are
-eligible for version calculation. The workflow then
-examines Conventional Commits since the last release tag. `feat:` suggests a minor increment,
-`fix:` suggests a patch increment, and `BREAKING CHANGE` or `!` suggests a major increment. The
-workflow updates the central `VERSION` file, commits the result, and creates the tag. CMake reads
-that file and configures Doxygen from `Doxyfile.in`; the README version badge reads published tags.
-A `feature/` branch, Pull Request, or individual `feat:` commit does not create a version before
-review and merge. If no SemVer baseline tag exists, the workflow creates `v0.0.0` once and does not
-publish a release.
+version is `0.0.0`; it is a baseline, not a published release. Every push to `master` runs the
+workflow so that the first push creates the immutable `v0.0.0` baseline automatically, even when
+the repository has no release-worthy commit or only documentation/configuration changes. The
+baseline never runs the release workflow. After the baseline exists, the workflow examines
+Conventional Commits since the last tag. `feat:` suggests a minor increment, `fix:` suggests a
+patch increment, and `BREAKING CHANGE` or `!` suggests a major increment. Commits without a
+release signal leave the version unchanged. A `feature/` branch, Pull Request, or individual
+`feat:` commit does not create a version before review and merge.
 
-The repository must define a `RELEASE_TOKEN` secret with permission to push commits and tags. A
-dedicated token is required because GitHub does not start downstream workflows for events generated
-with the default `GITHUB_TOKEN`. The token must be protected and used only by the trusted default-
-branch version workflow.
+The repository must define a `RELEASE_TOKEN` secret with permission to push publishable version
+commits and tags. The workflow may use the default `GITHUB_TOKEN` for the non-publishing `v0.0.0`
+baseline, but requires `RELEASE_TOKEN` before creating a later version commit or tag because GitHub
+does not start downstream workflows for events generated with the default token. The fine-grained
+token must be protected and used only by the trusted default-branch version workflow.
 
 API documentation is validated by `.github/workflows/doxygen.yml` and published by
 `.github/workflows/pages.yml`. The `VERSION` file is the authoritative version source; CMake

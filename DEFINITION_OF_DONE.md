@@ -32,6 +32,9 @@ Adapt this checklist to the project's risk, language, and delivery model. A work
 - [ ] CI is green.
 - [ ] Artifacts are reproducible and traceable to a commit or tag.
 - [ ] Deployment and rollback instructions are available.
+- [ ] The Pull Request title, complete description, and labels use the repository's default GitHub
+	web labels only.
+- [ ] Each Copilot review suggestion was assessed independently and has one resolution comment.
 
 ## Review and closure
 

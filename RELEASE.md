@@ -15,7 +15,9 @@
 Use an immutable tag in the format `v<MAJOR>.<MINOR>.<PATCH>`. The initial development version is
 `0.0.0`; the version workflow creates `v0.0.0` automatically on the first eligible push to
 `master` after the automation branch is merged. This baseline is not published as a GitHub Release.
-The first publishable release is created from a later approved version tag.
+The first publishable release is created from a later approved version tag. The baseline is created
+on the first push to `master` regardless of whether the push contains a release-worthy commit or
+only documentation/configuration changes.
 
 The repository's single version source is [VERSION](VERSION). CMake reads it directly, and Doxygen
 receives the same value through [Doxyfile.in](Doxyfile.in). Do not edit a version literal in a
@@ -25,6 +27,12 @@ The version workflow uses the protected `RELEASE_TOKEN` secret rather than the d
 `GITHUB_TOKEN`, because GitHub does not trigger another workflow from events created by the default
 token. This allows a newly created SemVer tag to start the release workflow. The token must have
 only the minimum contents permission required to push the version commit and tag.
+
+The first eligible push may create the non-publishing `v0.0.0` baseline with the default token. A
+later release-worthy push requires `RELEASE_TOKEN`; without it, the workflow stops before creating
+a version commit or tag. After a publishable tag such as `v0.0.1` or `v0.1.0` exists, `release.yml`
+builds and tests the Windows package, generates a SHA-256 checksum, and publishes the ZIP and
+checksum as a GitHub Release.
 
 ## Automation triggers
 
