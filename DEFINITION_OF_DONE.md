@@ -27,11 +27,7 @@ Adapt this checklist to the project's risk, language, and delivery model. A work
 
 ## Documentation and delivery
 
-- [ ] The root README accurately describes the current scope, structure, public API, setup, build,
-	  test, configuration, automation, documentation publication, and release distribution.
-- [ ] Every affected configuration and metadata file is reviewed and updated, including CMake,
-	  workflows, test registration, tasks, tool settings, ignore rules, and package metadata.
-- [ ] API documentation, runbooks, examples, and lifecycle documents are updated when affected.
+- [ ] README, API documentation, runbooks, or examples are updated.
 - [ ] Changelog and release notes are updated when applicable.
 - [ ] CI is green.
 - [ ] Artifacts are reproducible and traceable to a commit or tag.

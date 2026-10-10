@@ -19,7 +19,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pages: write
 
     steps:
       - name: Checkout repository
@@ -27,9 +26,6 @@ jobs:
 
       - name: Install Doxygen and Graphviz
         run: sudo apt-get update && sudo apt-get install -y doxygen graphviz
-
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
 
       - name: Configure versioned Doxygen file
         run: cmake -S . -B build -DETOOLKIT_BUILD_TESTS=OFF -DETOOLKIT_BUILD_APPLICATIONS=OFF
@@ -49,9 +45,6 @@ jobs:
     permissions:
       pages: write
       id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy to GitHub Pages
         id: deployment

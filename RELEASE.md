@@ -26,10 +26,6 @@ The version workflow uses the protected `RELEASE_TOKEN` secret rather than the d
 token. This allows a newly created SemVer tag to start the release workflow. The token must have
 only the minimum contents permission required to push the version commit and tag.
 
-The first eligible push may create the non-publishing `v0.0.0` baseline with the default token. A
-later release-worthy push requires `RELEASE_TOKEN`; without it, the workflow stops before creating
-a version commit or tag and reports the missing repository configuration.
-
 ## Automation triggers
 
 Release generation must not run for every Pull Request or arbitrary branch push. Prefer a reviewed

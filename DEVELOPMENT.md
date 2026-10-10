@@ -129,8 +129,7 @@ publish a release.
 The repository must define a `RELEASE_TOKEN` secret with permission to push commits and tags. A
 dedicated token is required because GitHub does not start downstream workflows for events generated
 with the default `GITHUB_TOKEN`. The token must be protected and used only by the trusted default-
-branch version workflow. The first baseline creation can use the default token; subsequent
-version commits and tags require `RELEASE_TOKEN` so that the tag starts the release workflow.
+branch version workflow.
 
 API documentation is validated by `.github/workflows/doxygen.yml` and published by
 `.github/workflows/pages.yml`. The `VERSION` file is the authoritative version source; CMake
@@ -139,10 +138,6 @@ Requests from all approved branch types generate one Doxygen site as a downloada
 artifact for review. Pushes to `master` and manual runs use the separate Pages workflow to publish
 the generated HTML through GitHub Pages. The generated `docs/` directory remains ignored and is
 never committed to the source repository.
-
-GitHub Pages must be enabled in repository Settings → Pages with the source set to GitHub Actions;
-the workflow cannot create or enable that repository setting automatically. The Pages deployment
-uses the `github-pages` environment and the required `pages: write` and `id-token: write` permissions.
 
 GitHub Releases are downloadable versioned assets; GitHub Packages are registry entries consumed
 through a package format such as NuGet or OCI. The project should automate Releases first and add
