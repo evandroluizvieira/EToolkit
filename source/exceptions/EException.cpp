@@ -1,8 +1,10 @@
 #include "../exceptions/EException.hpp"
 #include "../exceptions/EExceptionPrivate.hpp"
 
+#include <new>
+
 EToolkit::Exception::Exception(const String& message) :
-	data(0){
+	data(new (std::nothrow) ExceptionPrivate(message)){
 
 }
 
