@@ -1,0 +1,11 @@
+/.cproject
+/.project
+/.settings/
+/.vscode/
+/applications/*/Debug/
+/applications/*/Release/
+/docs/
+/build/
+Doxyfile
+
+

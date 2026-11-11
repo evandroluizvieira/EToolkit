@@ -1,0 +1,15 @@
+PROJECT_NAME           = "EToolkit Documentation"
+PROJECT_NUMBER         = "@ETOOLKIT_VERSION@"
+OUTPUT_DIRECTORY       = docs
+INPUT                  = include source
+FILE_PATTERNS          = *.h *.hpp
+RECURSIVE              = YES
+EXCLUDE                = build applications test resource
+EXCLUDE_PATTERNS       = */build/* */Debug/* */Release/*
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = NO
+GENERATE_HTML          = YES
+GENERATE_TREEVIEW      = YES
+GENERATE_LATEX         = NO
+HTML_TIMESTAMP         = NO
+QUIET                  = NO
