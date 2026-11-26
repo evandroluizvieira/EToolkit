@@ -2,31 +2,31 @@
 
 ## Objective
 
-Establish `main` as the new primary branch baseline with complete source, build, test, workflow,
-and governance files before beginning regular feature development.
+Deliver the first feature branch task by introducing the `IContainer` public interface contract,
+its forwarding include, and local automated validation.
 
 ## Scope
 
-- Include full project source tree, tests, CMake configuration, and public headers.
-- Include CI, documentation, version, and release workflows.
-- Include root governance documentation aligned with current repository behavior.
-- Exclude historical migration-only artifacts.
+- Add a reusable base container interface under `source/containers/interfaces/`.
+- Expose the interface through public forwarding header `include/EContainer`.
+- Add dependency-free automated tests integrated with CTest.
+- Keep the implementation and its validation evidence within this feature branch.
 
 ## Work breakdown
 
-| ID | Task | Evidence | Status |
-|---|---|---|---|
-| B-001 | Build initial `main` baseline from project source | `git status` on unborn `main` | done |
-| B-002 | Add explicit primary-branch marker (`BRANCH=main`) | `BRANCH` file in repository root | done |
-| B-003 | Add BSL 1.0 `LICENSE` file | `LICENSE` present in repository root | done |
-| B-004 | Remove migration checklist from baseline | File removal and README update | done |
-| B-005 | Align docs for new-main bootstrap | Updated README and governance docs | done |
-| B-006 | Push `main` and set GitHub default branch | GitHub settings and workflow runs | pending |
+| Task | Evidence | Status |
+|---|---|---|
+| Create `IContainer` interface contract | `source/containers/interfaces/IContainer.hpp` | done |
+| Add public forwarding include | `include/EContainer` includes `IContainer.hpp` | done |
+| Keep the build extensible for task-local tests and applications | Existing shared/static options remain; test sources and application subdirectories are discovered automatically | done |
+| Add robust local tests for `IContainer` behavior | `test/ContainerInterfaceTest.cpp` integrated in `test/main.cpp` | done |
+| Update project documentation for first feature task | README and planning/status/test docs | done |
 
 ## Validation checklist
 
-- Local build config succeeds.
+- Local configure succeeds.
 - Local build succeeds.
-- Local CTest run succeeds.
-- First push to remote `main` triggers CI/documentation workflows.
-- Repository default branch is switched to `main`.
+- Local test executable passes: 6 test cases and 21 assertion checks.
+- CTest passes locally: 1 of 1 registered test passed.
+- Doxygen API documentation is maintained in the C++ headers and source; generation is handled by the configured workflow.
+- `IContainer` equality, inequality, empty-state, clear, and swap behavior are validated.

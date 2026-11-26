@@ -6,7 +6,6 @@
 [![Win32 API](https://img.shields.io/badge/Win32_API-Win32-8A2BE2.svg?labelColor=555555)](https://learn.microsoft.com/en-us/windows/win32/apiindex/api-index-portal/)
 [![CMake 3.16](https://img.shields.io/badge/CMake-3.16-008000.svg?labelColor=555555)](https://cmake.org/cmake/help/v3.16/)
 [![BSL 1.0 License](https://img.shields.io/badge/License-BSL%201.0-FF8C00.svg?labelColor=555555)](https://choosealicense.com/licenses/bsl-1.0/)
-[![CI](https://github.com/evandroluizvieira/EToolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/evandroluizvieira/EToolkit/actions/workflows/ci.yml)
 [![Documentation](https://img.shields.io/badge/docs-Doxygen-008B8B.svg?labelColor=555555)](https://evandroluizvieira.github.io/EToolkit/)
 [![Version](https://img.shields.io/github/v/tag/evandroluizvieira/EToolkit?sort=semver&label=version&labelColor=555555&color=C62828)](https://github.com/evandroluizvieira/EToolkit/releases)
 
@@ -14,8 +13,8 @@
 
 EToolkit is a C++ library that serves as a Win32 API wrapper.
 
-This first `main` commit establishes the project baseline (governance, automation, quality, and
-release configuration). Implementation modules are added in subsequent development branches.
+The current delivery includes the first container interface contract, public forwarding header,
+and local test runner integration.
 
 The library is open source and licensed under the BSL 1.0 license.
 
@@ -33,7 +32,7 @@ cmake --build build
 ctest --test-dir build --output-on-failure
 ```
 
-In this initial setup commit, the build validates repository configuration and workflow wiring.
+The build includes the `etoolkit_tests` executable, which validates the `IContainer` contract.
 
 ## Continuous integration and releases
 
@@ -61,5 +60,10 @@ GitHub Releases.
 
 ## Usage
 
-Usage examples are documented as part of the regular development flow after the baseline branch is
-published.
+Public forwarding header usage starts with:
+
+```cpp
+#include <EContainer>
+```
+
+The first interface available through this entry point is `EToolkit::IContainer<DataType, SizeType>`.

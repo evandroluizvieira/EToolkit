@@ -8,25 +8,28 @@ The format follows the principles of [Keep a Changelog](https://keepachangelog.c
 
 ### Added
 
-- TODO
+- `IContainer` base interface contract in `source/containers/interfaces/IContainer.hpp`.
+- Public forwarding header `include/EContainer`.
+- Dependency-free local test runner with `ContainerInterfaceTest` integrated in `test/main.cpp`.
 
 ### Changed
 
-- TODO
+- CMake discovers test `.cpp` files automatically.
+- Project planning/status/test documentation updated for the first feature branch.
 
 ### Fixed
 
-- TODO
+- N/A for this branch scope.
 
 ### Removed
 
-- TODO
+- CI badge from README for the first feature branch documentation update.
 
 ### Security
 
-- TODO
+- No security-impacting changes identified.
 
-## [0.1.0] - YYYY-MM-DD
+## [0.1.0] - 2026-11-11
 
 ### Added
 

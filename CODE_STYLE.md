@@ -58,6 +58,23 @@ introduced only by the derived class. If a category has no inherited members, om
 Use the same category sequence independently in `public:`, `protected:`, and `private:`. The
 access-section sequence remains `public:`, `protected:`, then `private:`.
 
+## Declaration category order
+
+Within each file or namespace scope, keep declarations in contiguous blocks by kind instead of
+interleaving unrelated kinds. Use this order where those categories exist:
+
+1. Preprocessor definitions and macros, grouped together.
+2. Type declarations: aliases, enumerations, structures, classes, and interfaces.
+3. Namespace- or file-scope constants and variables, grouped by role.
+4. Function declarations and definitions, grouped together and kept in a predictable order.
+
+When adding a declaration, append it to the end of its matching category block. Do not insert a
+new function between type declarations, or a new type between functions. Keep related overloads
+and declarations adjacent, and keep the order of out-of-class function definitions consistent
+with their declarations when practical. Apply the same grouping inside namespaces and source
+files. Do not add category marker comments solely to label these blocks; the declaration kinds
+and their order make the grouping clear.
+
 ## Inheritance order
 
 Declare base classes in the same order in which the derived class conceptually exposes or
@@ -144,20 +161,23 @@ source files.
 
 Document public and protected API members with the project's documentation format. For C++/Doxygen declarations:
 
+- indent each interior line's leading `*` one column beyond the `/**` opener's indentation and align all interior asterisks within the block;
+- align the closing `*/` with the interior asterisks;
+- start Doxygen tags and prose at the same column after the leading `* `; do not add extra indentation to tags such as `@tparam`, `@param`, or `@return`;
 - document every public or protected constructor and destructor when its behavior is relevant;
 - document public and protected operators;
 - document public and protected methods, parameters, return values, exceptions, and ownership when applicable;
-- keep documentation immediately above the declaration it describes.
+- keep documentation immediately above the declaration it describes;
+- when declaration and implementation are separate, document the declaration only and do not duplicate its Doxygen block on the implementation;
 - use a multiline documentation block; do not compress a documentation block into a single line;
-- for class and local variables that require documentation, use `type name; ///< description`, aligning the `///<` markers across the variable declarations in the same group;
-- do not add a category comment between an access label and the first documentation block.
+- for class and local variables that require trailing documentation, place one or more tab characters between the declaration and `///<`, and align the `///<` markers across the related declarations in the same group; do not use spaces as alignment padding;
 
 Example:
 
 ```cpp
-DataType*    data;     ///< Pointer to the allocated element storage
-unsigned int size;     ///< Number of elements currently stored
-unsigned int capacity; ///< Number of elements that can be stored
+DataType*    data;	                ///< Pointer to the allocated element storage
+unsigned int size;	                ///< Number of elements currently stored
+unsigned int capacity;	                ///< Number of elements that can be stored
 ```
 
 Private implementation details may use shorter documentation unless they are part of generated API documentation.
@@ -176,11 +196,14 @@ only when they are established project terminology and documented.
 - [ ] All `friend` declarations are grouped at the top of the class body, before access labels.
 - [ ] Empty access sections are omitted.
 - [ ] Members follow constructors, destructors, operators, methods, data members, and static members order.
+- [ ] File- and namespace-scope declarations are grouped by category, and new declarations are appended to the matching category block.
 - [ ] Inherited operators precede class-specific operators, and inherited methods precede class-specific methods within every access section.
 - [ ] Base classes, base initializers, inherited declarations, and Doxygen inheritance tags use the same order.
 - [ ] Out-of-class definitions follow the declaration order.
 - [ ] Public and protected API declarations have appropriate documentation.
-- [ ] Documentation blocks are multiline and variable comments use aligned trailing `///<` descriptions.
+- [ ] Doxygen interior asterisks align within blocks, closing delimiters align with their interior asterisks, and tags have uniform indentation.
+- [ ] When declarations and implementations are separate, only declarations carry Doxygen blocks.
+- [ ] Documentation blocks are multiline; trailing `///<` comments use tabs rather than space padding and align within related groups.
 - [ ] Test declarations and signatures have appropriate Doxygen documentation.
 - [ ] Test bodies contain executable code rather than documentation comments.
 - [ ] Test names and diagnostics avoid unexplained abbreviations.
