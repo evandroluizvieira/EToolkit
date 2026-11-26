@@ -46,11 +46,10 @@ not generate an executable because it has no `main()` function. The build does n
 To execute something with `F5`, select a configuration from the Run and Debug selector:
 
 - `EToolkit: Run tests` executes the container test executable.
-- `EToolkit: Run simple_window` executes the basic window application.
 
 The `F5` configurations only execute the selected binary; they do not build or configure the
-project. Run `F7` first whenever the source or build configuration has changed. Additional
-applications should add another configuration to `.vscode/launch.json`.
+project. Run `F7` first whenever the source or build configuration has changed. Application
+debug configurations should be added only when that branch introduces concrete application targets.
 
 ## Tests
 
@@ -73,10 +72,9 @@ with CMake; it does not provide assertions or a test framework. GoogleTest is an
 test framework library. A project using a local runner can register its executable with CTest
 without depending on GoogleTest. State this distinction in the project documentation.
 
-The public API compatibility target provides a consumer-level compatibility check. It must
-include public forwarding headers, link through the supported `EToolkit` target, exercise a small
-representative API surface, and be registered with CTest. This check is intentionally separate
-from component-level tests so that public include and link regressions are detected explicitly.
+When a change introduces a single component, focus its automated tests on that component.
+Additional compatibility or integration executables can be added when their scope is implemented
+and reviewed.
 
 For C++ tests, document test classes, test methods, assertion utilities, and entry points with
 multiline Doxygen blocks immediately above declarations or signatures. Do not place test
@@ -161,12 +159,13 @@ Apply the structural rules in [CODE_STYLE.md](CODE_STYLE.md). In particular, kee
 
 ## Running
 
+Run the generated test executable for local validation:
+
 ```text
-build/applications/simple_window/<example-application>.exe
+build/test/etoolkit_tests.exe
 ```
 
-The exact executable location can vary by generator and configuration. The example creates an
-empty window and serves as a minimal manual integration check for the application and window API.
+Application executables are introduced by feature branches that explicitly add application targets.
 
 ## Debug
 

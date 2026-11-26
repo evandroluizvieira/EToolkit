@@ -1,21 +1,22 @@
 # Test plan
 
-## Public API consumer validation
+## IContainer interface validation
 
-The project validates the public API from a consumer perspective with a dedicated compatibility
-executable. It includes public forwarding headers, links against the supported `EToolkit` target,
-exercises a representative API surface, and runs through CTest.
-This check complements component-level tests; it does not replace them.
+This branch verifies the `IContainer` contract with `etoolkit_tests`; the cases cover state,
+comparison, and mutation behavior.
 
 ## Scope
 
-- Feature/release: `<name>`
-- Requirements: `<links or IDs>`
-- Owner: `<name or team>`
+- Feature/release: `feature/icontainer-interface`
+- Requirements: task-derived from current `main`
+- Owner: `EToolkit maintainers`
 
 ## Test strategy
 
-Describe the balance of unit, integration, system, acceptance, performance, security, compatibility, and manual testing.
+This branch uses dependency-free unit tests with a local runner to validate `IContainer` behavior
+(state checks, comparison semantics, and mutation contracts) through an explicit concrete test
+stub. The runner reports assertion failures with file and line metadata and returns non-zero on
+failure. CTest is used for execution and reporting only.
 
 ### Unit test organization
 
@@ -47,22 +48,32 @@ use complete, descriptive names instead of unexplained abbreviations.
 
 | Environment | Version/configuration | Data source | Reset procedure |
 |---|---|---|---|
-| `<environment>` | `<configuration>` | `<synthetic/staging>` | `<procedure>` |
+| Windows + MSYS2 MinGW64 | C++11, CMake 3.16+, Ninja | Synthetic in-memory integer arrays | Reconfigure and rebuild `build/` |
 
 ## Test cases
 
-| ID | Scenario | Type | Expected result | Evidence | Status |
-|---|---|---|---|---|---|
-| TC-001 | `<scenario>` | `<unit/integration/system>` | `<result>` | `<link>` | `<todo/pass/fail>` |
+| Scenario | Type | Expected result | Evidence | Status |
+|---|---|---|---|---|
+| Empty container reports empty state | unit | `isEmpty()` returns true | Local `etoolkit_tests` output | pass |
+| Non-empty container reports non-empty state | unit | `isEmpty()` returns false | Local `etoolkit_tests` output | pass |
+| Equality for same size and same sequence | unit | `operator==` true and `operator!=` false | Local `etoolkit_tests` output | pass |
+| Inequality for different sequence | unit | `operator!=` true | Local `etoolkit_tests` output | pass |
+| Inequality for different sizes | unit | `operator!=` true when sizes differ | Local `etoolkit_tests` output | pass |
+| Self comparison consistency | unit | `value == value` true and `value != value` false | Local `etoolkit_tests` output | pass |
+| `swap()` exchanges ownership and values | unit | interface-visible sizes and first elements are exchanged | Local `etoolkit_tests` output | pass |
+| `clear()` resets and remains stable | unit | size becomes zero, empty-state is true, and repeated clear remains valid | Local `etoolkit_tests` output | pass |
+| Non-empty null-data safety path | unit | comparison returns unequal when one side has null data and non-zero size | Local `etoolkit_tests` output | pass |
+| Empty null-data comparison path | unit | two empty containers compare equal | Local `etoolkit_tests` output | pass |
+| Swap with incompatible implementation | unit | values remain unchanged when dynamic type is incompatible | Local `etoolkit_tests` output | pass |
 
 ## Quality gates
 
-- [ ] Required tests pass.
-- [ ] Negative and error paths covered.
-- [ ] Security-sensitive behavior validated.
-- [ ] Supported platforms/configurations validated.
-- [ ] Performance thresholds met, if applicable.
-- [ ] No known release-blocking defect remains.
+- [x] Required tests pass.
+- [x] Negative and error paths covered.
+- [x] Security-sensitive behavior: N/A for this interface-only task.
+- [x] Supported platform/configuration validated: Windows with MSYS2 MinGW-w64, Debug.
+- [x] Performance thresholds: N/A; no performance requirement applies.
+- [x] No known release-blocking defect remains.
 
 ## Defect handling
 

@@ -1,21 +1,23 @@
 # EToolkit Project Status
 
-**Assessment date:** 2026-11-11  
-**Current phase:** Main branch initial setup
-**Assessment scope:** Baseline source, build, test, automation, and governance files before first remote `main` push.
+**Assessment date:** 2026-11-26
+
+**Local changes:** Ready for commit
+
+**Assessment scope:** `feature/icontainer-interface` local development status.
 
 ## Executive summary
 
-EToolkit is being initialized on `main` as the primary development branch. The immediate goal is to
-publish a complete baseline commit to remote `main`, switch the default branch on GitHub, and then
-start regular development flow with feature branches targeting `main`.
+EToolkit is in active feature development after the `main` baseline publication. This snapshot
+records local build, test, and API status.
 
 ## Git status at assessment time
 
-- Current local baseline branch: `main` (before first remote publish).
-- Primary branch marker file: `BRANCH` set to `main`.
-- Workflows are configured to run from and validate `main`.
-- Next action is to publish `main` and switch the GitHub default branch.
+- Current local branch: `feature/icontainer-interface`.
+- `main` baseline is already published and set as remote default branch.
+- Interface, tests, and task documentation are implemented and validated on this feature branch.
+- Changes remain local; no commit or merge has been created for this branch yet.
+- Next action is to commit the reviewed branch changes and open a Pull Request targeting `main`.
 
 This section is a snapshot and must be updated if the repository changes.
 
@@ -23,30 +25,28 @@ This section is a snapshot and must be updated if the repository changes.
 
 | Area | Status | Notes |
 |---|---|---|
-| Source organization | Initial setup | Implementation source modules will be added after baseline publish. |
-| Feature implementation | Not started | Functional code is intentionally deferred to follow-up development branches. |
+| Source organization | Implemented | `IContainer` interface module and forwarding include are present. |
+| Feature implementation | Implemented | `IContainer` is implemented locally and validated; Pull Request review remains after the branch commit. |
 | Requirements and scope | Defined | Baseline governance and planning documents are tracked in the repository root. |
-| Tests | Initial setup | Automated workflow hooks are present; implementation test suites are added with feature work. |
-| Reproducible build | Initial setup | Root CMake baseline validates configuration and workflow integration. |
+| Tests | Implemented | Local runner passes 6 test cases and 21 assertion checks; CTest passes 1/1 registered test. |
+| Reproducible build | Implemented | Build produces shared/static libraries and the `etoolkit_tests` target; application targets are discovered from application subdirectories. |
 | CI | Implemented | `.github/workflows/ci.yml` validates Pull Requests/pushes to `main` and manual runs on Windows with MSYS2, CMake, Ninja, build, and CTest. |
-| API documentation | Implemented | Doxygen targets the public headers and source API; GitHub Actions publishes HTML to GitHub Pages and exposes PR builds as review artifacts. |
+| API documentation | Implemented | Doxygen comments are maintained in the public headers and source API; the workflow validates generation on Pull Requests and publishes HTML from `main`. |
 | User documentation | Initial setup | README and governance documents describe setup and planned delivery flow. |
-| Versioning | Implemented | Version source is currently `0.0.0`; the first eligible push to `main` automatically creates the non-release baseline tag `v0.0.0`, and subsequent reviewed Conventional Commits merged into that branch can create approved tags. |
+| Versioning | Implemented | Version source remains `0.0.0`; subsequent approved feature merges to `main` can advance SemVer tags. |
 | Release packaging | Implemented | `release.yml` validates SemVer tags, rebuilds/tests the tagged revision, packages Windows artifacts, calculates SHA-256 checksums, and publishes a GitHub Release. |
 | License | Implemented | Repository baseline includes `LICENSE` with BSL 1.0 text. |
 | Contribution process | Implemented | Branching, commit, and review standards are documented before feature development starts. |
 
-## Immediate plan
+## Next steps
 
-1. Create the first baseline commit on local `main`.
-2. Push `main` to `origin`.
-3. Change the GitHub default branch to `main`.
-4. Validate CI/Doxygen/Pages/version workflows after the default-branch transition.
-5. Start normal development with feature branches and pull requests targeting `main`.
+1. Commit the reviewed feature-branch changes.
+2. Open a Pull Request targeting `main` and verify CI and Doxygen workflow results.
 
-## Acceptance for bootstrap completion
+## Feature validation status
 
-- `BRANCH` contains `main`.
-- `LICENSE` exists and matches BSL 1.0.
-- Root docs reference `main` for workflow and governance flow.
-- First remote `main` push completes required checks.
+- `IContainer` contract is publicly accessible from `include/EContainer`.
+- The `etoolkit_tests` executable passes locally: 6 tests and 21 assertion checks.
+- CTest passes locally: 1/1 registered test.
+- Branch-scope `etoolkit_tests` target compiles and runs successfully.
+- No unapproved Git update is performed.
